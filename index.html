@@ -1,0 +1,1353 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FocusFlow — Motor de Estudio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;900&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<!-- ============================================================
+     FOCUSFLOW — Motor de Estudio v1.0
+     ============================================================ -->
+
+<style>
+/* ---- VARIABLES ---- */
+:root {
+  --bg:       #04060d;
+  --bg2:      #070c18;
+  --bg3:      #0c1425;
+  --card:     rgba(8, 14, 28, 0.85);
+  --border:   rgba(0, 180, 255, 0.10);
+  --border-h: rgba(0, 212, 255, 0.30);
+
+  --focus:    #00d4ff;
+  --focus-d:  rgba(0, 212, 255, 0.14);
+  --short:    #00ff98;
+  --short-d:  rgba(0, 255, 152, 0.14);
+  --long:     #b06aff;
+  --long-d:   rgba(176, 106, 255, 0.14);
+
+  --xp:       #ff7043;
+  --xp-d:     rgba(255, 112, 67, 0.15);
+  --gold:     #ffd600;
+  --success:  #00ff98;
+
+  --text:     #dce8f8;
+  --text-dim: #5c78a8;
+  --text-faint: #2a3a5a;
+
+  --radius: 14px;
+}
+
+/* ---- RESET ---- */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { height: 100%; scroll-behavior: smooth; }
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Outfit', sans-serif;
+  min-height: 100vh;
+  overflow-x: hidden;
+  position: relative;
+}
+
+/* ---- BACKGROUND ---- */
+.bg-grid {
+  position: fixed; inset: 0;
+  background-image:
+    linear-gradient(rgba(0, 212, 255, 0.028) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0, 212, 255, 0.028) 1px, transparent 1px);
+  background-size: 44px 44px;
+  pointer-events: none; z-index: 0;
+}
+.bg-orb {
+  position: fixed; pointer-events: none; z-index: 0;
+  border-radius: 50%;
+  filter: blur(80px);
+  animation: orb-drift 12s ease-in-out infinite;
+}
+.bg-orb-1 {
+  width: 600px; height: 600px;
+  top: -200px; left: 50%;
+  transform: translateX(-50%);
+  background: radial-gradient(circle, rgba(0,212,255,0.07) 0%, transparent 70%);
+}
+.bg-orb-2 {
+  width: 400px; height: 400px;
+  bottom: 10%; right: -100px;
+  background: radial-gradient(circle, rgba(176,106,255,0.06) 0%, transparent 70%);
+  animation-delay: -4s;
+}
+.bg-orb-3 {
+  width: 350px; height: 350px;
+  bottom: 20%; left: -80px;
+  background: radial-gradient(circle, rgba(0,255,152,0.05) 0%, transparent 70%);
+  animation-delay: -8s;
+}
+@keyframes orb-drift {
+  0%,100% { transform: translateX(-50%) translateY(0) scale(1); }
+  50%      { transform: translateX(-50%) translateY(-30px) scale(1.05); }
+}
+.bg-orb-2 { animation: orb-drift2 10s ease-in-out infinite -4s; }
+.bg-orb-3 { animation: orb-drift2 14s ease-in-out infinite -8s; }
+@keyframes orb-drift2 {
+  0%,100% { transform: scale(1) rotate(0deg); }
+  50%      { transform: scale(1.1) rotate(5deg); }
+}
+
+/* ---- LAYOUT ---- */
+#app {
+  position: relative; z-index: 1;
+  max-width: 780px;
+  margin: 0 auto;
+  padding: 0 24px 60px;
+}
+
+/* ---- HEADER ---- */
+.header {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 22px 0 20px;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 30px;
+}
+.logo { display: flex; align-items: center; gap: 12px; }
+.logo-icon {
+  width: 36px; height: 36px;
+  border: 2px solid var(--focus);
+  border-radius: 10px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 18px;
+  box-shadow: 0 0 16px var(--focus-d), inset 0 0 12px var(--focus-d);
+  animation: icon-pulse 3s ease-in-out infinite;
+}
+@keyframes icon-pulse {
+  0%,100% { box-shadow: 0 0 10px var(--focus-d), inset 0 0 8px var(--focus-d); }
+  50%      { box-shadow: 0 0 24px rgba(0,212,255,0.35), inset 0 0 16px rgba(0,212,255,0.2); }
+}
+.logo-wordmark { display: flex; flex-direction: column; gap: 1px; }
+.logo-name {
+  font-family: 'Orbitron', monospace;
+  font-size: 17px; font-weight: 900;
+  letter-spacing: 0.12em;
+  background: linear-gradient(135deg, var(--focus) 0%, #ffffff 70%);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+.logo-sub {
+  font-size: 9px; color: var(--text-dim);
+  letter-spacing: 0.3em; text-transform: uppercase; font-weight: 500;
+}
+.nav { display: flex; gap: 8px; }
+.nav-btn {
+  background: var(--card);
+  border: 1px solid var(--border);
+  color: var(--text-dim);
+  padding: 8px 14px;
+  border-radius: 9px;
+  cursor: pointer;
+  font-family: 'Outfit', sans-serif;
+  font-size: 12px; font-weight: 500;
+  transition: all 0.22s;
+  letter-spacing: 0.06em;
+  display: flex; align-items: center; gap: 6px;
+  backdrop-filter: blur(10px);
+}
+.nav-btn:hover {
+  border-color: var(--border-h);
+  color: var(--text);
+  background: var(--focus-d);
+  box-shadow: 0 0 14px var(--focus-d);
+}
+
+/* ---- MODE TABS ---- */
+.mode-tabs {
+  display: flex; gap: 4px;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 4px;
+  margin-bottom: 36px;
+  backdrop-filter: blur(12px);
+}
+.mode-tab {
+  flex: 1; padding: 10px 12px;
+  border: 1px solid transparent;
+  border-radius: 10px;
+  background: transparent;
+  color: var(--text-dim);
+  font-family: 'Outfit', sans-serif;
+  font-size: 12px; font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s;
+  letter-spacing: 0.04em;
+  white-space: nowrap;
+}
+.mode-tab:hover { color: var(--text); }
+.mode-tab.active[data-mode="focus"]  { background: var(--focus-d); border-color: var(--focus);  color: var(--focus);  box-shadow: 0 0 14px var(--focus-d);  }
+.mode-tab.active[data-mode="short"]  { background: var(--short-d); border-color: var(--short);  color: var(--short);  box-shadow: 0 0 14px var(--short-d);  }
+.mode-tab.active[data-mode="long"]   { background: var(--long-d);  border-color: var(--long);   color: var(--long);   box-shadow: 0 0 14px var(--long-d);   }
+
+/* ---- TIMER ---- */
+.timer-section { display: flex; flex-direction: column; align-items: center; margin-bottom: 32px; }
+.timer-ring-wrap {
+  position: relative;
+  width: 290px; height: 290px;
+  margin-bottom: 20px;
+}
+.timer-svg {
+  width: 100%; height: 100%;
+  transform: rotate(-90deg);
+}
+.timer-svg .ring-deco {
+  fill: none;
+  stroke: rgba(0,212,255,0.04);
+  stroke-width: 1;
+}
+.timer-svg .ring-track {
+  fill: none;
+  stroke: rgba(0,212,255,0.08);
+  stroke-width: 5;
+  transition: stroke 0.5s;
+}
+.timer-svg .ring-prog {
+  fill: none;
+  stroke: var(--focus);
+  stroke-width: 5;
+  stroke-linecap: round;
+  stroke-dasharray: 753.98;
+  stroke-dashoffset: 0;
+  transition: stroke-dashoffset 0.6s linear, stroke 0.5s;
+  filter: drop-shadow(0 0 6px var(--focus));
+}
+
+/* Mode-specific ring colors */
+body[data-mode="short"] .ring-track { stroke: rgba(0,255,152,0.08); }
+body[data-mode="short"] .ring-prog  { stroke: var(--short); filter: drop-shadow(0 0 6px var(--short)); }
+body[data-mode="long"]  .ring-track { stroke: rgba(176,106,255,0.08); }
+body[data-mode="long"]  .ring-prog  { stroke: var(--long);  filter: drop-shadow(0 0 6px var(--long));  }
+
+.timer-inner {
+  position: absolute; inset: 0;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  gap: 4px;
+}
+.timer-digits {
+  font-family: 'Orbitron', monospace;
+  font-size: 56px; font-weight: 700;
+  letter-spacing: 0.04em;
+  color: var(--text);
+  line-height: 1;
+  text-shadow: 0 0 30px var(--focus);
+  transition: text-shadow 0.5s;
+}
+body[data-mode="short"] .timer-digits { text-shadow: 0 0 30px var(--short); }
+body[data-mode="long"]  .timer-digits { text-shadow: 0 0 30px var(--long); }
+
+.timer-label-mode {
+  font-size: 10px; color: var(--text-dim);
+  text-transform: uppercase; letter-spacing: 0.28em;
+  font-weight: 600;
+}
+
+/* Pulsing ring when running */
+.timer-ring-wrap.running .ring-prog {
+  animation: ring-pulse 2.4s ease-in-out infinite;
+}
+@keyframes ring-pulse {
+  0%,100% { opacity: 1; }
+  50%      { opacity: 0.7; }
+}
+/* Flash on complete */
+.timer-ring-wrap.flash {
+  animation: ring-flash 0.35s steps(2, end) 3;
+}
+@keyframes ring-flash {
+  0%   { opacity: 1; }
+  50%  { opacity: 0.1; }
+  100% { opacity: 1; }
+}
+
+/* ---- CYCLE DOTS ---- */
+.cycle-dots { display: flex; gap: 12px; align-items: center; margin-bottom: 8px; }
+.c-dot {
+  width: 10px; height: 10px;
+  border-radius: 50%;
+  border: 2px solid var(--focus);
+  background: transparent;
+  transition: all 0.4s cubic-bezier(0.34,1.56,0.64,1);
+}
+.c-dot.done { background: var(--focus); box-shadow: 0 0 8px var(--focus); }
+body[data-mode="short"] .c-dot { border-color: var(--short); }
+body[data-mode="short"] .c-dot.done { background: var(--short); box-shadow: 0 0 8px var(--short); }
+
+/* ---- CONTROLS ---- */
+.controls {
+  display: flex; align-items: center; gap: 18px;
+  margin-bottom: 36px;
+}
+.btn-circle {
+  width: 50px; height: 50px;
+  border-radius: 50%;
+  border: 1px solid var(--border);
+  background: var(--card);
+  color: var(--text-dim);
+  font-size: 18px;
+  cursor: pointer;
+  transition: all 0.22s;
+  display: flex; align-items: center; justify-content: center;
+  backdrop-filter: blur(10px);
+  font-family: 'Outfit', sans-serif;
+}
+.btn-circle:hover {
+  border-color: var(--border-h);
+  color: var(--text);
+  box-shadow: 0 0 16px var(--focus-d);
+  background: var(--focus-d);
+}
+.btn-play {
+  width: 76px; height: 76px;
+  font-size: 26px;
+  border: 2px solid var(--focus);
+  background: var(--focus-d);
+  color: var(--focus);
+  box-shadow: 0 0 24px var(--focus-d), inset 0 0 20px var(--focus-d);
+}
+.btn-play:hover {
+  transform: scale(1.06);
+  box-shadow: 0 0 40px rgba(0,212,255,0.35), inset 0 0 24px rgba(0,212,255,0.2);
+  background: rgba(0,212,255,0.22);
+}
+.btn-play:active { transform: scale(0.94); }
+body[data-mode="short"] .btn-play { border-color: var(--short); background: var(--short-d); color: var(--short); box-shadow: 0 0 24px var(--short-d), inset 0 0 20px var(--short-d); }
+body[data-mode="long"]  .btn-play { border-color: var(--long);  background: var(--long-d);  color: var(--long);  box-shadow: 0 0 24px var(--long-d),  inset 0 0 20px var(--long-d);  }
+
+/* ---- XP BAR ---- */
+.xp-panel {
+  width: 100%;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 16px 20px;
+  margin-bottom: 24px;
+  backdrop-filter: blur(12px);
+}
+.xp-top {
+  display: flex; justify-content: space-between; align-items: center;
+  margin-bottom: 10px;
+}
+.xp-left { display: flex; align-items: center; gap: 10px; }
+.lvl-badge {
+  background: linear-gradient(135deg, var(--xp), #e65100);
+  color: #fff;
+  font-family: 'Orbitron', monospace;
+  font-size: 10px; font-weight: 700;
+  padding: 4px 10px;
+  border-radius: 20px;
+  letter-spacing: 0.12em;
+  white-space: nowrap;
+}
+.lvl-name { font-size: 13px; color: var(--text-dim); font-weight: 500; }
+.xp-count {
+  font-family: 'Orbitron', monospace;
+  font-size: 11px; color: var(--text-dim);
+}
+.xp-track {
+  height: 6px; background: rgba(255,112,67,0.1);
+  border-radius: 3px; overflow: hidden;
+}
+.xp-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--xp), #ffca28);
+  border-radius: 3px;
+  transition: width 0.9s cubic-bezier(0.34,1.56,0.64,1);
+  box-shadow: 0 0 8px rgba(255,112,67,0.5);
+}
+
+/* ---- STATS BAR ---- */
+.stats-row {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+  margin-bottom: 10px;
+}
+.scard {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 14px 10px;
+  text-align: center;
+  backdrop-filter: blur(10px);
+  transition: border-color 0.22s;
+  cursor: default;
+}
+.scard:hover { border-color: var(--border-h); }
+.scard-val {
+  font-family: 'Orbitron', monospace;
+  font-size: 22px; font-weight: 700; color: var(--text);
+  margin-bottom: 4px;
+}
+.scard-label {
+  font-size: 9px; color: var(--text-dim);
+  text-transform: uppercase; letter-spacing: 0.18em;
+}
+.scard.streak .scard-val { color: var(--xp); }
+
+/* ---- MODALS ---- */
+.overlay {
+  display: none; position: fixed; inset: 0;
+  background: rgba(2,4,10,0.82);
+  backdrop-filter: blur(10px);
+  z-index: 200;
+  align-items: center; justify-content: center;
+  padding: 20px;
+}
+.overlay.open { display: flex; }
+.mbox {
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  width: 100%; max-width: 500px;
+  max-height: 85vh; overflow-y: auto;
+  box-shadow: 0 0 60px rgba(0,212,255,0.08);
+  animation: mbox-in 0.32s cubic-bezier(0.34,1.56,0.64,1);
+}
+@keyframes mbox-in {
+  from { opacity:0; transform: scale(0.88) translateY(24px); }
+  to   { opacity:1; transform: scale(1) translateY(0); }
+}
+.mhead {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 20px 24px;
+  border-bottom: 1px solid var(--border);
+  position: sticky; top: 0;
+  background: var(--bg3); z-index: 1;
+  border-radius: 18px 18px 0 0;
+}
+.mtitle {
+  font-family: 'Orbitron', monospace;
+  font-size: 12px; font-weight: 700;
+  letter-spacing: 0.18em;
+  color: var(--focus);
+}
+.mclose {
+  width: 30px; height: 30px;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  background: transparent; color: var(--text-dim);
+  font-size: 14px; cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  transition: all 0.2s;
+}
+.mclose:hover { border-color: var(--focus); color: var(--text); }
+.mbody { padding: 24px; }
+
+/* ---- SETTINGS ---- */
+.sgroup { margin-bottom: 22px; }
+.sgroup-title {
+  font-size: 9px; color: var(--focus);
+  text-transform: uppercase; letter-spacing: 0.24em;
+  font-weight: 700; margin-bottom: 10px;
+}
+.srow {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 11px 0;
+  border-bottom: 1px solid var(--border);
+}
+.srow:last-child { border-bottom: none; }
+.slabel { font-size: 13px; color: var(--text); font-weight: 500; }
+.ssub { font-size: 10px; color: var(--text-dim); margin-top: 2px; }
+.snumber {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  color: var(--text);
+  font-family: 'Orbitron', monospace;
+  font-size: 13px;
+  padding: 6px 10px;
+  width: 78px; text-align: center;
+  transition: border-color 0.2s;
+}
+.snumber:focus { outline: none; border-color: var(--focus); box-shadow: 0 0 10px var(--focus-d); }
+
+/* Toggle */
+.tog {
+  width: 44px; height: 24px;
+  border-radius: 12px;
+  background: var(--text-faint);
+  border: none; cursor: pointer;
+  position: relative; transition: background 0.28s;
+}
+.tog.on { background: var(--focus); }
+.tog::after {
+  content: '';
+  position: absolute; top: 2px; left: 2px;
+  width: 20px; height: 20px;
+  background: #fff; border-radius: 50%;
+  transition: left 0.28s;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.3);
+}
+.tog.on::after { left: 22px; }
+
+.btn-save {
+  width: 100%; padding: 12px;
+  background: var(--focus-d);
+  border: 1px solid var(--focus);
+  border-radius: 10px;
+  color: var(--focus);
+  font-family: 'Outfit', sans-serif;
+  font-size: 14px; font-weight: 600;
+  cursor: pointer; transition: all 0.22s;
+  letter-spacing: 0.06em; margin-top: 4px;
+}
+.btn-save:hover { background: rgba(0,212,255,0.22); box-shadow: 0 0 18px var(--focus-d); }
+
+/* ---- ACHIEVEMENTS ---- */
+.ach-stats {
+  display: flex; gap: 12px; margin-bottom: 20px;
+}
+.ach-stat {
+  flex: 1; background: var(--bg2); border: 1px solid var(--border);
+  border-radius: 10px; padding: 12px; text-align: center;
+}
+.ach-stat-val {
+  font-family: 'Orbitron', monospace;
+  font-size: 20px; font-weight: 700; color: var(--gold);
+}
+.ach-stat-label { font-size: 9px; color: var(--text-dim); text-transform: uppercase; letter-spacing: 0.15em; margin-top: 3px; }
+
+.ach-grid {
+  display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px;
+}
+.acard {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: 11px; padding: 14px;
+  transition: all 0.22s; position: relative; overflow: hidden;
+}
+.acard.unlocked {
+  border-color: rgba(255,214,0,0.28);
+  background: rgba(255,214,0,0.04);
+}
+.acard.locked { opacity: 0.42; filter: grayscale(0.7); }
+.acard-check {
+  position: absolute; top: 8px; right: 8px;
+  width: 20px; height: 20px;
+  background: var(--gold); border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 10px; font-weight: 700; color: #000;
+}
+.acard-icon { font-size: 26px; margin-bottom: 7px; }
+.acard-name { font-size: 13px; font-weight: 700; color: var(--text); margin-bottom: 3px; }
+.acard-desc { font-size: 10px; color: var(--text-dim); margin-bottom: 6px; line-height: 1.4; }
+.acard-xp { font-size: 10px; color: var(--xp); font-family: 'Orbitron', monospace; font-weight: 700; }
+
+/* ---- STATS MODAL ---- */
+.stats-grid-modal {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 20px;
+}
+.stat-cell {
+  background: var(--bg2); border: 1px solid var(--border);
+  border-radius: 10px; padding: 16px; text-align: center;
+}
+.stat-cell-val {
+  font-family: 'Orbitron', monospace;
+  font-size: 26px; font-weight: 700; color: var(--focus); margin-bottom: 5px;
+}
+.stat-cell-label {
+  font-size: 9px; color: var(--text-dim); text-transform: uppercase; letter-spacing: 0.18em;
+}
+.stat-detail-row {
+  display: flex; justify-content: space-between;
+  padding: 9px 0; border-bottom: 1px solid var(--border);
+  font-size: 13px;
+}
+.stat-detail-row:last-child { border-bottom: none; }
+.stat-detail-row span:first-child { color: var(--text-dim); }
+.stat-detail-row span:last-child { font-family: 'Orbitron', monospace; color: var(--text); font-size: 12px; }
+
+/* ---- TOAST ---- */
+.toast-wrap {
+  position: fixed; bottom: 28px; right: 28px;
+  z-index: 999;
+  display: flex; flex-direction: column; gap: 8px;
+  pointer-events: none;
+}
+.toast {
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 12px 16px;
+  min-width: 270px; max-width: 320px;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.6);
+  animation: t-in 0.38s cubic-bezier(0.34,1.56,0.64,1);
+  backdrop-filter: blur(14px);
+}
+.toast.t-xp   { border-color: rgba(255,112,67,0.35); }
+.toast.t-ach  { border-color: rgba(255,214,0,0.35); }
+.toast.t-done { border-color: rgba(0,255,152,0.35); }
+.toast-ttl {
+  font-size: 9px; text-transform: uppercase; letter-spacing: 0.18em;
+  color: var(--text-dim); margin-bottom: 4px; font-weight: 600;
+}
+.toast.t-xp  .toast-ttl { color: var(--xp); }
+.toast.t-ach .toast-ttl { color: var(--gold); }
+.toast.t-done .toast-ttl { color: var(--success); }
+.toast-msg { font-size: 14px; font-weight: 600; color: var(--text); }
+@keyframes t-in  { from { opacity:0; transform: translateX(30px); } to { opacity:1; transform: none; } }
+@keyframes t-out { from { opacity:1; transform: none; } to { opacity:0; transform: translateX(30px); } }
+
+/* ---- PARTICLES ---- */
+.px { position: fixed; pointer-events: none; z-index: 998; border-radius: 50%; animation: px-fly 1s ease-out forwards; }
+@keyframes px-fly {
+  0%   { opacity:1; transform: translate(0,0) scale(1); }
+  100% { opacity:0; transform: translate(var(--dx),var(--dy)) scale(0.4); }
+}
+
+/* ---- SCROLLBAR ---- */
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+
+/* ---- RESPONSIVE ---- */
+@media (max-width: 560px) {
+  .stats-row { grid-template-columns: repeat(2,1fr); }
+  .timer-digits { font-size: 44px; }
+  .timer-ring-wrap { width: 250px; height: 250px; }
+  .nav-btn .nav-label { display: none; }
+  .ach-grid { grid-template-columns: 1fr; }
+  .stats-grid-modal { grid-template-columns: 1fr 1fr; }
+}
+@media (max-width: 380px) {
+  .mode-tab { font-size: 10px; padding: 8px 6px; }
+  #app { padding: 0 14px 40px; }
+}
+</style>
+</head>
+
+<body data-mode="focus">
+
+<!-- Background -->
+<div class="bg-grid"></div>
+<div class="bg-orb bg-orb-1"></div>
+<div class="bg-orb bg-orb-2"></div>
+<div class="bg-orb bg-orb-3"></div>
+
+<div id="app">
+
+  <!-- Header -->
+  <header class="header">
+    <div class="logo">
+      <div class="logo-icon">⚡</div>
+      <div class="logo-wordmark">
+        <div class="logo-name">FOCUSFLOW</div>
+        <div class="logo-sub">Motor de Estudio</div>
+      </div>
+    </div>
+    <nav class="nav">
+      <button class="nav-btn" id="btn-stats">📊 <span class="nav-label">Stats</span></button>
+      <button class="nav-btn" id="btn-achs">🏆 <span class="nav-label">Logros</span></button>
+      <button class="nav-btn" id="btn-cfg">⚙️ <span class="nav-label">Config</span></button>
+    </nav>
+  </header>
+
+  <!-- Mode Tabs -->
+  <div class="mode-tabs">
+    <button class="mode-tab active" data-mode="focus">🎯 Focus</button>
+    <button class="mode-tab" data-mode="short">☕ Descanso Corto</button>
+    <button class="mode-tab" data-mode="long">🌙 Descanso Largo</button>
+  </div>
+
+  <!-- Timer Ring -->
+  <div class="timer-section">
+    <div class="timer-ring-wrap" id="ring-wrap">
+      <svg class="timer-svg" viewBox="0 0 300 300" xmlns="http://www.w3.org/2000/svg">
+        <circle class="ring-deco" cx="150" cy="150" r="140"/>
+        <circle class="ring-deco" cx="150" cy="150" r="105"/>
+        <circle class="ring-track" cx="150" cy="150" r="120"/>
+        <circle class="ring-prog" id="ring-prog" cx="150" cy="150" r="120"/>
+      </svg>
+      <div class="timer-inner">
+        <div class="timer-digits" id="timer-digits">25:00</div>
+        <div class="timer-label-mode" id="timer-mode-lbl">FOCUS</div>
+      </div>
+    </div>
+
+    <!-- Cycle dots -->
+    <div class="cycle-dots" id="cycle-dots"></div>
+  </div>
+
+  <!-- Controls -->
+  <div class="controls">
+    <button class="btn-circle" id="btn-reset" title="Reset (R)">↺</button>
+    <button class="btn-circle btn-play" id="btn-play" title="Play/Pause (Espacio)">▶</button>
+    <button class="btn-circle" id="btn-skip" title="Saltar">⏭</button>
+  </div>
+
+  <!-- XP Bar -->
+  <div class="xp-panel">
+    <div class="xp-top">
+      <div class="xp-left">
+        <div class="lvl-badge" id="lvl-badge">LVL 1</div>
+        <div class="lvl-name" id="lvl-name">Estudiante</div>
+      </div>
+      <div class="xp-count" id="xp-count">0 / 100 XP</div>
+    </div>
+    <div class="xp-track"><div class="xp-fill" id="xp-fill" style="width:0%"></div></div>
+  </div>
+
+  <!-- Stats -->
+  <div class="stats-row">
+    <div class="scard">
+      <div class="scard-val" id="s-today-p">0</div>
+      <div class="scard-label">Hoy 🍅</div>
+    </div>
+    <div class="scard">
+      <div class="scard-val" id="s-today-h">0m</div>
+      <div class="scard-label">Focus hoy</div>
+    </div>
+    <div class="scard streak">
+      <div class="scard-val" id="s-streak">0🔥</div>
+      <div class="scard-label">Racha</div>
+    </div>
+    <div class="scard">
+      <div class="scard-val" id="s-total">0</div>
+      <div class="scard-label">Total 🍅</div>
+    </div>
+  </div>
+
+</div><!-- /#app -->
+
+<!-- ====== MODAL: SETTINGS ====== -->
+<div class="overlay" id="ov-cfg">
+  <div class="mbox">
+    <div class="mhead">
+      <div class="mtitle">⚙ CONFIGURACIÓN</div>
+      <button class="mclose" data-ov="ov-cfg">✕</button>
+    </div>
+    <div class="mbody">
+
+      <div class="sgroup">
+        <div class="sgroup-title">⏱ Tiempos (minutos)</div>
+        <div class="srow">
+          <div><div class="slabel">Focus</div><div class="ssub">Sesión de concentración</div></div>
+          <input class="snumber" id="cfg-focus" type="number" min="1" max="120" value="25">
+        </div>
+        <div class="srow">
+          <div><div class="slabel">Descanso Corto</div><div class="ssub">Pausa entre pomodoros</div></div>
+          <input class="snumber" id="cfg-short" type="number" min="1" max="30" value="5">
+        </div>
+        <div class="srow">
+          <div><div class="slabel">Descanso Largo</div><div class="ssub">Pausa al completar ciclo</div></div>
+          <input class="snumber" id="cfg-long" type="number" min="5" max="60" value="15">
+        </div>
+        <div class="srow">
+          <div><div class="slabel">Pomodoros por ciclo</div><div class="ssub">Hasta el descanso largo</div></div>
+          <input class="snumber" id="cfg-interval" type="number" min="2" max="8" value="4">
+        </div>
+      </div>
+
+      <div class="sgroup">
+        <div class="sgroup-title">🔊 Audio</div>
+        <div class="srow">
+          <div><div class="slabel">Sonidos activados</div></div>
+          <button class="tog on" id="tog-sound"></button>
+        </div>
+      </div>
+
+      <div class="sgroup">
+        <div class="sgroup-title">⚡ Automático</div>
+        <div class="srow">
+          <div><div class="slabel">Auto-iniciar descansos</div></div>
+          <button class="tog" id="tog-abreak"></button>
+        </div>
+        <div class="srow">
+          <div><div class="slabel">Auto-iniciar focus</div></div>
+          <button class="tog" id="tog-afocus"></button>
+        </div>
+      </div>
+
+      <button class="btn-save" id="btn-save-cfg">✓ Guardar Configuración</button>
+    </div>
+  </div>
+</div>
+
+<!-- ====== MODAL: ACHIEVEMENTS ====== -->
+<div class="overlay" id="ov-achs">
+  <div class="mbox" style="max-width:560px">
+    <div class="mhead">
+      <div class="mtitle">🏆 LOGROS</div>
+      <button class="mclose" data-ov="ov-achs">✕</button>
+    </div>
+    <div class="mbody">
+      <div class="ach-stats">
+        <div class="ach-stat"><div class="ach-stat-val" id="ach-unlocked">0</div><div class="ach-stat-label">Desbloqueados</div></div>
+        <div class="ach-stat"><div class="ach-stat-val" id="ach-total-xp" style="color:var(--xp)">0</div><div class="ach-stat-label">XP de logros</div></div>
+      </div>
+      <div class="ach-grid" id="ach-grid"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ====== MODAL: STATS ====== -->
+<div class="overlay" id="ov-stats">
+  <div class="mbox">
+    <div class="mhead">
+      <div class="mtitle">📊 ESTADÍSTICAS</div>
+      <button class="mclose" data-ov="ov-stats">✕</button>
+    </div>
+    <div class="mbody" id="stats-mbody"></div>
+  </div>
+</div>
+
+<!-- Toast container -->
+<div class="toast-wrap" id="toast-wrap"></div>
+
+<!-- =====================================================================
+     JAVASCRIPT
+     ===================================================================== -->
+<script>
+'use strict';
+
+// =====================================================================
+// ACHIEVEMENTS
+// =====================================================================
+const ACHS = [
+  { id:'first_pomo',     name:'Primera Semilla',     desc:'Completa tu primer pomodoro',              icon:'🌱', xp:50   },
+  { id:'pomo_5_day',     name:'En Llamas',            desc:'5 pomodoros en un día',                   icon:'🔥', xp:75   },
+  { id:'pomo_10_day',    name:'Modo Bestia',          desc:'10 pomodoros en un día',                  icon:'⚡', xp:150  },
+  { id:'pomo_50_total',  name:'Dedicado',             desc:'50 pomodoros en total',                   icon:'🎯', xp:200  },
+  { id:'pomo_100_total', name:'Centurión',            desc:'100 pomodoros en total',                  icon:'💎', xp:500  },
+  { id:'pomo_500_total', name:'Indestructible',       desc:'500 pomodoros en total',                  icon:'🦾', xp:2000 },
+  { id:'hours_1',        name:'Primera Hora',         desc:'Acumula 1 hora de focus',                 icon:'⏱️', xp:100  },
+  { id:'hours_10',       name:'Décima Hora',          desc:'Acumula 10 horas de focus',               icon:'📚', xp:300  },
+  { id:'hours_50',       name:'Maestro del Tiempo',   desc:'50 horas de focus en total',              icon:'🏆', xp:1000 },
+  { id:'hours_100',      name:'Élite',                desc:'100 horas de focus en total',             icon:'👑', xp:3000 },
+  { id:'streak_3',       name:'Racha ×3',             desc:'3 días de estudio seguidos',              icon:'🔗', xp:100  },
+  { id:'streak_7',       name:'Semana Imparable',     desc:'7 días seguidos',                         icon:'🌟', xp:300  },
+  { id:'streak_30',      name:'Leyenda Mensual',      desc:'30 días seguidos',                        icon:'🔮', xp:1000 },
+  { id:'cycle_complete', name:'Ciclo Completo',       desc:'Completa un ciclo de 4 pomodoros',        icon:'🔄', xp:150  },
+  { id:'night_owl',      name:'Búho Nocturno',        desc:'Estudia después de las 11pm',             icon:'🌙', xp:75   },
+  { id:'early_bird',     name:'Madrugador',           desc:'Estudia antes de las 7am',                icon:'🌅', xp:75   },
+  { id:'level_5',        name:'Nivel 5',              desc:'Alcanza el nivel 5',                      icon:'🚀', xp:0    },
+  { id:'level_10',       name:'Nivel 10',             desc:'Alcanza el nivel 10',                     icon:'⭐', xp:0    },
+  { id:'level_25',       name:'Transmutado',          desc:'Alcanza el nivel 25',                     icon:'✨', xp:0    },
+];
+
+// =====================================================================
+// LEVEL SYSTEM
+// =====================================================================
+function xpForLevel(lv) { return Math.floor(100 * Math.pow(1.42, lv - 1)); }
+function totalXPForLevel(lv) {
+  let t = 0;
+  for (let i = 1; i < lv; i++) t += xpForLevel(i);
+  return t;
+}
+function levelFromXP(xp) {
+  let lv = 1;
+  while (totalXPForLevel(lv + 1) <= xp) lv++;
+  return lv;
+}
+function xpProgress(xp) {
+  const lv  = levelFromXP(xp);
+  const lo  = totalXPForLevel(lv);
+  const hi  = totalXPForLevel(lv + 1);
+  return { lv, inLv: xp - lo, need: hi - lo, pct: Math.max(0, Math.min(1, (xp - lo) / (hi - lo))) };
+}
+function lvName(lv) {
+  if (lv <  3) return 'Estudiante';
+  if (lv <  5) return 'Aprendiz';
+  if (lv <  8) return 'Concentrado';
+  if (lv < 12) return 'Enfocado';
+  if (lv < 17) return 'Aplicado';
+  if (lv < 23) return 'Dedicado';
+  if (lv < 30) return 'Experto';
+  if (lv < 40) return 'Maestro';
+  if (lv < 55) return 'Sabio';
+  return 'Leyenda';
+}
+
+// =====================================================================
+// STATE
+// =====================================================================
+const DEF = {
+  mode:'focus', status:'idle',
+  timeLeft: 25*60, totalTime: 25*60,
+  cyclePos: 0,
+  totalPomos: 0, todayPomos: 0,
+  totalFocusSec: 0, todayFocusSec: 0,
+  lastStudyDate: null, streak: 0,
+  xp: 0,
+  unlocked: [],
+  cfg: { focus:25, short:5, long:15, interval:4, sound:true, abreak:false, afocus:false }
+};
+
+let S = loadState();
+let ticker = null;
+let tStart = null, tStartLeft = null, tStartFocusSec = null, tStartTodaySec = null;
+
+function loadState() {
+  try {
+    const raw = localStorage.getItem('ff_v2');
+    if (raw) {
+      const p = JSON.parse(raw);
+      const today = new Date().toDateString();
+      // daily reset
+      if (p.lastStudyDate && p.lastStudyDate !== today) {
+        const yest = new Date(); yest.setDate(yest.getDate()-1);
+        if (p.lastStudyDate !== yest.toDateString()) p.streak = 0;
+        p.todayPomos = 0; p.todayFocusSec = 0;
+      }
+      p.status = 'idle';
+      p.mode   = 'focus';
+      p.cfg    = Object.assign({}, DEF.cfg, p.cfg || {});
+      p.timeLeft = p.cfg.focus * 60;
+      p.totalTime = p.cfg.focus * 60;
+      p.unlocked  = p.unlocked || [];
+      p.cyclePos  = p.cyclePos || 0;
+      return p;
+    }
+  } catch(e){}
+  return JSON.parse(JSON.stringify(DEF));
+}
+
+function save() {
+  try { localStorage.setItem('ff_v2', JSON.stringify(S)); } catch(e){}
+}
+
+// =====================================================================
+// AUDIO
+// =====================================================================
+let actx = null;
+function actxGet() {
+  if (!actx) actx = new (window.AudioContext || window.webkitAudioContext)();
+  return actx;
+}
+function tone(f, dur, type='sine', vol=0.1) {
+  if (!S.cfg.sound) return;
+  try {
+    const ctx = actxGet();
+    const o = ctx.createOscillator();
+    const g = ctx.createGain();
+    o.connect(g); g.connect(ctx.destination);
+    o.type = type; o.frequency.value = f;
+    g.gain.setValueAtTime(vol, ctx.currentTime);
+    g.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + dur);
+    o.start(ctx.currentTime); o.stop(ctx.currentTime + dur);
+  } catch(e){}
+}
+function sfxComplete() {
+  [[523.25,0],[659.25,200],[783.99,400],[1046.5,650]].forEach(([f,d])=>setTimeout(()=>tone(f,0.4,'sine',0.14),d));
+}
+function sfxBreakEnd() { tone(880,0.25,'sine',0.12); setTimeout(()=>tone(660,0.4,'sine',0.12),250); }
+function sfxXP()       { tone(440,0.1,'sine',0.08); setTimeout(()=>tone(554,0.15,'sine',0.08),100); }
+function sfxLevelUp()  { [261,329,392,523,659,784].forEach((f,i)=>setTimeout(()=>tone(f,0.3,'triangle',0.12),i*110)); }
+
+// =====================================================================
+// TIMER
+// =====================================================================
+const CIRC = 2 * Math.PI * 120; // 753.98
+
+function setMode(mode, autoStart=false) {
+  stop();
+  S.mode = mode;
+  document.body.dataset.mode = mode;
+  document.querySelectorAll('.mode-tab').forEach(t => t.classList.toggle('active', t.dataset.mode === mode));
+
+  const mins = mode==='focus' ? S.cfg.focus : mode==='short' ? S.cfg.short : S.cfg.long;
+  S.timeLeft = mins*60; S.totalTime = mins*60; S.status = 'idle';
+  document.getElementById('timer-mode-lbl').textContent =
+    mode==='focus' ? 'FOCUS' : mode==='short' ? 'DESCANSO' : 'DESCANSO LARGO';
+
+  refreshDisplay();
+  refreshRing();
+  refreshPlayBtn();
+  if (autoStart) startTimer();
+}
+
+function startTimer() {
+  if (S.status==='running') return;
+  if (actx && actx.state==='suspended') actx.resume();
+  S.status = 'running';
+  tStart        = Date.now();
+  tStartLeft    = S.timeLeft;
+  tStartFocusSec = S.totalFocusSec;
+  tStartTodaySec = S.todayFocusSec;
+
+  document.getElementById('ring-wrap').classList.add('running');
+  refreshPlayBtn();
+
+  ticker = setInterval(() => {
+    const elapsed = Math.round((Date.now() - tStart) / 1000);
+    const newLeft = Math.max(0, tStartLeft - elapsed);
+
+    if (S.mode === 'focus') {
+      S.totalFocusSec = tStartFocusSec + elapsed;
+      S.todayFocusSec = tStartTodaySec + elapsed;
+    }
+
+    S.timeLeft = newLeft;
+    refreshDisplay();
+    refreshRing();
+    refreshStats();
+
+    if (elapsed % 60 === 0) save();
+    if (newLeft === 0) onComplete();
+  }, 400);
+}
+
+function stop() {
+  clearInterval(ticker); ticker = null;
+  document.getElementById('ring-wrap').classList.remove('running');
+  S.status = (S.status==='running') ? 'paused' : S.status;
+  refreshPlayBtn();
+  save();
+}
+
+function resetTimer() { stop(); setMode(S.mode); }
+function skipTimer()  { stop(); onComplete(); }
+
+function onComplete() {
+  clearInterval(ticker); ticker = null;
+  document.getElementById('ring-wrap').classList.remove('running');
+  document.getElementById('ring-wrap').classList.add('flash');
+  setTimeout(()=>document.getElementById('ring-wrap').classList.remove('flash'), 1100);
+  S.status = 'idle';
+
+  if (S.mode === 'focus') {
+    S.totalPomos++;
+    S.todayPomos++;
+    S.cyclePos++;
+
+    const today = new Date().toDateString();
+    if (S.lastStudyDate !== today) {
+      const yest = new Date(); yest.setDate(yest.getDate()-1);
+      S.streak = S.lastStudyDate===yest.toDateString() ? S.streak+1 : 1;
+      S.lastStudyDate = today;
+    }
+
+    sfxComplete();
+    addXP(50, `+50 XP — Pomodoro completado 🍅`);
+
+    const iv = S.cfg.interval;
+    if (S.cyclePos >= iv) {
+      S.cyclePos = 0;
+      checkAch('cycle_complete');
+      setTimeout(()=>addXP(100, `+100 XP Bonus — ¡Ciclo completo! 🔄`), 1600);
+      setTimeout(()=>toast('t-done','¡CICLO COMPLETO!',`${iv} pomodoros, tómate un descanso largo 🌙`), 2000);
+      setTimeout(()=>setMode('long', S.cfg.abreak), S.cfg.abreak ? 2800 : 2600);
+    } else {
+      toast('t-done','¡POMODORO COMPLETADO!',`#${S.totalPomos} — ¡Sigue así! 💪`);
+      setTimeout(()=>setMode('short', S.cfg.abreak), S.cfg.abreak ? 1800 : 1400);
+    }
+
+    checkAllAchs();
+
+  } else {
+    sfxBreakEnd();
+    toast('t-done','¡BREAK TERMINADO!','Hora de otro pomodoro 🎯');
+    setTimeout(()=>setMode('focus', S.cfg.afocus), S.cfg.afocus ? 1800 : 1000);
+  }
+
+  refreshDots();
+  refreshStats();
+  save();
+}
+
+// =====================================================================
+// XP & LEVEL
+// =====================================================================
+function addXP(amt, msg) {
+  const lvBefore = levelFromXP(S.xp);
+  S.xp += amt;
+  const lvAfter  = levelFromXP(S.xp);
+
+  sfxXP();
+  toast('t-xp','XP GANADO', msg);
+
+  if (lvAfter > lvBefore) {
+    setTimeout(()=>{
+      sfxLevelUp(); spawnParticles();
+      toast('t-ach',`¡LEVEL UP! NIVEL ${lvAfter}`,`${lvName(lvAfter)} desbloqueado 🎉`);
+      if (lvAfter>=5)  checkAch('level_5');
+      if (lvAfter>=10) checkAch('level_10');
+      if (lvAfter>=25) checkAch('level_25');
+    }, 900);
+  }
+
+  refreshXP(); save();
+}
+
+// =====================================================================
+// ACHIEVEMENTS
+// =====================================================================
+function checkAch(id) {
+  if (S.unlocked.includes(id)) return;
+  S.unlocked.push(id);
+  const a = ACHS.find(x=>x.id===id);
+  if (!a) return;
+  setTimeout(()=>{
+    toast('t-ach','🏆 LOGRO DESBLOQUEADO', `${a.icon} ${a.name}`);
+    if (a.xp>0) setTimeout(()=>addXP(a.xp,`+${a.xp} XP — Logro: ${a.name}`),1000);
+  }, 2600);
+  save();
+}
+
+function checkAllAchs() {
+  const h = S.totalFocusSec/3600;
+  const hr = new Date().getHours();
+  if (S.totalPomos>=1)    checkAch('first_pomo');
+  if (S.todayPomos>=5)    checkAch('pomo_5_day');
+  if (S.todayPomos>=10)   checkAch('pomo_10_day');
+  if (S.totalPomos>=50)   checkAch('pomo_50_total');
+  if (S.totalPomos>=100)  checkAch('pomo_100_total');
+  if (S.totalPomos>=500)  checkAch('pomo_500_total');
+  if (h>=1)               checkAch('hours_1');
+  if (h>=10)              checkAch('hours_10');
+  if (h>=50)              checkAch('hours_50');
+  if (h>=100)             checkAch('hours_100');
+  if (S.streak>=3)        checkAch('streak_3');
+  if (S.streak>=7)        checkAch('streak_7');
+  if (S.streak>=30)       checkAch('streak_30');
+  if (hr>=23||hr<1)       checkAch('night_owl');
+  if (hr>=5&&hr<7)        checkAch('early_bird');
+}
+
+// =====================================================================
+// RENDER
+// =====================================================================
+function refreshDisplay() {
+  const m = Math.floor(S.timeLeft/60);
+  const s = S.timeLeft%60;
+  document.getElementById('timer-digits').textContent =
+    `${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
+}
+
+function refreshRing() {
+  const pct = S.timeLeft / S.totalTime;
+  document.getElementById('ring-prog').style.strokeDashoffset = CIRC * (1-pct);
+}
+
+function refreshPlayBtn() {
+  document.getElementById('btn-play').textContent = S.status==='running' ? '⏸' : '▶';
+}
+
+function refreshDots() {
+  const wrap = document.getElementById('cycle-dots');
+  wrap.innerHTML = '';
+  const iv = S.cfg.interval;
+  for (let i=0; i<iv; i++) {
+    const d = document.createElement('div');
+    d.className = 'c-dot' + (i < S.cyclePos ? ' done' : '');
+    wrap.appendChild(d);
+  }
+}
+
+function refreshXP() {
+  const { lv, inLv, need, pct } = xpProgress(S.xp);
+  document.getElementById('lvl-badge').textContent = `LVL ${lv}`;
+  document.getElementById('lvl-name').textContent  = lvName(lv);
+  document.getElementById('xp-count').textContent  = `${inLv} / ${need} XP`;
+  document.getElementById('xp-fill').style.width   = `${pct*100}%`;
+}
+
+function refreshStats() {
+  const todH = S.todayFocusSec/3600;
+  document.getElementById('s-today-p').textContent = S.todayPomos;
+  document.getElementById('s-today-h').textContent = todH>=1 ? `${todH.toFixed(1)}h` : `${Math.floor(S.todayFocusSec/60)}m`;
+  document.getElementById('s-streak').textContent  = `${S.streak}🔥`;
+  document.getElementById('s-total').textContent   = S.totalPomos;
+}
+
+function initAll() {
+  document.body.dataset.mode = S.mode;
+  document.querySelectorAll('.mode-tab').forEach(t=>t.classList.toggle('active',t.dataset.mode===S.mode));
+  refreshDisplay(); refreshRing(); refreshPlayBtn();
+  refreshXP(); refreshStats(); refreshDots();
+}
+
+// =====================================================================
+// TOAST
+// =====================================================================
+function toast(type, ttl, msg) {
+  const wrap = document.getElementById('toast-wrap');
+  const el = document.createElement('div');
+  el.className = `toast ${type}`;
+  el.innerHTML = `<div class="toast-ttl">${ttl}</div><div class="toast-msg">${msg}</div>`;
+  wrap.appendChild(el);
+  setTimeout(()=>{
+    el.style.animation='t-out 0.38s ease forwards';
+    setTimeout(()=>el.remove(),400);
+  },3600);
+}
+
+// =====================================================================
+// PARTICLES
+// =====================================================================
+function spawnParticles() {
+  const cols=['#00d4ff','#ff7043','#ffd600','#00ff98','#b06aff'];
+  const cx=window.innerWidth/2, cy=window.innerHeight/2;
+  for (let i=0;i<24;i++){
+    const p=document.createElement('div');
+    p.className='px';
+    const a=(i/24)*Math.PI*2;
+    const r=70+Math.random()*130;
+    p.style.cssText=`left:${cx}px;top:${cy}px;width:${4+Math.random()*5}px;height:${4+Math.random()*5}px;background:${cols[i%cols.length]};--dx:${Math.cos(a)*r}px;--dy:${Math.sin(a)*r-60}px;animation-duration:${0.8+Math.random()*0.5}s;animation-delay:${Math.random()*0.2}s;`;
+    document.body.appendChild(p);
+    setTimeout(()=>p.remove(),1400);
+  }
+}
+
+// =====================================================================
+// MODAL RENDERS
+// =====================================================================
+function renderAchs() {
+  document.getElementById('ach-unlocked').textContent = S.unlocked.length;
+  const xpTot = ACHS.filter(a=>S.unlocked.includes(a.id)).reduce((s,a)=>s+a.xp,0);
+  document.getElementById('ach-total-xp').textContent = xpTot;
+  const grid = document.getElementById('ach-grid');
+  grid.innerHTML = ACHS.map(a=>{
+    const un = S.unlocked.includes(a.id);
+    return `<div class="acard ${un?'unlocked':'locked'}">
+      ${un?'<div class="acard-check">✓</div>':''}
+      <div class="acard-icon">${a.icon}</div>
+      <div class="acard-name">${a.name}</div>
+      <div class="acard-desc">${a.desc}</div>
+      ${a.xp>0?`<div class="acard-xp">+${a.xp} XP</div>`:''}
+    </div>`;
+  }).join('');
+}
+
+function renderStatsModal() {
+  const h = (S.totalFocusSec/3600).toFixed(1);
+  const th = (S.todayFocusSec/3600).toFixed(1);
+  document.getElementById('stats-mbody').innerHTML = `
+    <div class="stats-grid-modal">
+      <div class="stat-cell"><div class="stat-cell-val">${S.totalPomos}</div><div class="stat-cell-label">Total Pomodoros</div></div>
+      <div class="stat-cell"><div class="stat-cell-val">${h}h</div><div class="stat-cell-label">Horas Totales</div></div>
+      <div class="stat-cell"><div class="stat-cell-val" style="color:var(--xp)">${S.streak}🔥</div><div class="stat-cell-label">Racha</div></div>
+      <div class="stat-cell"><div class="stat-cell-val" style="color:var(--gold)">${S.unlocked.length}/${ACHS.length}</div><div class="stat-cell-label">Logros</div></div>
+    </div>
+    <div style="background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:16px;margin-bottom:16px">
+      <div class="sgroup-title" style="margin-bottom:12px">HOY</div>
+      <div class="stat-detail-row"><span>Pomodoros completados</span><span>${S.todayPomos}</span></div>
+      <div class="stat-detail-row"><span>Tiempo de focus</span><span>${th}h</span></div>
+      <div class="stat-detail-row"><span>Nivel actual</span><span>LVL ${levelFromXP(S.xp)}</span></div>
+      <div class="stat-detail-row"><span>XP total</span><span>${S.xp} XP</span></div>
+    </div>
+    <div style="text-align:center">
+      <button onclick="doReset()" style="background:rgba(255,50,50,0.1);border:1px solid rgba(255,50,50,0.25);color:#ff6b6b;padding:9px 22px;border-radius:8px;cursor:pointer;font-family:'Outfit',sans-serif;font-size:13px;font-weight:500">
+        🗑️ Resetear todos los datos
+      </button>
+    </div>`;
+}
+
+function doReset() {
+  if (confirm('¿Seguro? Se borrarán todos tus datos, XP y logros permanentemente.')) {
+    localStorage.removeItem('ff_v2');
+    S = JSON.parse(JSON.stringify(DEF));
+    S.cfg = Object.assign({},DEF.cfg);
+    initAll();
+    closeAll();
+    toast('t-done','RESET COMPLETO','Empezando desde cero 🌱');
+  }
+}
+
+function loadCfgUI() {
+  document.getElementById('cfg-focus').value    = S.cfg.focus;
+  document.getElementById('cfg-short').value    = S.cfg.short;
+  document.getElementById('cfg-long').value     = S.cfg.long;
+  document.getElementById('cfg-interval').value = S.cfg.interval;
+  document.getElementById('tog-sound').classList.toggle('on',  S.cfg.sound);
+  document.getElementById('tog-abreak').classList.toggle('on', S.cfg.abreak);
+  document.getElementById('tog-afocus').classList.toggle('on', S.cfg.afocus);
+}
+
+// =====================================================================
+// EVENTS
+// =====================================================================
+document.getElementById('btn-play').addEventListener('click',()=>{
+  if (actx && actx.state==='suspended') actx.resume();
+  if (S.status==='running') stop(); else startTimer();
+});
+document.getElementById('btn-reset').addEventListener('click', resetTimer);
+document.getElementById('btn-skip').addEventListener('click',  skipTimer);
+
+document.querySelectorAll('.mode-tab').forEach(t=>{
+  t.addEventListener('click',()=>{ if(S.status==='running')stop(); setMode(t.dataset.mode); });
+});
+
+// Open modals
+document.getElementById('btn-stats').addEventListener('click',()=>{ renderStatsModal(); openOv('ov-stats'); });
+document.getElementById('btn-achs').addEventListener('click', ()=>{ renderAchs();       openOv('ov-achs');  });
+document.getElementById('btn-cfg').addEventListener('click',  ()=>{ loadCfgUI();        openOv('ov-cfg');   });
+
+// Close buttons
+document.querySelectorAll('.mclose').forEach(b=>{
+  b.addEventListener('click',()=>closeOv(b.dataset.ov));
+});
+
+// Close on backdrop
+document.querySelectorAll('.overlay').forEach(ov=>{
+  ov.addEventListener('click',e=>{ if(e.target===ov) closeOv(ov.id); });
+});
+
+// Toggles
+document.querySelectorAll('.tog').forEach(t=>{
+  t.addEventListener('click',()=>t.classList.toggle('on'));
+});
+
+// Save settings
+document.getElementById('btn-save-cfg').addEventListener('click',()=>{
+  S.cfg.focus    = Math.max(1, parseInt(document.getElementById('cfg-focus').value)    || 25);
+  S.cfg.short    = Math.max(1, parseInt(document.getElementById('cfg-short').value)    || 5);
+  S.cfg.long     = Math.max(5, parseInt(document.getElementById('cfg-long').value)     || 15);
+  S.cfg.interval = Math.max(2, parseInt(document.getElementById('cfg-interval').value) || 4);
+  S.cfg.sound    = document.getElementById('tog-sound').classList.contains('on');
+  S.cfg.abreak   = document.getElementById('tog-abreak').classList.contains('on');
+  S.cfg.afocus   = document.getElementById('tog-afocus').classList.contains('on');
+  save(); setMode('focus'); refreshDots(); closeOv('ov-cfg');
+  toast('t-done','GUARDADO','Configuración aplicada ✓');
+});
+
+function openOv(id)  { document.getElementById(id).classList.add('open'); }
+function closeOv(id) { document.getElementById(id).classList.remove('open'); }
+function closeAll()  { document.querySelectorAll('.overlay').forEach(o=>o.classList.remove('open')); }
+
+// Keyboard shortcuts
+document.addEventListener('keydown', e => {
+  if (e.target.tagName==='INPUT') return;
+  if (e.code==='Space') {
+    e.preventDefault();
+    if (S.status==='running') stop(); else startTimer();
+  }
+  if (e.code==='KeyR') resetTimer();
+  if (e.code==='Escape') closeAll();
+});
+
+// Page title sync
+setInterval(()=>{
+  if (S.status==='running') {
+    const m=String(Math.floor(S.timeLeft/60)).padStart(2,'0');
+    const s=String(S.timeLeft%60).padStart(2,'0');
+    document.title=`${m}:${s} — FocusFlow`;
+  } else {
+    document.title='FocusFlow — Motor de Estudio';
+  }
+}, 1000);
+
+// =====================================================================
+// BOOT
+// =====================================================================
+initAll();
+
+console.log('%cFOCUSFLOW v1.0','font-size:20px;font-weight:900;color:#00d4ff;font-family:monospace');
+console.log('%cMotor de Estudio — Listo para arrancar ⚡','color:#5c78a8;font-family:monospace');
+</script>
+</body>
+</html>
+
+<a href="privacy.html">Política de privacidad</a>
+<a href="cookies.html">Cookies</a>
