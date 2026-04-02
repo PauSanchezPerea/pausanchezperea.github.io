@@ -658,6 +658,102 @@ body[data-mode="long"]  .btn-play { border-color: var(--long);  background: var(
 }
 .app-footer a:hover { color: var(--text-dim); }
 
+/* ---- ABOUT SECTION ---- */
+#about-section {
+  position: relative; z-index: 1;
+  background: var(--bg2);
+  border-top: 1px solid var(--border);
+  margin-top: 40px;
+  padding: 50px 0 0;
+}
+.about-wrap {
+  max-width: 780px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+.about-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 28px 28px 24px;
+  margin-bottom: 24px;
+  backdrop-filter: blur(10px);
+}
+.about-tag {
+  font-size: 10px; color: var(--focus);
+  text-transform: uppercase; letter-spacing: 0.22em;
+  font-weight: 700; margin-bottom: 10px;
+}
+.about-h2 {
+  font-family: 'Orbitron', monospace;
+  font-size: 16px; font-weight: 700;
+  color: var(--text);
+  margin-bottom: 14px; line-height: 1.4;
+}
+.about-p {
+  font-size: 14px; color: var(--text-dim);
+  line-height: 1.75; margin-bottom: 12px;
+}
+.about-p:last-child { margin-bottom: 0; }
+.about-p strong { color: var(--text); font-weight: 600; }
+
+/* Features grid */
+.about-features {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 12px; margin-top: 16px;
+}
+.about-feat {
+  display: flex; gap: 10px; align-items: flex-start;
+  background: var(--bg2); border: 1px solid var(--border);
+  border-radius: 10px; padding: 12px;
+  font-size: 13px; color: var(--text-dim); line-height: 1.5;
+}
+.about-feat strong { color: var(--text); }
+.about-feat-icon { font-size: 18px; flex-shrink: 0; margin-top: 1px; }
+
+/* Roadmap */
+.roadmap { display: flex; flex-direction: column; gap: 12px; margin-top: 16px; }
+.road-item {
+  background: var(--bg2); border: 1px solid var(--border);
+  border-radius: 10px; padding: 14px 16px;
+  display: flex; flex-direction: column; gap: 5px;
+}
+.road-badge {
+  display: inline-block; font-size: 9px; font-weight: 700;
+  letter-spacing: 0.16em; text-transform: uppercase;
+  padding: 3px 8px; border-radius: 20px;
+  background: rgba(0,212,255,0.12); color: var(--focus);
+  border: 1px solid rgba(0,212,255,0.2);
+  width: fit-content; margin-bottom: 4px;
+}
+.road-badge-mid { background: rgba(176,106,255,0.12); color: var(--long); border-color: rgba(176,106,255,0.2); }
+.road-badge-fut { background: rgba(255,112,67,0.12); color: var(--xp); border-color: rgba(255,112,67,0.2); }
+.road-title { font-size: 14px; font-weight: 700; color: var(--text); }
+.road-desc { font-size: 12px; color: var(--text-dim); line-height: 1.6; }
+
+/* About footer */
+.about-footer {
+  text-align: center; padding: 30px 0 40px;
+  border-top: 1px solid var(--border); margin-top: 10px;
+}
+.about-footer-logo {
+  font-family: 'Orbitron', monospace;
+  font-size: 14px; font-weight: 700; color: var(--focus);
+  margin-bottom: 6px;
+}
+.about-footer-sub { font-size: 11px; color: var(--text-faint); margin-bottom: 14px; }
+.about-footer-links a {
+  color: var(--text-faint); font-size: 11px;
+  text-decoration: none; margin: 0 10px; transition: color 0.2s;
+}
+.about-footer-links a:hover { color: var(--text-dim); }
+
+@media (max-width: 560px) {
+  .about-features { grid-template-columns: 1fr; }
+  .about-card { padding: 20px 16px; }
+  .about-h2 { font-size: 14px; }
+}
+
 /* ---- SCROLLBAR ---- */
 ::-webkit-scrollbar { width: 4px; }
 ::-webkit-scrollbar-track { background: transparent; }
@@ -799,6 +895,192 @@ body[data-mode="long"]  .btn-play { border-color: var(--long);  background: var(
   </div>
 
 </div><!-- /#app -->
+
+<!-- ══════════════════════════════════════════════════════
+     SECCIÓN DE CONTENIDO — Sobre PomodoroXP
+     (Texto para SEO + espacios para anuncios AdSense)
+     ══════════════════════════════════════════════════════ -->
+<div id="about-section">
+
+  <!-- Anuncio 3 — Banner entre app y contenido -->
+  <div class="ad-banner" style="max-width:780px;margin:0 auto 40px;padding:0 24px">
+    <ins class="adsbygoogle"
+         style="display:block"
+         data-ad-client="ca-pub-9027862604686644"
+         data-ad-slot="auto"
+         data-ad-format="auto"
+         data-full-width-responsive="true"></ins>
+    <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+  </div>
+
+  <div class="about-wrap">
+
+    <!-- Bloque 1: Qué es -->
+    <div class="about-card">
+      <div class="about-tag">🍅 ¿Qué es PomodoroXP?</div>
+      <h2 class="about-h2">El temporizador Pomodoro que te recompensa por estudiar</h2>
+      <p class="about-p">
+        PomodoroXP es una aplicación web gratuita de productividad basada en la
+        <strong>técnica Pomodoro</strong>, un método de gestión del tiempo desarrollado por
+        Francesco Cirillo a finales de los años 80. La idea es simple: trabajas en bloques
+        de concentración de 25 minutos, separados por descansos cortos de 5 minutos.
+        Cada cuatro bloques completas un ciclo y te mereces un descanso largo.
+      </p>
+      <p class="about-p">
+        Lo que diferencia a PomodoroXP de cualquier otro temporizador es su
+        <strong>sistema de gamificación</strong>: cada pomodoro completado te otorga XP,
+        subes de nivel, desbloqueas logros y acumulas rachas de días de estudio consecutivos.
+        Estudiar se convierte en un juego donde tú eres el protagonista.
+      </p>
+    </div>
+
+    <!-- Anuncio 4 — dentro del contenido -->
+    <div class="ad-banner" style="margin:0 0 32px">
+      <ins class="adsbygoogle"
+           style="display:block"
+           data-ad-client="ca-pub-9027862604686644"
+           data-ad-slot="auto"
+           data-ad-format="auto"
+           data-full-width-responsive="true"></ins>
+      <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+    </div>
+
+    <!-- Bloque 2: Cómo funciona -->
+    <div class="about-card">
+      <div class="about-tag">⚙️ Cómo funciona</div>
+      <h2 class="about-h2">Simple de usar, difícil de dejar</h2>
+      <p class="about-p">
+        Abre PomodoroXP, pulsa el botón de inicio y empieza a concentrarte. El temporizador
+        cuenta los 25 minutos mientras el anillo visual te muestra el progreso en tiempo real.
+        Al terminar, suena una señal, ganas XP y la app te lleva automáticamente al descanso.
+      </p>
+      <p class="about-p">
+        Puedes <strong>personalizar completamente los tiempos</strong>: sesiones de focus de
+        1 a 120 minutos, descansos cortos, descansos largos y el número de pomodoros por ciclo.
+        También puedes activar el modo automático para que la app encadene sesiones sola sin
+        que tengas que tocar nada.
+      </p>
+      <div class="about-features">
+        <div class="about-feat"><span class="about-feat-icon">🎯</span><div><strong>Timer visual</strong> con anillo SVG animado y cuenta regresiva en tiempo real</div></div>
+        <div class="about-feat"><span class="about-feat-icon">⚡</span><div><strong>Sistema XP y niveles</strong> con 10 rangos desde Estudiante hasta Leyenda</div></div>
+        <div class="about-feat"><span class="about-feat-icon">🏆</span><div><strong>19 logros desbloqueables</strong> con recompensas de XP adicional</div></div>
+        <div class="about-feat"><span class="about-feat-icon">🔥</span><div><strong>Racha de días</strong> para mantener la constancia de estudio</div></div>
+        <div class="about-feat"><span class="about-feat-icon">📈</span><div><strong>Gráfica semanal</strong> con tus pomodoros de los últimos 7 días</div></div>
+        <div class="about-feat"><span class="about-feat-icon">🌙</span><div><strong>Modo oscuro</strong> diseño tecnológico pensado para sesiones nocturnas</div></div>
+      </div>
+    </div>
+
+    <!-- Bloque 3: Versión actual -->
+    <div class="about-card">
+      <div class="about-tag">📦 Versión actual — v1.1</div>
+      <h2 class="about-h2">Estado del proyecto</h2>
+      <p class="about-p">
+        PomodoroXP se encuentra actualmente en su versión <strong>1.1</strong>, una aplicación
+        web completamente funcional que no requiere instalación ni registro. Todos los datos
+        se guardan automáticamente en tu navegador, por lo que puedes empezar a usarla
+        inmediatamente sin crear ninguna cuenta.
+      </p>
+      <p class="about-p">
+        En esta versión ya está integrado el sistema de <strong>login opcional con Firebase</strong>,
+        que permite a los usuarios que lo deseen guardar sus datos en la nube y acceder a su
+        progreso desde cualquier dispositivo.
+      </p>
+    </div>
+
+    <!-- Anuncio 5 — entre bloques de contenido -->
+    <div class="ad-banner" style="margin:0 0 32px">
+      <ins class="adsbygoogle"
+           style="display:block"
+           data-ad-client="ca-pub-9027862604686644"
+           data-ad-slot="auto"
+           data-ad-format="auto"
+           data-full-width-responsive="true"></ins>
+      <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+    </div>
+
+    <!-- Bloque 4: Roadmap -->
+    <div class="about-card">
+      <div class="about-tag">🚀 Próximamente</div>
+      <h2 class="about-h2">Ideas y funciones futuras</h2>
+      <p class="about-p">
+        PomodoroXP está en desarrollo activo. Estas son las funciones planeadas para
+        las próximas versiones:
+      </p>
+      <div class="roadmap">
+        <div class="road-item road-soon">
+          <div class="road-badge">Próximo</div>
+          <div class="road-title">🥇 Ranking global</div>
+          <div class="road-desc">Compite con estudiantes de todo el mundo. Top 10 semanal y mensual ordenado por pomodoros completados y horas de estudio.</div>
+        </div>
+        <div class="road-item road-soon">
+          <div class="road-badge">Próximo</div>
+          <div class="road-title">📊 Estadísticas avanzadas</div>
+          <div class="road-desc">Gráficas mensuales y anuales, récords personales, comparativas semana a semana y resumen detallado de tu productividad.</div>
+        </div>
+        <div class="road-item road-mid">
+          <div class="road-badge road-badge-mid">Planificado</div>
+          <div class="road-title">✅ Gestor de tareas</div>
+          <div class="road-desc">Crea listas de tareas y vincula cada pomodoro a una tarea concreta. Mide exactamente cuánto tiempo dedicas a cada proyecto.</div>
+        </div>
+        <div class="road-item road-mid">
+          <div class="road-badge road-badge-mid">Planificado</div>
+          <div class="road-title">👥 Sistema de amigos</div>
+          <div class="road-desc">Añade amigos, compara estadísticas, reta a otros usuarios y estudiad juntos en sesiones sincronizadas.</div>
+        </div>
+        <div class="road-item road-future">
+          <div class="road-badge road-badge-fut">Futuro</div>
+          <div class="road-title">📱 App móvil</div>
+          <div class="road-desc">Versión nativa para iOS y Android con notificaciones, widgets y sincronización completa con la versión web.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Bloque 5: Técnica Pomodoro -->
+    <div class="about-card">
+      <div class="about-tag">📚 La técnica Pomodoro</div>
+      <h2 class="about-h2">Por qué funciona estudiar con pomodoros</h2>
+      <p class="about-p">
+        La técnica Pomodoro se basa en un principio psicológico fundamental: el cerebro humano
+        no está diseñado para mantener la concentración de forma indefinida. Los descansos
+        regulares no son una pérdida de tiempo, sino una <strong>estrategia para maximizar
+        el rendimiento cognitivo</strong>.
+      </p>
+      <p class="about-p">
+        Estudios en neurociencia del aprendizaje indican que alternar periodos de trabajo
+        intenso con descansos breves mejora la consolidación de la memoria, reduce la fatiga
+        mental y mantiene los niveles de dopamina —el neurotransmisor de la motivación—
+        más estables a lo largo de la sesión de estudio.
+      </p>
+      <p class="about-p">
+        PomodoroXP añade una capa extra a esta técnica: el sistema de recompensas. Cada vez
+        que completas un pomodoro, tu cerebro recibe una señal de logro que refuerza el
+        hábito de estudio. Con el tiempo, la constancia se vuelve automática.
+      </p>
+    </div>
+
+    <!-- Anuncio 6 — final del contenido -->
+    <div class="ad-banner" style="margin:0 0 40px">
+      <ins class="adsbygoogle"
+           style="display:block"
+           data-ad-client="ca-pub-9027862604686644"
+           data-ad-slot="auto"
+           data-ad-format="auto"
+           data-full-width-responsive="true"></ins>
+      <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+    </div>
+
+    <!-- Footer final -->
+    <div class="about-footer">
+      <div class="about-footer-logo">🍅 PomodoroXP</div>
+      <div class="about-footer-sub">Hecho con ☕ y muchos pomodoros · v1.1</div>
+      <div class="about-footer-links">
+        <a href="privacy.html">Privacidad</a>
+        <a href="cookies.html">Cookies</a>
+      </div>
+    </div>
+
+  </div><!-- /.about-wrap -->
+</div><!-- /#about-section -->
 
 <!-- ====== MODAL: SETTINGS ====== -->
 <div class="overlay" id="ov-cfg">
