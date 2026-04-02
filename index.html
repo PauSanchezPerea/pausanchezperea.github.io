@@ -700,6 +700,8 @@ body[data-mode="long"]  .btn-play { border-color: var(--long);  background: var(
     <nav class="nav">
       <button class="nav-btn" id="btn-stats">📊 <span class="nav-label">Stats</span></button>
       <button class="nav-btn" id="btn-achs">🏆 <span class="nav-label">Logros</span></button>
+      <button class="nav-btn" id="btn-ranking">🥇 <span class="nav-label">Ranking</span></button>
+      <button class="nav-btn" id="btn-auth">👤 <span class="nav-label">Entrar</span></button>
       <button class="nav-btn" id="btn-cfg">⚙️ <span class="nav-label">Config</span></button>
     </nav>
   </header>
@@ -877,6 +879,84 @@ body[data-mode="long"]  .btn-play { border-color: var(--long);  background: var(
 </div>
 
 <div class="toast-wrap" id="toast-wrap"></div>
+
+<!-- ====== MODAL: AUTH ====== -->
+<div class="overlay" id="ov-auth">
+  <div class="mbox">
+    <div class="mhead">
+      <div class="mtitle" id="auth-title">👤 INICIAR SESIÓN</div>
+      <button class="mclose" data-ov="ov-auth">✕</button>
+    </div>
+    <div class="mbody" id="auth-body">
+
+      <!-- Vista: usuario conectado -->
+      <div id="auth-logged" style="display:none;text-align:center">
+        <div style="font-size:48px;margin-bottom:12px">👤</div>
+        <div id="auth-user-name" style="font-size:18px;font-weight:700;margin-bottom:4px"></div>
+        <div id="auth-user-email" style="font-size:12px;color:var(--text-dim);margin-bottom:20px"></div>
+        <div style="background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:14px;margin-bottom:20px">
+          <div style="font-size:9px;color:var(--focus);text-transform:uppercase;letter-spacing:0.2em;margin-bottom:10px">TUS DATOS EN LA NUBE</div>
+          <div class="stat-detail-row"><span>Pomodoros</span><span id="cloud-pomos">—</span></div>
+          <div class="stat-detail-row"><span>XP total</span><span id="cloud-xp">—</span></div>
+          <div class="stat-detail-row"><span>Racha</span><span id="cloud-streak">—</span></div>
+        </div>
+        <button onclick="window.FB.syncToCloud(window.S)" class="btn-save" style="margin-bottom:10px">☁️ Sincronizar ahora</button>
+        <button onclick="window.FB.logout();closeOv('ov-auth')" style="width:100%;padding:10px;background:rgba(255,50,50,0.1);border:1px solid rgba(255,50,50,0.25);color:#ff6b6b;border-radius:10px;cursor:pointer;font-family:'Outfit',sans-serif;font-size:13px;font-weight:500">
+          Cerrar sesión
+        </button>
+      </div>
+
+      <!-- Vista: formulario login/register -->
+      <div id="auth-form">
+        <div style="display:flex;gap:4px;background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:4px;margin-bottom:20px">
+          <button id="tab-login" onclick="switchAuthTab('login')" style="flex:1;padding:8px;border:1px solid var(--focus);border-radius:8px;background:var(--focus-d);color:var(--focus);font-family:'Outfit',sans-serif;font-size:12px;font-weight:600;cursor:pointer">Entrar</button>
+          <button id="tab-register" onclick="switchAuthTab('register')" style="flex:1;padding:8px;border:1px solid transparent;border-radius:8px;background:transparent;color:var(--text-dim);font-family:'Outfit',sans-serif;font-size:12px;font-weight:600;cursor:pointer">Registrarse</button>
+        </div>
+
+        <div id="field-username" style="display:none;margin-bottom:12px">
+          <div style="font-size:11px;color:var(--text-dim);margin-bottom:5px">Nombre de usuario</div>
+          <input id="auth-username" type="text" placeholder="Tu nombre en el ranking" style="width:100%;background:var(--bg2);border:1px solid var(--border);border-radius:8px;color:var(--text);font-family:'Outfit',sans-serif;font-size:13px;padding:10px 12px;outline:none">
+        </div>
+        <div style="margin-bottom:12px">
+          <div style="font-size:11px;color:var(--text-dim);margin-bottom:5px">Email</div>
+          <input id="auth-email" type="email" placeholder="tu@email.com" style="width:100%;background:var(--bg2);border:1px solid var(--border);border-radius:8px;color:var(--text);font-family:'Outfit',sans-serif;font-size:13px;padding:10px 12px;outline:none">
+        </div>
+        <div style="margin-bottom:20px">
+          <div style="font-size:11px;color:var(--text-dim);margin-bottom:5px">Contraseña</div>
+          <input id="auth-password" type="password" placeholder="Mínimo 6 caracteres" style="width:100%;background:var(--bg2);border:1px solid var(--border);border-radius:8px;color:var(--text);font-family:'Outfit',sans-serif;font-size:13px;padding:10px 12px;outline:none">
+        </div>
+
+        <div id="auth-error" style="display:none;background:rgba(255,50,50,0.1);border:1px solid rgba(255,50,50,0.25);color:#ff6b6b;padding:10px 12px;border-radius:8px;font-size:12px;margin-bottom:14px"></div>
+
+        <button id="btn-auth-submit" onclick="submitAuth()" class="btn-save" style="margin-bottom:12px">Entrar</button>
+
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px">
+          <div style="flex:1;height:1px;background:var(--border)"></div>
+          <div style="font-size:10px;color:var(--text-dim)">O</div>
+          <div style="flex:1;height:1px;background:var(--border)"></div>
+        </div>
+
+        <button onclick="window.FB.loginGoogle().then(r=>{if(r.ok)closeOv('ov-auth')})" style="width:100%;padding:10px;background:rgba(255,255,255,0.05);border:1px solid var(--border);border-radius:10px;color:var(--text);font-family:'Outfit',sans-serif;font-size:13px;font-weight:500;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px">
+          <span>🔵</span> Continuar con Google
+        </button>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- ====== MODAL: RANKING ====== -->
+<div class="overlay" id="ov-ranking">
+  <div class="mbox" style="max-width:560px">
+    <div class="mhead">
+      <div class="mtitle">🥇 RANKING GLOBAL</div>
+      <button class="mclose" data-ov="ov-ranking">✕</button>
+    </div>
+    <div class="mbody" id="ranking-body">
+      <div style="text-align:center;padding:20px;color:var(--text-dim)">Cargando ranking...</div>
+    </div>
+  </div>
+</div>
 
 <script>
 'use strict';
@@ -1431,9 +1511,113 @@ setInterval(()=>{
 // BOOT
 // =====================================================================
 initAll();
+// Exponer funciones globales para Firebase
+window.S       = S;
+window.initAll = initAll;
+window.toast   = toast;
+
+// ---- AUTH MODAL ----
+function switchAuthTab(tab) {
+  const isReg = tab === 'register';
+  document.getElementById('field-username').style.display = isReg ? 'block' : 'none';
+  document.getElementById('btn-auth-submit').textContent  = isReg ? 'Crear cuenta' : 'Entrar';
+  document.getElementById('tab-login').style.borderColor    = isReg ? 'transparent' : 'var(--focus)';
+  document.getElementById('tab-login').style.background     = isReg ? 'transparent' : 'var(--focus-d)';
+  document.getElementById('tab-login').style.color          = isReg ? 'var(--text-dim)' : 'var(--focus)';
+  document.getElementById('tab-register').style.borderColor = isReg ? 'var(--focus)' : 'transparent';
+  document.getElementById('tab-register').style.background  = isReg ? 'var(--focus-d)' : 'transparent';
+  document.getElementById('tab-register').style.color       = isReg ? 'var(--focus)' : 'var(--text-dim)';
+  document.getElementById('auth-error').style.display = 'none';
+  document.getElementById('auth-title').textContent = isReg ? '👤 CREAR CUENTA' : '👤 INICIAR SESIÓN';
+  switchAuthTab._current = tab;
+}
+switchAuthTab._current = 'login';
+window.switchAuthTab = switchAuthTab;
+
+async function submitAuth() {
+  const email    = document.getElementById('auth-email').value.trim();
+  const password = document.getElementById('auth-password').value;
+  const errDiv   = document.getElementById('auth-error');
+  errDiv.style.display = 'none';
+
+  if (!window.FB) { errDiv.textContent = 'Firebase no cargado aún'; errDiv.style.display='block'; return; }
+
+  let result;
+  if (switchAuthTab._current === 'register') {
+    const username = document.getElementById('auth-username').value.trim() || email.split('@')[0];
+    result = await window.FB.registerEmail(email, password, username);
+  } else {
+    result = await window.FB.loginEmail(email, password);
+  }
+
+  if (result.ok) {
+    closeOv('ov-auth');
+  } else {
+    errDiv.textContent = result.msg;
+    errDiv.style.display = 'block';
+  }
+}
+window.submitAuth = submitAuth;
+
+// Botón auth — abre modal o perfil
+document.getElementById('btn-auth').addEventListener('click', () => {
+  const user = window._fbUser;
+  if (user) {
+    document.getElementById('auth-logged').style.display = 'block';
+    document.getElementById('auth-form').style.display   = 'none';
+    document.getElementById('auth-user-name').textContent  = user.displayName || user.email.split('@')[0];
+    document.getElementById('auth-user-email').textContent = user.email;
+    document.getElementById('cloud-pomos').textContent  = S.totalPomos;
+    document.getElementById('cloud-xp').textContent     = S.xp + ' XP';
+    document.getElementById('cloud-streak').textContent = S.streak + ' días';
+  } else {
+    document.getElementById('auth-logged').style.display = 'none';
+    document.getElementById('auth-form').style.display   = 'block';
+    switchAuthTab('login');
+  }
+  openOv('ov-auth');
+});
+
+// Botón ranking
+document.getElementById('btn-ranking').addEventListener('click', async () => {
+  openOv('ov-ranking');
+  const body = document.getElementById('ranking-body');
+  body.innerHTML = '<div style="text-align:center;padding:20px;color:var(--text-dim)">Cargando...</div>';
+  if (!window.FB) { body.innerHTML = '<div style="text-align:center;padding:20px;color:var(--text-dim)">Firebase no disponible</div>'; return; }
+  const rows = await window.FB.getRanking();
+  if (!rows.length) { body.innerHTML = '<div style="text-align:center;padding:30px;color:var(--text-dim)">Aún no hay datos en el ranking.<br>¡Sé el primero en registrarte! 🚀</div>'; return; }
+  const medals = ['🥇','🥈','🥉'];
+  body.innerHTML = `
+    <div style="margin-bottom:16px">
+      ${rows.map(r=>`
+        <div style="display:flex;align-items:center;gap:12px;padding:12px;background:${r.isMe?'rgba(0,212,255,0.07)':'var(--bg2)'};border:1px solid ${r.isMe?'var(--focus)':'var(--border)'};border-radius:10px;margin-bottom:8px">
+          <div style="font-size:20px;width:28px;text-align:center">${medals[r.rank-1]||r.rank}</div>
+          <div style="flex:1">
+            <div style="font-size:13px;font-weight:700;color:${r.isMe?'var(--focus)':'var(--text)'}">${r.username}${r.isMe?' (tú)':''}</div>
+            <div style="font-size:10px;color:var(--text-dim)">${r.hours}h de focus</div>
+          </div>
+          <div style="text-align:right">
+            <div style="font-family:'Orbitron',monospace;font-size:14px;color:var(--text)">${r.pomos} 🍅</div>
+            <div style="font-size:10px;color:var(--xp)">${r.xp} XP</div>
+          </div>
+        </div>`).join('')}
+    </div>
+    ${!window._fbUser ? '<div style="text-align:center;font-size:12px;color:var(--text-dim)">Regístrate para aparecer en el ranking 👆</div>' : ''}`;
+});
+
+// Sync automático cada vez que se completa un pomodoro (hook)
+const _origOnComplete = window._onComplete;
+function syncAfterPomo() { if (window.FB && window._fbUser) window.FB.syncToCloud(S); }
+
+// Guardar referencia al usuario actual
+window._fbUser = null;
 
 console.log('%cPOMODOROXP v1.1','font-size:20px;font-weight:900;color:#00d4ff;font-family:monospace');
 console.log('%cMotor de Estudio — AdSense + Gráfica semanal ⚡','color:#5c78a8;font-family:monospace');
 </script>
+
+<!-- Firebase -->
+<script type="module" src="firebase.js"></script>
+
 </body>
 </html>
