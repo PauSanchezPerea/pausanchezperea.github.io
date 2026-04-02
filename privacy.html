@@ -1,3 +1,492 @@
-<h1>Política de Privacidad</h1>
-<p>Este sitio web puede recopilar datos de navegación de forma anónima para mejorar la experiencia del usuario.</p>
-<p>Se pueden utilizar servicios de terceros como Google AdSense que usan cookies.</p>
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9027862604686644" crossorigin="anonymous"></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Política de Privacidad — PomodoroXP</title>
+  <meta name="description" content="Política de privacidad de PomodoroXP. Información sobre el tratamiento de datos personales, uso de Firebase, Google AdSense y cookies.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg:      #04060d;
+      --bg2:     #070c18;
+      --bg3:     #0c1425;
+      --card:    rgba(8,14,28,0.85);
+      --border:  rgba(0,180,255,0.10);
+      --focus:   #00d4ff;
+      --focus-d: rgba(0,212,255,0.12);
+      --text:    #dce8f8;
+      --text-dim:#5c78a8;
+      --text-faint:#2a3a5a;
+      --xp:      #ff7043;
+      --radius:  14px;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Outfit', sans-serif;
+      min-height: 100vh;
+      line-height: 1.7;
+    }
+    .bg-grid {
+      position: fixed; inset: 0;
+      background-image:
+        linear-gradient(rgba(0,212,255,0.022) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0,212,255,0.022) 1px, transparent 1px);
+      background-size: 44px 44px;
+      pointer-events: none; z-index: 0;
+    }
+
+    /* NAV */
+    .topbar {
+      position: sticky; top: 0; z-index: 100;
+      background: rgba(4,6,13,0.92);
+      backdrop-filter: blur(14px);
+      border-bottom: 1px solid var(--border);
+      padding: 14px 24px;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .topbar-logo {
+      font-family: 'Orbitron', monospace;
+      font-size: 14px; font-weight: 900;
+      letter-spacing: 0.12em;
+      background: linear-gradient(135deg, var(--focus) 0%, #fff 70%);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      background-clip: text; text-decoration: none;
+    }
+    .topbar-back {
+      font-size: 12px; color: var(--text-dim);
+      text-decoration: none; transition: color 0.2s;
+      display: flex; align-items: center; gap: 6px;
+    }
+    .topbar-back:hover { color: var(--focus); }
+
+    /* LAYOUT */
+    .page-wrap {
+      position: relative; z-index: 1;
+      max-width: 760px; margin: 0 auto;
+      padding: 48px 24px 80px;
+    }
+
+    /* HERO */
+    .page-hero { margin-bottom: 40px; }
+    .page-tag {
+      font-size: 10px; color: var(--focus);
+      text-transform: uppercase; letter-spacing: 0.26em;
+      font-weight: 700; margin-bottom: 12px;
+    }
+    .page-title {
+      font-family: 'Orbitron', monospace;
+      font-size: clamp(22px, 4vw, 32px);
+      font-weight: 900; color: var(--text);
+      margin-bottom: 14px; line-height: 1.3;
+    }
+    .page-meta {
+      font-size: 12px; color: var(--text-dim);
+      display: flex; gap: 20px; flex-wrap: wrap;
+    }
+    .page-meta span { display: flex; align-items: center; gap: 5px; }
+
+    /* TOC */
+    .toc {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px 24px;
+      margin-bottom: 36px;
+      backdrop-filter: blur(10px);
+    }
+    .toc-title {
+      font-size: 9px; color: var(--focus);
+      text-transform: uppercase; letter-spacing: 0.22em;
+      font-weight: 700; margin-bottom: 14px;
+    }
+    .toc ol { padding-left: 18px; }
+    .toc li { margin-bottom: 6px; }
+    .toc a {
+      font-size: 13px; color: var(--text-dim);
+      text-decoration: none; transition: color 0.2s;
+    }
+    .toc a:hover { color: var(--focus); }
+
+    /* SECTIONS */
+    .legal-section {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 28px;
+      margin-bottom: 20px;
+      backdrop-filter: blur(10px);
+      scroll-margin-top: 80px;
+    }
+    .sec-num {
+      font-family: 'Orbitron', monospace;
+      font-size: 9px; color: var(--focus);
+      letter-spacing: 0.2em; font-weight: 700;
+      margin-bottom: 8px;
+    }
+    .sec-title {
+      font-family: 'Orbitron', monospace;
+      font-size: 15px; font-weight: 700;
+      color: var(--text); margin-bottom: 16px;
+      line-height: 1.4;
+    }
+    .sec-p {
+      font-size: 14px; color: var(--text-dim);
+      margin-bottom: 12px; line-height: 1.75;
+    }
+    .sec-p:last-child { margin-bottom: 0; }
+    .sec-p strong { color: var(--text); font-weight: 600; }
+    .sec-p a { color: var(--focus); text-decoration: none; }
+    .sec-p a:hover { text-decoration: underline; }
+
+    /* Tables */
+    .data-table {
+      width: 100%; border-collapse: collapse;
+      margin: 16px 0; font-size: 13px;
+    }
+    .data-table th {
+      background: var(--bg2);
+      color: var(--focus);
+      font-size: 9px; text-transform: uppercase;
+      letter-spacing: 0.16em; font-weight: 700;
+      padding: 10px 14px; text-align: left;
+      border: 1px solid var(--border);
+    }
+    .data-table td {
+      padding: 10px 14px;
+      border: 1px solid var(--border);
+      color: var(--text-dim); vertical-align: top;
+    }
+    .data-table tr:nth-child(even) td { background: rgba(0,212,255,0.02); }
+
+    /* Info boxes */
+    .info-box {
+      background: rgba(0,212,255,0.05);
+      border: 1px solid rgba(0,212,255,0.18);
+      border-radius: 10px; padding: 14px 16px;
+      margin: 14px 0; font-size: 13px;
+      color: var(--text-dim); line-height: 1.6;
+    }
+    .info-box strong { color: var(--focus); }
+    .warn-box {
+      background: rgba(255,112,67,0.06);
+      border: 1px solid rgba(255,112,67,0.2);
+      border-radius: 10px; padding: 14px 16px;
+      margin: 14px 0; font-size: 13px;
+      color: var(--text-dim); line-height: 1.6;
+    }
+    .warn-box strong { color: var(--xp); }
+
+    /* Lists */
+    .sec-ul { padding-left: 20px; margin: 10px 0 12px; }
+    .sec-ul li {
+      font-size: 14px; color: var(--text-dim);
+      margin-bottom: 6px; line-height: 1.65;
+    }
+    .sec-ul li strong { color: var(--text); }
+
+    /* Ad */
+    .ad-legal {
+      width: 100%; min-height: 90px;
+      background: rgba(0,212,255,0.02);
+      border: 1px dashed rgba(0,212,255,0.1);
+      border-radius: var(--radius);
+      margin: 28px 0; overflow: hidden;
+    }
+
+    /* Footer */
+    .legal-footer {
+      text-align: center; padding-top: 36px;
+      border-top: 1px solid var(--border);
+      margin-top: 10px;
+    }
+    .legal-footer a {
+      color: var(--text-faint); font-size: 11px;
+      text-decoration: none; margin: 0 10px; transition: color 0.2s;
+    }
+    .legal-footer a:hover { color: var(--text-dim); }
+    .legal-footer p { font-size: 11px; color: var(--text-faint); margin-top: 10px; }
+
+    ::-webkit-scrollbar { width: 4px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+
+    @media (max-width: 560px) {
+      .page-wrap { padding: 32px 16px 60px; }
+      .legal-section { padding: 20px 16px; }
+      .data-table { font-size: 12px; }
+      .data-table th, .data-table td { padding: 8px 10px; }
+    }
+  </style>
+</head>
+<body>
+<div class="bg-grid"></div>
+
+<nav class="topbar">
+  <a href="index.html" class="topbar-logo">🍅 POMODOROXP</a>
+  <a href="index.html" class="topbar-back">← Volver a la app</a>
+</nav>
+
+<div class="page-wrap">
+
+  <div class="page-hero">
+    <div class="page-tag">Legal · Privacidad</div>
+    <h1 class="page-title">Política de Privacidad</h1>
+    <div class="page-meta">
+      <span>📅 Última actualización: abril 2026</span>
+      <span>🌐 Aplicable a: pausanchezperea.github.io</span>
+    </div>
+  </div>
+
+  <!-- TOC -->
+  <div class="toc">
+    <div class="toc-title">Índice de contenidos</div>
+    <ol>
+      <li><a href="#s1">Responsable del tratamiento</a></li>
+      <li><a href="#s2">Datos que recopilamos</a></li>
+      <li><a href="#s3">Finalidad y base legal del tratamiento</a></li>
+      <li><a href="#s4">Google Firebase — Autenticación y base de datos</a></li>
+      <li><a href="#s5">Google AdSense — Publicidad</a></li>
+      <li><a href="#s6">Google Analytics</a></li>
+      <li><a href="#s7">Almacenamiento local (localStorage)</a></li>
+      <li><a href="#s8">Transferencias internacionales de datos</a></li>
+      <li><a href="#s9">Conservación de los datos</a></li>
+      <li><a href="#s10">Derechos del usuario</a></li>
+      <li><a href="#s11">Seguridad</a></li>
+      <li><a href="#s12">Menores de edad</a></li>
+      <li><a href="#s13">Cambios en esta política</a></li>
+      <li><a href="#s14">Contacto</a></li>
+    </ol>
+  </div>
+
+  <div class="info-box">
+    <strong>Resumen rápido:</strong> PomodoroXP es una aplicación web gratuita de productividad. Si usas la app sin registrarte, tus datos se guardan únicamente en tu navegador. Si creas una cuenta, algunos datos de progreso (pomodoros, XP, racha) se almacenan en la nube de Google Firebase. Mostramos anuncios a través de Google AdSense. Puedes ejercer tus derechos en cualquier momento.
+  </div>
+
+  <!-- 1 -->
+  <div class="legal-section" id="s1">
+    <div class="sec-num">Artículo 01</div>
+    <h2 class="sec-title">Responsable del Tratamiento</h2>
+    <p class="sec-p">El responsable del tratamiento de los datos personales recabados a través del sitio web <strong>pausanchezperea.github.io</strong> (en adelante, "PomodoroXP" o "la Aplicación") es el titular del proyecto, persona física no identificada públicamente, que puede ser contactada a través de los medios indicados en el artículo 14 de esta política.</p>
+    <p class="sec-p">El sitio web está alojado en <strong>GitHub Pages</strong>, un servicio de GitHub, Inc. (subsidiaria de Microsoft Corporation), con domicilio en 88 Colin P Kelly Jr St, San Francisco, CA 94107, Estados Unidos.</p>
+  </div>
+
+  <!-- 2 -->
+  <div class="legal-section" id="s2">
+    <div class="sec-num">Artículo 02</div>
+    <h2 class="sec-title">Datos que Recopilamos</h2>
+    <p class="sec-p">Dependiendo del uso que hagas de la aplicación, recopilamos diferentes categorías de datos:</p>
+
+    <table class="data-table">
+      <thead>
+        <tr><th>Categoría</th><th>Dato concreto</th><th>Obligatorio</th><th>Dónde se guarda</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Identificación</td><td>Dirección de correo electrónico</td><td>Solo si te registras</td><td>Google Firebase</td></tr>
+        <tr><td>Identificación</td><td>Nombre de usuario (alias)</td><td>Solo si te registras</td><td>Google Firebase</td></tr>
+        <tr><td>Progreso</td><td>Número de pomodoros completados</td><td>No (opt-in)</td><td>Firebase / localStorage</td></tr>
+        <tr><td>Progreso</td><td>Segundos de focus acumulados</td><td>No (opt-in)</td><td>Firebase / localStorage</td></tr>
+        <tr><td>Progreso</td><td>Puntos de experiencia (XP) y nivel</td><td>No (opt-in)</td><td>Firebase / localStorage</td></tr>
+        <tr><td>Progreso</td><td>Racha de días de estudio</td><td>No (opt-in)</td><td>Firebase / localStorage</td></tr>
+        <tr><td>Progreso</td><td>Logros desbloqueados</td><td>No (opt-in)</td><td>Firebase / localStorage</td></tr>
+        <tr><td>Técnicos</td><td>Dirección IP (aproximada)</td><td>Automático</td><td>Google (Firebase/AdSense)</td></tr>
+        <tr><td>Técnicos</td><td>Tipo de navegador y sistema operativo</td><td>Automático</td><td>Google Analytics</td></tr>
+        <tr><td>Publicidad</td><td>Cookies e identificadores publicitarios</td><td>Automático</td><td>Google AdSense</td></tr>
+      </tbody>
+    </table>
+
+    <p class="sec-p">El uso de la aplicación <strong>sin crear una cuenta</strong> no implica la recogida de ningún dato personal identificable. Todos los datos de progreso se almacenan exclusivamente en el almacenamiento local de tu navegador (<em>localStorage</em>) y no abandonan tu dispositivo.</p>
+  </div>
+
+  <!-- 3 -->
+  <div class="legal-section" id="s3">
+    <div class="sec-num">Artículo 03</div>
+    <h2 class="sec-title">Finalidad y Base Legal del Tratamiento</h2>
+    <p class="sec-p">Tratamos tus datos para las siguientes finalidades y con las siguientes bases legales conforme al Reglamento (UE) 2016/679 (RGPD):</p>
+    <table class="data-table">
+      <thead>
+        <tr><th>Finalidad</th><th>Base legal</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Prestación del servicio (funcionamiento del temporizador y gamificación)</td><td>Ejecución de un contrato / interés legítimo</td></tr>
+        <tr><td>Gestión de cuentas de usuario y autenticación</td><td>Consentimiento del usuario (Art. 6.1.a RGPD)</td></tr>
+        <tr><td>Sincronización de datos de progreso en la nube</td><td>Consentimiento del usuario</td></tr>
+        <tr><td>Ranking global (muestra nombre de usuario y estadísticas públicas)</td><td>Consentimiento del usuario al registrarse</td></tr>
+        <tr><td>Mostrar publicidad personalizada (Google AdSense)</td><td>Consentimiento del usuario (cookies)</td></tr>
+        <tr><td>Análisis de tráfico web (Google Analytics)</td><td>Interés legítimo / consentimiento</td></tr>
+        <tr><td>Cumplimiento de obligaciones legales</td><td>Obligación legal (Art. 6.1.c RGPD)</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- 4 -->
+  <div class="legal-section" id="s4">
+    <div class="sec-num">Artículo 04</div>
+    <h2 class="sec-title">Google Firebase — Autenticación y Base de Datos</h2>
+    <p class="sec-p">PomodoroXP utiliza <strong>Google Firebase</strong>, una plataforma de desarrollo de aplicaciones proporcionada por Google LLC (1600 Amphitheatre Parkway, Mountain View, CA 94043, EE.UU.), para los siguientes servicios:</p>
+    <ul class="sec-ul">
+      <li><strong>Firebase Authentication:</strong> Gestión segura del registro e inicio de sesión de usuarios mediante correo electrónico/contraseña o cuenta de Google. Las contraseñas nunca se almacenan en texto plano; Firebase aplica cifrado bcrypt.</li>
+      <li><strong>Cloud Firestore:</strong> Base de datos NoSQL en la nube donde se almacenan los datos de progreso del usuario (pomodoros, XP, racha, semana de actividad) asociados a su UID único de Firebase. Los datos son accesibles únicamente por el propio usuario y, de forma anonimizada, para el ranking global (solo se muestra el nombre de usuario elegido).</li>
+      <li><strong>Firebase Analytics:</strong> Recopilación de métricas de uso agregadas y anonimizadas.</li>
+    </ul>
+    <div class="info-box">
+      <strong>Reglas de seguridad de Firestore:</strong> Hemos configurado reglas de seguridad que impiden que cualquier usuario externo modifique los datos de otro usuario. La escritura en un documento de usuario está restringida estrictamente al propietario autenticado de ese documento.
+    </div>
+    <p class="sec-p">Los datos procesados por Firebase están sujetos a la <a href="https://firebase.google.com/support/privacy" target="_blank" rel="noopener">Política de Privacidad de Google Firebase</a>. Google LLC está adherida al marco EU-U.S. Data Privacy Framework, lo que garantiza un nivel de protección adecuado para las transferencias de datos a EE.UU.</p>
+  </div>
+
+  <!-- 5 -->
+  <div class="legal-section" id="s5">
+    <div class="sec-num">Artículo 05</div>
+    <h2 class="sec-title">Google AdSense — Publicidad</h2>
+    <p class="sec-p">PomodoroXP muestra anuncios publicitarios a través de <strong>Google AdSense</strong>, un servicio de publicidad gestionado por Google LLC. Para mostrar anuncios relevantes, Google AdSense puede:</p>
+    <ul class="sec-ul">
+      <li>Instalar <strong>cookies de publicidad</strong> en tu navegador (como la cookie <em>DSID</em>, <em>IDE</em> o <em>__gads</em>).</li>
+      <li>Utilizar tu <strong>dirección IP</strong> para determinar tu ubicación geográfica aproximada.</li>
+      <li>Recopilar datos sobre tus <strong>interacciones con los anuncios</strong> (impresiones, clics).</li>
+      <li>Usar tecnologías de seguimiento entre sitios para ofrecerte <strong>publicidad personalizada</strong> basada en tus intereses.</li>
+    </ul>
+    <div class="warn-box">
+      <strong>Publicidad personalizada:</strong> Si no deseas recibir publicidad personalizada, puedes desactivarla en <a href="https://www.google.com/settings/ads" target="_blank" rel="noopener" style="color:var(--xp)">Configuración de anuncios de Google</a> o instalando la extensión <a href="https://optout.aboutads.info/" target="_blank" rel="noopener" style="color:var(--xp)">opt-out de Google</a>.
+    </div>
+    <p class="sec-p">El identificador de editor de AdSense utilizado en esta web es <strong>ca-pub-9027862604686644</strong>. Para más información sobre cómo Google utiliza los datos de publicidad, consulta la <a href="https://policies.google.com/technologies/ads" target="_blank" rel="noopener">política de publicidad de Google</a>.</p>
+  </div>
+
+  <!-- AD -->
+  <div class="ad-legal">
+    <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-9027862604686644" data-ad-slot="auto" data-ad-format="auto" data-full-width-responsive="true"></ins>
+    <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+  </div>
+
+  <!-- 6 -->
+  <div class="legal-section" id="s6">
+    <div class="sec-num">Artículo 06</div>
+    <h2 class="sec-title">Google Analytics</h2>
+    <p class="sec-p">Esta web utiliza <strong>Google Analytics</strong> a través de Firebase Analytics para obtener estadísticas de uso agregadas y anonimizadas: número de visitantes, páginas vistas, tiempo de sesión y origen del tráfico. Esta información no permite identificar a usuarios individuales.</p>
+    <p class="sec-p">El ID de medición de Analytics es <strong>G-0BBZ7M8S6Y</strong>. Puedes impedir la recogida de datos por Google Analytics instalando el <a href="https://tools.google.com/dlpage/gaoptout" target="_blank" rel="noopener">complemento de inhabilitación del navegador</a> ofrecido por Google.</p>
+  </div>
+
+  <!-- 7 -->
+  <div class="legal-section" id="s7">
+    <div class="sec-num">Artículo 07</div>
+    <h2 class="sec-title">Almacenamiento Local (localStorage)</h2>
+    <p class="sec-p">Cuando usas PomodoroXP <strong>sin crear una cuenta</strong>, todos tus datos de progreso (pomodoros, XP, logros, configuración del temporizador) se almacenan únicamente en el <strong>almacenamiento local de tu navegador</strong> mediante la API <em>localStorage</em>.</p>
+    <p class="sec-p">El localStorage no es una cookie. Los datos almacenados en él:</p>
+    <ul class="sec-ul">
+      <li>No se transmiten a ningún servidor externo.</li>
+      <li>Solo son accesibles desde el mismo dominio que los creó.</li>
+      <li>Persisten hasta que el usuario los borra manualmente (desde la opción "Resetear datos" de la app o borrando los datos del sitio en su navegador).</li>
+      <li>No tienen fecha de caducidad automática.</li>
+    </ul>
+    <p class="sec-p">La clave utilizada para almacenar los datos es <strong>"ff_v2"</strong>. Puedes eliminar estos datos en cualquier momento desde la sección de estadísticas de la aplicación.</p>
+  </div>
+
+  <!-- 8 -->
+  <div class="legal-section" id="s8">
+    <div class="sec-num">Artículo 08</div>
+    <h2 class="sec-title">Transferencias Internacionales de Datos</h2>
+    <p class="sec-p">Algunos de los servicios de terceros utilizados en PomodoroXP implican la transferencia de datos a servidores ubicados fuera del Espacio Económico Europeo (EEE), concretamente a <strong>Estados Unidos</strong>:</p>
+    <ul class="sec-ul">
+      <li><strong>Google LLC</strong> (Firebase, AdSense, Analytics): adherida al <em>EU-U.S. Data Privacy Framework</em> y sujeta a cláusulas contractuales tipo aprobadas por la Comisión Europea.</li>
+      <li><strong>GitHub, Inc.</strong> (alojamiento web): sujeta a cláusulas contractuales tipo.</li>
+    </ul>
+    <p class="sec-p">Estas transferencias se realizan con las garantías adecuadas establecidas en el Capítulo V del RGPD.</p>
+  </div>
+
+  <!-- 9 -->
+  <div class="legal-section" id="s9">
+    <div class="sec-num">Artículo 09</div>
+    <h2 class="sec-title">Conservación de los Datos</h2>
+    <p class="sec-p">Los datos se conservan durante los siguientes periodos:</p>
+    <table class="data-table">
+      <thead>
+        <tr><th>Tipo de dato</th><th>Periodo de conservación</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Datos de cuenta (email, nombre de usuario)</td><td>Hasta que el usuario elimine su cuenta</td></tr>
+        <tr><td>Datos de progreso en Firebase</td><td>Hasta que el usuario elimine su cuenta o solicite la supresión</td></tr>
+        <tr><td>Datos en localStorage (sin cuenta)</td><td>Indefinido hasta borrado manual por el usuario</td></tr>
+        <tr><td>Datos de Analytics</td><td>14 meses (configuración predeterminada de Google)</td></tr>
+        <tr><td>Cookies de AdSense</td><td>Según política de Google (máx. 13 meses)</td></tr>
+        <tr><td>Logs del servidor (GitHub Pages)</td><td>Según política de GitHub (máx. 30 días)</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- 10 -->
+  <div class="legal-section" id="s10">
+    <div class="sec-num">Artículo 10</div>
+    <h2 class="sec-title">Derechos del Usuario</h2>
+    <p class="sec-p">En virtud del RGPD y la LOPDGDD (Ley Orgánica 3/2018), tienes los siguientes derechos respecto a tus datos personales:</p>
+    <ul class="sec-ul">
+      <li><strong>Derecho de acceso:</strong> Conocer qué datos tenemos sobre ti.</li>
+      <li><strong>Derecho de rectificación:</strong> Corregir datos inexactos o incompletos.</li>
+      <li><strong>Derecho de supresión ("derecho al olvido"):</strong> Solicitar la eliminación de tus datos cuando ya no sean necesarios.</li>
+      <li><strong>Derecho de oposición:</strong> Oponerte al tratamiento de tus datos para determinadas finalidades.</li>
+      <li><strong>Derecho de limitación:</strong> Solicitar que suspendamos el tratamiento de tus datos en determinadas circunstancias.</li>
+      <li><strong>Derecho a la portabilidad:</strong> Recibir tus datos en un formato estructurado y legible por máquina.</li>
+      <li><strong>Derecho a no ser objeto de decisiones automatizadas:</strong> No ser objeto de decisiones basadas únicamente en el tratamiento automatizado que produzcan efectos significativos.</li>
+    </ul>
+    <p class="sec-p">Para ejercer cualquiera de estos derechos, puedes contactarnos a través del correo indicado en el Artículo 14. También puedes eliminar tu cuenta y todos los datos asociados directamente desde la aplicación. Además, tienes derecho a presentar una reclamación ante la <strong>Agencia Española de Protección de Datos (AEPD)</strong> en <a href="https://www.aepd.es" target="_blank" rel="noopener">www.aepd.es</a>.</p>
+  </div>
+
+  <!-- 11 -->
+  <div class="legal-section" id="s11">
+    <div class="sec-num">Artículo 11</div>
+    <h2 class="sec-title">Seguridad</h2>
+    <p class="sec-p">Aplicamos medidas técnicas y organizativas razonables para proteger tus datos personales frente a accesos no autorizados, pérdida, alteración o destrucción:</p>
+    <ul class="sec-ul">
+      <li>Comunicaciones cifradas mediante <strong>HTTPS/TLS</strong> en todo el sitio.</li>
+      <li><strong>Reglas de seguridad de Firestore</strong> que impiden que un usuario acceda o modifique datos de otro.</li>
+      <li>Restricción de la <strong>API Key de Firebase</strong> al dominio autorizado de la aplicación.</li>
+      <li>Las contraseñas de usuario son gestionadas íntegramente por Firebase Authentication, que aplica cifrado robusto y nunca almacena contraseñas en texto plano.</li>
+      <li>No almacenamos datos de pago de ningún tipo.</li>
+    </ul>
+    <p class="sec-p">Sin embargo, ningún sistema de seguridad es completamente infalible. En caso de detectarse una brecha de seguridad que afecte a tus datos, te notificaremos en un plazo máximo de 72 horas conforme al Art. 33 del RGPD.</p>
+  </div>
+
+  <!-- 12 -->
+  <div class="legal-section" id="s12">
+    <div class="sec-num">Artículo 12</div>
+    <h2 class="sec-title">Menores de Edad</h2>
+    <p class="sec-p">PomodoroXP no está dirigida específicamente a menores de 14 años. No recopilamos conscientemente datos personales de menores de 14 años sin el consentimiento verificable de sus padres o tutores legales, conforme a lo establecido en el Art. 8 del RGPD y el Art. 7 de la LOPDGDD.</p>
+    <p class="sec-p">Si eres padre, madre o tutor y tienes conocimiento de que un menor bajo tu custodia nos ha proporcionado datos personales sin tu consentimiento, por favor contáctanos para proceder a su eliminación.</p>
+  </div>
+
+  <!-- 13 -->
+  <div class="legal-section" id="s13">
+    <div class="sec-num">Artículo 13</div>
+    <h2 class="sec-title">Cambios en esta Política</h2>
+    <p class="sec-p">Nos reservamos el derecho a modificar esta Política de Privacidad para adaptarla a cambios legislativos, jurisprudenciales o de las prácticas del sector. Cualquier modificación sustancial será comunicada a los usuarios registrados mediante una notificación en la aplicación o por correo electrónico, con al menos 15 días de antelación a su entrada en vigor.</p>
+    <p class="sec-p">La fecha de la última actualización figura siempre en la parte superior de este documento. Te recomendamos que consultes esta página periódicamente.</p>
+  </div>
+
+  <!-- 14 -->
+  <div class="legal-section" id="s14">
+    <div class="sec-num">Artículo 14</div>
+    <h2 class="sec-title">Contacto</h2>
+    <p class="sec-p">Para cualquier consulta, ejercicio de derechos o reclamación relacionada con esta Política de Privacidad, puedes contactarnos a través de la sección de <strong>Issues</strong> del repositorio público del proyecto en GitHub, o mediante el formulario de contacto que habilitaremos próximamente en la aplicación.</p>
+    <p class="sec-p">Nos comprometemos a responder a todas las solicitudes en un plazo máximo de <strong>30 días hábiles</strong> desde su recepción.</p>
+  </div>
+
+  <!-- Ad -->
+  <div class="ad-legal">
+    <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-9027862604686644" data-ad-slot="auto" data-ad-format="auto" data-full-width-responsive="true"></ins>
+    <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+  </div>
+
+  <div class="legal-footer">
+    <a href="index.html">← Volver a PomodoroXP</a>
+    <a href="cookies.html">Política de Cookies</a>
+    <p>© 2026 PomodoroXP · Todos los derechos reservados</p>
+  </div>
+
+</div>
+</body>
+</html>
