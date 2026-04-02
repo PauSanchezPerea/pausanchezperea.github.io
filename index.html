@@ -1,17 +1,18 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9027862604686644"
-     crossorigin="anonymous"></script>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9027862604686644"
+    crossorigin="anonymous"></script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>FocusFlow — Motor de Estudio</title>
+<title>PomodoroXP — Motor de Estudio</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;900&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
 <!-- ============================================================
-     FOCUSFLOW — Motor de Estudio v1.0
+     FOCUSFLOW — Motor de Estudio v1.1
+     Cambios: zonas AdSense integradas + gráfica semanal
      ============================================================ -->
 
 <style>
@@ -223,8 +224,6 @@ body {
   transition: stroke-dashoffset 0.6s linear, stroke 0.5s;
   filter: drop-shadow(0 0 6px var(--focus));
 }
-
-/* Mode-specific ring colors */
 body[data-mode="short"] .ring-track { stroke: rgba(0,255,152,0.08); }
 body[data-mode="short"] .ring-prog  { stroke: var(--short); filter: drop-shadow(0 0 6px var(--short)); }
 body[data-mode="long"]  .ring-track { stroke: rgba(176,106,255,0.08); }
@@ -254,23 +253,10 @@ body[data-mode="long"]  .timer-digits { text-shadow: 0 0 30px var(--long); }
   font-weight: 600;
 }
 
-/* Pulsing ring when running */
-.timer-ring-wrap.running .ring-prog {
-  animation: ring-pulse 2.4s ease-in-out infinite;
-}
-@keyframes ring-pulse {
-  0%,100% { opacity: 1; }
-  50%      { opacity: 0.7; }
-}
-/* Flash on complete */
-.timer-ring-wrap.flash {
-  animation: ring-flash 0.35s steps(2, end) 3;
-}
-@keyframes ring-flash {
-  0%   { opacity: 1; }
-  50%  { opacity: 0.1; }
-  100% { opacity: 1; }
-}
+.timer-ring-wrap.running .ring-prog { animation: ring-pulse 2.4s ease-in-out infinite; }
+@keyframes ring-pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.7; } }
+.timer-ring-wrap.flash { animation: ring-flash 0.35s steps(2, end) 3; }
+@keyframes ring-flash { 0% { opacity: 1; } 50% { opacity: 0.1; } 100% { opacity: 1; } }
 
 /* ---- CYCLE DOTS ---- */
 .cycle-dots { display: flex; gap: 12px; align-items: center; margin-bottom: 8px; }
@@ -287,7 +273,7 @@ body[data-mode="short"] .c-dot.done { background: var(--short); box-shadow: 0 0 
 
 /* ---- CONTROLS ---- */
 .controls {
-  display: flex; align-items: center; gap: 18px;
+  display: flex; align-items: center; justify-content: center; gap: 18px;
   margin-bottom: 36px;
 }
 .btn-circle {
@@ -325,6 +311,20 @@ body[data-mode="short"] .c-dot.done { background: var(--short); box-shadow: 0 0 
 .btn-play:active { transform: scale(0.94); }
 body[data-mode="short"] .btn-play { border-color: var(--short); background: var(--short-d); color: var(--short); box-shadow: 0 0 24px var(--short-d), inset 0 0 20px var(--short-d); }
 body[data-mode="long"]  .btn-play { border-color: var(--long);  background: var(--long-d);  color: var(--long);  box-shadow: 0 0 24px var(--long-d),  inset 0 0 20px var(--long-d);  }
+
+/* ---- AD ZONE — banner debajo de controles ---- */
+.ad-banner {
+  width: 100%;
+  min-height: 90px;
+  background: rgba(0,212,255,0.03);
+  border: 1px dashed rgba(0,212,255,0.12);
+  border-radius: var(--radius);
+  margin-bottom: 24px;
+  display: flex; align-items: center; justify-content: center;
+  overflow: hidden;
+  position: relative;
+}
+.ad-banner ins { display: block; width: 100%; }
 
 /* ---- XP BAR ---- */
 .xp-panel {
@@ -373,7 +373,7 @@ body[data-mode="long"]  .btn-play { border-color: var(--long);  background: var(
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: 12px;
-  margin-bottom: 10px;
+  margin-bottom: 24px;
 }
 .scard {
   background: var(--card);
@@ -396,6 +396,61 @@ body[data-mode="long"]  .btn-play { border-color: var(--long);  background: var(
   text-transform: uppercase; letter-spacing: 0.18em;
 }
 .scard.streak .scard-val { color: var(--xp); }
+
+/* ---- WEEKLY CHART ---- */
+.week-panel {
+  width: 100%;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 16px 20px;
+  margin-bottom: 24px;
+  backdrop-filter: blur(12px);
+}
+.week-header {
+  display: flex; justify-content: space-between; align-items: center;
+  margin-bottom: 16px;
+}
+.week-title {
+  font-size: 9px; color: var(--focus);
+  text-transform: uppercase; letter-spacing: 0.24em; font-weight: 700;
+}
+.week-total {
+  font-family: 'Orbitron', monospace;
+  font-size: 11px; color: var(--text-dim);
+}
+.week-bars {
+  display: flex; align-items: flex-end; gap: 6px;
+  height: 70px;
+}
+.week-bar-wrap {
+  flex: 1; display: flex; flex-direction: column;
+  align-items: center; gap: 5px;
+  height: 100%;
+}
+.week-bar-track {
+  flex: 1; width: 100%;
+  background: rgba(0,212,255,0.06);
+  border-radius: 4px 4px 0 0;
+  position: relative; overflow: hidden;
+  min-height: 4px;
+}
+.week-bar-fill {
+  position: absolute; bottom: 0; left: 0; right: 0;
+  background: linear-gradient(180deg, var(--focus) 0%, rgba(0,212,255,0.5) 100%);
+  border-radius: 4px 4px 0 0;
+  transition: height 0.8s cubic-bezier(0.34,1.56,0.64,1);
+  box-shadow: 0 0 6px rgba(0,212,255,0.3);
+}
+.week-bar-fill.today {
+  background: linear-gradient(180deg, #fff 0%, var(--focus) 100%);
+  box-shadow: 0 0 10px rgba(0,212,255,0.6);
+}
+.week-bar-label {
+  font-size: 9px; color: var(--text-dim);
+  letter-spacing: 0.06em; font-weight: 500;
+}
+.week-bar-label.today { color: var(--focus); font-weight: 700; }
 
 /* ---- MODALS ---- */
 .overlay {
@@ -446,6 +501,19 @@ body[data-mode="long"]  .btn-play { border-color: var(--long);  background: var(
 .mclose:hover { border-color: var(--focus); color: var(--text); }
 .mbody { padding: 24px; }
 
+/* ---- AD ZONE dentro del modal de stats ---- */
+.ad-modal {
+  width: 100%;
+  min-height: 100px;
+  background: rgba(0,212,255,0.02);
+  border: 1px dashed rgba(0,212,255,0.1);
+  border-radius: 10px;
+  margin-bottom: 16px;
+  display: flex; align-items: center; justify-content: center;
+  overflow: hidden;
+}
+.ad-modal ins { display: block; width: 100%; }
+
 /* ---- SETTINGS ---- */
 .sgroup { margin-bottom: 22px; }
 .sgroup-title {
@@ -474,7 +542,6 @@ body[data-mode="long"]  .btn-play { border-color: var(--long);  background: var(
 }
 .snumber:focus { outline: none; border-color: var(--focus); box-shadow: 0 0 10px var(--focus-d); }
 
-/* Toggle */
 .tog {
   width: 44px; height: 24px;
   border-radius: 12px;
@@ -507,32 +574,22 @@ body[data-mode="long"]  .btn-play { border-color: var(--long);  background: var(
 .btn-save:hover { background: rgba(0,212,255,0.22); box-shadow: 0 0 18px var(--focus-d); }
 
 /* ---- ACHIEVEMENTS ---- */
-.ach-stats {
-  display: flex; gap: 12px; margin-bottom: 20px;
-}
+.ach-stats { display: flex; gap: 12px; margin-bottom: 20px; }
 .ach-stat {
   flex: 1; background: var(--bg2); border: 1px solid var(--border);
   border-radius: 10px; padding: 12px; text-align: center;
 }
-.ach-stat-val {
-  font-family: 'Orbitron', monospace;
-  font-size: 20px; font-weight: 700; color: var(--gold);
-}
+.ach-stat-val { font-family: 'Orbitron', monospace; font-size: 20px; font-weight: 700; color: var(--gold); }
 .ach-stat-label { font-size: 9px; color: var(--text-dim); text-transform: uppercase; letter-spacing: 0.15em; margin-top: 3px; }
 
-.ach-grid {
-  display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px;
-}
+.ach-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; }
 .acard {
   background: var(--bg2);
   border: 1px solid var(--border);
   border-radius: 11px; padding: 14px;
   transition: all 0.22s; position: relative; overflow: hidden;
 }
-.acard.unlocked {
-  border-color: rgba(255,214,0,0.28);
-  background: rgba(255,214,0,0.04);
-}
+.acard.unlocked { border-color: rgba(255,214,0,0.28); background: rgba(255,214,0,0.04); }
 .acard.locked { opacity: 0.42; filter: grayscale(0.7); }
 .acard-check {
   position: absolute; top: 8px; right: 8px;
@@ -547,25 +604,11 @@ body[data-mode="long"]  .btn-play { border-color: var(--long);  background: var(
 .acard-xp { font-size: 10px; color: var(--xp); font-family: 'Orbitron', monospace; font-weight: 700; }
 
 /* ---- STATS MODAL ---- */
-.stats-grid-modal {
-  display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 20px;
-}
-.stat-cell {
-  background: var(--bg2); border: 1px solid var(--border);
-  border-radius: 10px; padding: 16px; text-align: center;
-}
-.stat-cell-val {
-  font-family: 'Orbitron', monospace;
-  font-size: 26px; font-weight: 700; color: var(--focus); margin-bottom: 5px;
-}
-.stat-cell-label {
-  font-size: 9px; color: var(--text-dim); text-transform: uppercase; letter-spacing: 0.18em;
-}
-.stat-detail-row {
-  display: flex; justify-content: space-between;
-  padding: 9px 0; border-bottom: 1px solid var(--border);
-  font-size: 13px;
-}
+.stats-grid-modal { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 20px; }
+.stat-cell { background: var(--bg2); border: 1px solid var(--border); border-radius: 10px; padding: 16px; text-align: center; }
+.stat-cell-val { font-family: 'Orbitron', monospace; font-size: 26px; font-weight: 700; color: var(--focus); margin-bottom: 5px; }
+.stat-cell-label { font-size: 9px; color: var(--text-dim); text-transform: uppercase; letter-spacing: 0.18em; }
+.stat-detail-row { display: flex; justify-content: space-between; padding: 9px 0; border-bottom: 1px solid var(--border); font-size: 13px; }
 .stat-detail-row:last-child { border-bottom: none; }
 .stat-detail-row span:first-child { color: var(--text-dim); }
 .stat-detail-row span:last-child { font-family: 'Orbitron', monospace; color: var(--text); font-size: 12px; }
@@ -590,10 +633,7 @@ body[data-mode="long"]  .btn-play { border-color: var(--long);  background: var(
 .toast.t-xp   { border-color: rgba(255,112,67,0.35); }
 .toast.t-ach  { border-color: rgba(255,214,0,0.35); }
 .toast.t-done { border-color: rgba(0,255,152,0.35); }
-.toast-ttl {
-  font-size: 9px; text-transform: uppercase; letter-spacing: 0.18em;
-  color: var(--text-dim); margin-bottom: 4px; font-weight: 600;
-}
+.toast-ttl { font-size: 9px; text-transform: uppercase; letter-spacing: 0.18em; color: var(--text-dim); margin-bottom: 4px; font-weight: 600; }
 .toast.t-xp  .toast-ttl { color: var(--xp); }
 .toast.t-ach .toast-ttl { color: var(--gold); }
 .toast.t-done .toast-ttl { color: var(--success); }
@@ -603,10 +643,20 @@ body[data-mode="long"]  .btn-play { border-color: var(--long);  background: var(
 
 /* ---- PARTICLES ---- */
 .px { position: fixed; pointer-events: none; z-index: 998; border-radius: 50%; animation: px-fly 1s ease-out forwards; }
-@keyframes px-fly {
-  0%   { opacity:1; transform: translate(0,0) scale(1); }
-  100% { opacity:0; transform: translate(var(--dx),var(--dy)) scale(0.4); }
+@keyframes px-fly { 0% { opacity:1; transform: translate(0,0) scale(1); } 100% { opacity:0; transform: translate(var(--dx),var(--dy)) scale(0.4); } }
+
+/* ---- FOOTER ---- */
+.app-footer {
+  text-align: center; padding: 20px 0 0;
+  border-top: 1px solid var(--border);
+  margin-top: 10px;
 }
+.app-footer a {
+  color: var(--text-faint); font-size: 11px;
+  text-decoration: none; margin: 0 10px;
+  transition: color 0.2s;
+}
+.app-footer a:hover { color: var(--text-dim); }
 
 /* ---- SCROLLBAR ---- */
 ::-webkit-scrollbar { width: 4px; }
@@ -631,7 +681,6 @@ body[data-mode="long"]  .btn-play { border-color: var(--long);  background: var(
 
 <body data-mode="focus">
 
-<!-- Background -->
 <div class="bg-grid"></div>
 <div class="bg-orb bg-orb-1"></div>
 <div class="bg-orb bg-orb-2"></div>
@@ -644,7 +693,7 @@ body[data-mode="long"]  .btn-play { border-color: var(--long);  background: var(
     <div class="logo">
       <div class="logo-icon">⚡</div>
       <div class="logo-wordmark">
-        <div class="logo-name">FOCUSFLOW</div>
+        <div class="logo-name">POMODOROXP</div>
         <div class="logo-sub">Motor de Estudio</div>
       </div>
     </div>
@@ -676,8 +725,6 @@ body[data-mode="long"]  .btn-play { border-color: var(--long);  background: var(
         <div class="timer-label-mode" id="timer-mode-lbl">FOCUS</div>
       </div>
     </div>
-
-    <!-- Cycle dots -->
     <div class="cycle-dots" id="cycle-dots"></div>
   </div>
 
@@ -686,6 +733,20 @@ body[data-mode="long"]  .btn-play { border-color: var(--long);  background: var(
     <button class="btn-circle" id="btn-reset" title="Reset (R)">↺</button>
     <button class="btn-circle btn-play" id="btn-play" title="Play/Pause (Espacio)">▶</button>
     <button class="btn-circle" id="btn-skip" title="Saltar">⏭</button>
+  </div>
+
+  <!-- ══════════════════════════════════════════
+       ANUNCIO 1 — Banner principal (728x90 / responsive)
+       Se activa automáticamente cuando AdSense apruebe
+       ══════════════════════════════════════════ -->
+  <div class="ad-banner">
+    <ins class="adsbygoogle"
+         style="display:block"
+         data-ad-client="ca-pub-9027862604686644"
+         data-ad-slot="auto"
+         data-ad-format="auto"
+         data-full-width-responsive="true"></ins>
+    <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
   </div>
 
   <!-- XP Bar -->
@@ -700,7 +761,7 @@ body[data-mode="long"]  .btn-play { border-color: var(--long);  background: var(
     <div class="xp-track"><div class="xp-fill" id="xp-fill" style="width:0%"></div></div>
   </div>
 
-  <!-- Stats -->
+  <!-- Stats row -->
   <div class="stats-row">
     <div class="scard">
       <div class="scard-val" id="s-today-p">0</div>
@@ -720,6 +781,21 @@ body[data-mode="long"]  .btn-play { border-color: var(--long);  background: var(
     </div>
   </div>
 
+  <!-- Gráfica semanal -->
+  <div class="week-panel">
+    <div class="week-header">
+      <div class="week-title">📈 Esta semana</div>
+      <div class="week-total" id="week-total">0 pomodoros</div>
+    </div>
+    <div class="week-bars" id="week-bars"></div>
+  </div>
+
+  <!-- Footer legal -->
+  <div class="app-footer">
+    <a href="privacy.html">Política de privacidad</a>
+    <a href="cookies.html">Cookies</a>
+  </div>
+
 </div><!-- /#app -->
 
 <!-- ====== MODAL: SETTINGS ====== -->
@@ -730,7 +806,6 @@ body[data-mode="long"]  .btn-play { border-color: var(--long);  background: var(
       <button class="mclose" data-ov="ov-cfg">✕</button>
     </div>
     <div class="mbody">
-
       <div class="sgroup">
         <div class="sgroup-title">⏱ Tiempos (minutos)</div>
         <div class="srow">
@@ -750,7 +825,6 @@ body[data-mode="long"]  .btn-play { border-color: var(--long);  background: var(
           <input class="snumber" id="cfg-interval" type="number" min="2" max="8" value="4">
         </div>
       </div>
-
       <div class="sgroup">
         <div class="sgroup-title">🔊 Audio</div>
         <div class="srow">
@@ -758,7 +832,6 @@ body[data-mode="long"]  .btn-play { border-color: var(--long);  background: var(
           <button class="tog on" id="tog-sound"></button>
         </div>
       </div>
-
       <div class="sgroup">
         <div class="sgroup-title">⚡ Automático</div>
         <div class="srow">
@@ -770,7 +843,6 @@ body[data-mode="long"]  .btn-play { border-color: var(--long);  background: var(
           <button class="tog" id="tog-afocus"></button>
         </div>
       </div>
-
       <button class="btn-save" id="btn-save-cfg">✓ Guardar Configuración</button>
     </div>
   </div>
@@ -804,12 +876,8 @@ body[data-mode="long"]  .btn-play { border-color: var(--long);  background: var(
   </div>
 </div>
 
-<!-- Toast container -->
 <div class="toast-wrap" id="toast-wrap"></div>
 
-<!-- =====================================================================
-     JAVASCRIPT
-     ===================================================================== -->
 <script>
 'use strict';
 
@@ -817,25 +885,25 @@ body[data-mode="long"]  .btn-play { border-color: var(--long);  background: var(
 // ACHIEVEMENTS
 // =====================================================================
 const ACHS = [
-  { id:'first_pomo',     name:'Primera Semilla',     desc:'Completa tu primer pomodoro',              icon:'🌱', xp:50   },
-  { id:'pomo_5_day',     name:'En Llamas',            desc:'5 pomodoros en un día',                   icon:'🔥', xp:75   },
-  { id:'pomo_10_day',    name:'Modo Bestia',          desc:'10 pomodoros en un día',                  icon:'⚡', xp:150  },
-  { id:'pomo_50_total',  name:'Dedicado',             desc:'50 pomodoros en total',                   icon:'🎯', xp:200  },
-  { id:'pomo_100_total', name:'Centurión',            desc:'100 pomodoros en total',                  icon:'💎', xp:500  },
-  { id:'pomo_500_total', name:'Indestructible',       desc:'500 pomodoros en total',                  icon:'🦾', xp:2000 },
-  { id:'hours_1',        name:'Primera Hora',         desc:'Acumula 1 hora de focus',                 icon:'⏱️', xp:100  },
-  { id:'hours_10',       name:'Décima Hora',          desc:'Acumula 10 horas de focus',               icon:'📚', xp:300  },
-  { id:'hours_50',       name:'Maestro del Tiempo',   desc:'50 horas de focus en total',              icon:'🏆', xp:1000 },
-  { id:'hours_100',      name:'Élite',                desc:'100 horas de focus en total',             icon:'👑', xp:3000 },
-  { id:'streak_3',       name:'Racha ×3',             desc:'3 días de estudio seguidos',              icon:'🔗', xp:100  },
-  { id:'streak_7',       name:'Semana Imparable',     desc:'7 días seguidos',                         icon:'🌟', xp:300  },
-  { id:'streak_30',      name:'Leyenda Mensual',      desc:'30 días seguidos',                        icon:'🔮', xp:1000 },
-  { id:'cycle_complete', name:'Ciclo Completo',       desc:'Completa un ciclo de 4 pomodoros',        icon:'🔄', xp:150  },
-  { id:'night_owl',      name:'Búho Nocturno',        desc:'Estudia después de las 11pm',             icon:'🌙', xp:75   },
-  { id:'early_bird',     name:'Madrugador',           desc:'Estudia antes de las 7am',                icon:'🌅', xp:75   },
-  { id:'level_5',        name:'Nivel 5',              desc:'Alcanza el nivel 5',                      icon:'🚀', xp:0    },
-  { id:'level_10',       name:'Nivel 10',             desc:'Alcanza el nivel 10',                     icon:'⭐', xp:0    },
-  { id:'level_25',       name:'Transmutado',          desc:'Alcanza el nivel 25',                     icon:'✨', xp:0    },
+  { id:'first_pomo',     name:'Primera Semilla',   desc:'Completa tu primer pomodoro',         icon:'🌱', xp:50   },
+  { id:'pomo_5_day',     name:'En Llamas',          desc:'5 pomodoros en un día',               icon:'🔥', xp:75   },
+  { id:'pomo_10_day',    name:'Modo Bestia',        desc:'10 pomodoros en un día',              icon:'⚡', xp:150  },
+  { id:'pomo_50_total',  name:'Dedicado',           desc:'50 pomodoros en total',               icon:'🎯', xp:200  },
+  { id:'pomo_100_total', name:'Centurión',          desc:'100 pomodoros en total',              icon:'💎', xp:500  },
+  { id:'pomo_500_total', name:'Indestructible',     desc:'500 pomodoros en total',              icon:'🦾', xp:2000 },
+  { id:'hours_1',        name:'Primera Hora',       desc:'Acumula 1 hora de focus',             icon:'⏱️', xp:100  },
+  { id:'hours_10',       name:'Décima Hora',        desc:'Acumula 10 horas de focus',           icon:'📚', xp:300  },
+  { id:'hours_50',       name:'Maestro del Tiempo', desc:'50 horas de focus en total',          icon:'🏆', xp:1000 },
+  { id:'hours_100',      name:'Élite',              desc:'100 horas de focus en total',         icon:'👑', xp:3000 },
+  { id:'streak_3',       name:'Racha ×3',           desc:'3 días de estudio seguidos',          icon:'🔗', xp:100  },
+  { id:'streak_7',       name:'Semana Imparable',   desc:'7 días seguidos',                     icon:'🌟', xp:300  },
+  { id:'streak_30',      name:'Leyenda Mensual',    desc:'30 días seguidos',                    icon:'🔮', xp:1000 },
+  { id:'cycle_complete', name:'Ciclo Completo',     desc:'Completa un ciclo de 4 pomodoros',    icon:'🔄', xp:150  },
+  { id:'night_owl',      name:'Búho Nocturno',      desc:'Estudia después de las 11pm',         icon:'🌙', xp:75   },
+  { id:'early_bird',     name:'Madrugador',         desc:'Estudia antes de las 7am',            icon:'🌅', xp:75   },
+  { id:'level_5',        name:'Nivel 5',            desc:'Alcanza el nivel 5',                  icon:'🚀', xp:0    },
+  { id:'level_10',       name:'Nivel 10',           desc:'Alcanza el nivel 10',                 icon:'⭐', xp:0    },
+  { id:'level_25',       name:'Transmutado',        desc:'Alcanza el nivel 25',                 icon:'✨', xp:0    },
 ];
 
 // =====================================================================
@@ -853,9 +921,9 @@ function levelFromXP(xp) {
   return lv;
 }
 function xpProgress(xp) {
-  const lv  = levelFromXP(xp);
-  const lo  = totalXPForLevel(lv);
-  const hi  = totalXPForLevel(lv + 1);
+  const lv = levelFromXP(xp);
+  const lo = totalXPForLevel(lv);
+  const hi = totalXPForLevel(lv + 1);
   return { lv, inLv: xp - lo, need: hi - lo, pct: Math.max(0, Math.min(1, (xp - lo) / (hi - lo))) };
 }
 function lvName(lv) {
@@ -883,6 +951,7 @@ const DEF = {
   lastStudyDate: null, streak: 0,
   xp: 0,
   unlocked: [],
+  weekData: {},   // { "YYYY-MM-DD": N pomodoros }
   cfg: { focus:25, short:5, long:15, interval:4, sound:true, abreak:false, afocus:false }
 };
 
@@ -896,19 +965,19 @@ function loadState() {
     if (raw) {
       const p = JSON.parse(raw);
       const today = new Date().toDateString();
-      // daily reset
       if (p.lastStudyDate && p.lastStudyDate !== today) {
         const yest = new Date(); yest.setDate(yest.getDate()-1);
         if (p.lastStudyDate !== yest.toDateString()) p.streak = 0;
         p.todayPomos = 0; p.todayFocusSec = 0;
       }
-      p.status = 'idle';
-      p.mode   = 'focus';
-      p.cfg    = Object.assign({}, DEF.cfg, p.cfg || {});
-      p.timeLeft = p.cfg.focus * 60;
+      p.status    = 'idle';
+      p.mode      = 'focus';
+      p.cfg       = Object.assign({}, DEF.cfg, p.cfg || {});
+      p.timeLeft  = p.cfg.focus * 60;
       p.totalTime = p.cfg.focus * 60;
-      p.unlocked  = p.unlocked || [];
-      p.cyclePos  = p.cyclePos || 0;
+      p.unlocked  = p.unlocked  || [];
+      p.cyclePos  = p.cyclePos  || 0;
+      p.weekData  = p.weekData  || {};
       return p;
     }
   } catch(e){}
@@ -950,22 +1019,18 @@ function sfxLevelUp()  { [261,329,392,523,659,784].forEach((f,i)=>setTimeout(()=
 // =====================================================================
 // TIMER
 // =====================================================================
-const CIRC = 2 * Math.PI * 120; // 753.98
+const CIRC = 2 * Math.PI * 120;
 
 function setMode(mode, autoStart=false) {
   stop();
   S.mode = mode;
   document.body.dataset.mode = mode;
   document.querySelectorAll('.mode-tab').forEach(t => t.classList.toggle('active', t.dataset.mode === mode));
-
   const mins = mode==='focus' ? S.cfg.focus : mode==='short' ? S.cfg.short : S.cfg.long;
   S.timeLeft = mins*60; S.totalTime = mins*60; S.status = 'idle';
   document.getElementById('timer-mode-lbl').textContent =
     mode==='focus' ? 'FOCUS' : mode==='short' ? 'DESCANSO' : 'DESCANSO LARGO';
-
-  refreshDisplay();
-  refreshRing();
-  refreshPlayBtn();
+  refreshDisplay(); refreshRing(); refreshPlayBtn();
   if (autoStart) startTimer();
 }
 
@@ -973,28 +1038,21 @@ function startTimer() {
   if (S.status==='running') return;
   if (actx && actx.state==='suspended') actx.resume();
   S.status = 'running';
-  tStart        = Date.now();
-  tStartLeft    = S.timeLeft;
+  tStart         = Date.now();
+  tStartLeft     = S.timeLeft;
   tStartFocusSec = S.totalFocusSec;
   tStartTodaySec = S.todayFocusSec;
-
   document.getElementById('ring-wrap').classList.add('running');
   refreshPlayBtn();
-
   ticker = setInterval(() => {
     const elapsed = Math.round((Date.now() - tStart) / 1000);
     const newLeft = Math.max(0, tStartLeft - elapsed);
-
     if (S.mode === 'focus') {
       S.totalFocusSec = tStartFocusSec + elapsed;
       S.todayFocusSec = tStartTodaySec + elapsed;
     }
-
     S.timeLeft = newLeft;
-    refreshDisplay();
-    refreshRing();
-    refreshStats();
-
+    refreshDisplay(); refreshRing(); refreshStats();
     if (elapsed % 60 === 0) save();
     if (newLeft === 0) onComplete();
   }, 400);
@@ -1004,12 +1062,16 @@ function stop() {
   clearInterval(ticker); ticker = null;
   document.getElementById('ring-wrap').classList.remove('running');
   S.status = (S.status==='running') ? 'paused' : S.status;
-  refreshPlayBtn();
-  save();
+  refreshPlayBtn(); save();
 }
 
 function resetTimer() { stop(); setMode(S.mode); }
 function skipTimer()  { stop(); onComplete(); }
+
+function todayKey() {
+  const d = new Date();
+  return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+}
 
 function onComplete() {
   clearInterval(ticker); ticker = null;
@@ -1023,6 +1085,10 @@ function onComplete() {
     S.todayPomos++;
     S.cyclePos++;
 
+    // Registrar en weekData
+    const key = todayKey();
+    S.weekData[key] = (S.weekData[key] || 0) + 1;
+
     const today = new Date().toDateString();
     if (S.lastStudyDate !== today) {
       const yest = new Date(); yest.setDate(yest.getDate()-1);
@@ -1032,6 +1098,7 @@ function onComplete() {
 
     sfxComplete();
     addXP(50, `+50 XP — Pomodoro completado 🍅`);
+    refreshWeekChart();
 
     const iv = S.cfg.interval;
     if (S.cyclePos >= iv) {
@@ -1046,16 +1113,13 @@ function onComplete() {
     }
 
     checkAllAchs();
-
   } else {
     sfxBreakEnd();
     toast('t-done','¡BREAK TERMINADO!','Hora de otro pomodoro 🎯');
     setTimeout(()=>setMode('focus', S.cfg.afocus), S.cfg.afocus ? 1800 : 1000);
   }
 
-  refreshDots();
-  refreshStats();
-  save();
+  refreshDots(); refreshStats(); save();
 }
 
 // =====================================================================
@@ -1064,11 +1128,9 @@ function onComplete() {
 function addXP(amt, msg) {
   const lvBefore = levelFromXP(S.xp);
   S.xp += amt;
-  const lvAfter  = levelFromXP(S.xp);
-
+  const lvAfter = levelFromXP(S.xp);
   sfxXP();
   toast('t-xp','XP GANADO', msg);
-
   if (lvAfter > lvBefore) {
     setTimeout(()=>{
       sfxLevelUp(); spawnParticles();
@@ -1078,7 +1140,6 @@ function addXP(amt, msg) {
       if (lvAfter>=25) checkAch('level_25');
     }, 900);
   }
-
   refreshXP(); save();
 }
 
@@ -1096,7 +1157,6 @@ function checkAch(id) {
   }, 2600);
   save();
 }
-
 function checkAllAchs() {
   const h = S.totalFocusSec/3600;
   const hr = new Date().getHours();
@@ -1126,27 +1186,22 @@ function refreshDisplay() {
   document.getElementById('timer-digits').textContent =
     `${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
 }
-
 function refreshRing() {
   const pct = S.timeLeft / S.totalTime;
   document.getElementById('ring-prog').style.strokeDashoffset = CIRC * (1-pct);
 }
-
 function refreshPlayBtn() {
   document.getElementById('btn-play').textContent = S.status==='running' ? '⏸' : '▶';
 }
-
 function refreshDots() {
   const wrap = document.getElementById('cycle-dots');
   wrap.innerHTML = '';
-  const iv = S.cfg.interval;
-  for (let i=0; i<iv; i++) {
+  for (let i=0; i<S.cfg.interval; i++) {
     const d = document.createElement('div');
     d.className = 'c-dot' + (i < S.cyclePos ? ' done' : '');
     wrap.appendChild(d);
   }
 }
-
 function refreshXP() {
   const { lv, inLv, need, pct } = xpProgress(S.xp);
   document.getElementById('lvl-badge').textContent = `LVL ${lv}`;
@@ -1154,7 +1209,6 @@ function refreshXP() {
   document.getElementById('xp-count').textContent  = `${inLv} / ${need} XP`;
   document.getElementById('xp-fill').style.width   = `${pct*100}%`;
 }
-
 function refreshStats() {
   const todH = S.todayFocusSec/3600;
   document.getElementById('s-today-p').textContent = S.todayPomos;
@@ -1163,11 +1217,43 @@ function refreshStats() {
   document.getElementById('s-total').textContent   = S.totalPomos;
 }
 
+// ---- GRÁFICA SEMANAL ----
+const DAYS_ES = ['Dom','Lun','Mar','Mié','Jue','Vie','Sáb'];
+function refreshWeekChart() {
+  const wrap = document.getElementById('week-bars');
+  if (!wrap) return;
+
+  // Construir array de los últimos 7 días
+  const days = [];
+  for (let i=6; i>=0; i--) {
+    const d = new Date();
+    d.setDate(d.getDate() - i);
+    const key = `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+    days.push({ key, label: DAYS_ES[d.getDay()], isToday: i===0 });
+  }
+
+  const values = days.map(d => S.weekData[d.key] || 0);
+  const maxVal = Math.max(...values, 1);
+  const weekTotal = values.reduce((a,b)=>a+b, 0);
+  document.getElementById('week-total').textContent = `${weekTotal} pomodoro${weekTotal!==1?'s':''} esta semana`;
+
+  wrap.innerHTML = days.map((d,i) => {
+    const pct = values[i] / maxVal * 100;
+    return `
+      <div class="week-bar-wrap">
+        <div class="week-bar-track">
+          <div class="week-bar-fill${d.isToday?' today':''}" style="height:${pct}%"></div>
+        </div>
+        <div class="week-bar-label${d.isToday?' today':''}">${d.label}</div>
+      </div>`;
+  }).join('');
+}
+
 function initAll() {
   document.body.dataset.mode = S.mode;
   document.querySelectorAll('.mode-tab').forEach(t=>t.classList.toggle('active',t.dataset.mode===S.mode));
   refreshDisplay(); refreshRing(); refreshPlayBtn();
-  refreshXP(); refreshStats(); refreshDots();
+  refreshXP(); refreshStats(); refreshDots(); refreshWeekChart();
 }
 
 // =====================================================================
@@ -1203,7 +1289,7 @@ function spawnParticles() {
 }
 
 // =====================================================================
-// MODAL RENDERS
+// MODALS
 // =====================================================================
 function renderAchs() {
   document.getElementById('ach-unlocked').textContent = S.unlocked.length;
@@ -1223,7 +1309,7 @@ function renderAchs() {
 }
 
 function renderStatsModal() {
-  const h = (S.totalFocusSec/3600).toFixed(1);
+  const h  = (S.totalFocusSec/3600).toFixed(1);
   const th = (S.todayFocusSec/3600).toFixed(1);
   document.getElementById('stats-mbody').innerHTML = `
     <div class="stats-grid-modal">
@@ -1232,6 +1318,17 @@ function renderStatsModal() {
       <div class="stat-cell"><div class="stat-cell-val" style="color:var(--xp)">${S.streak}🔥</div><div class="stat-cell-label">Racha</div></div>
       <div class="stat-cell"><div class="stat-cell-val" style="color:var(--gold)">${S.unlocked.length}/${ACHS.length}</div><div class="stat-cell-label">Logros</div></div>
     </div>
+
+    <!-- ANUNCIO 2 — dentro del modal de stats -->
+    <div class="ad-modal">
+      <ins class="adsbygoogle"
+           style="display:block"
+           data-ad-client="ca-pub-9027862604686644"
+           data-ad-slot="auto"
+           data-ad-format="auto"
+           data-full-width-responsive="true"></ins>
+    </div>
+
     <div style="background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:16px;margin-bottom:16px">
       <div class="sgroup-title" style="margin-bottom:12px">HOY</div>
       <div class="stat-detail-row"><span>Pomodoros completados</span><span>${S.todayPomos}</span></div>
@@ -1244,6 +1341,9 @@ function renderStatsModal() {
         🗑️ Resetear todos los datos
       </button>
     </div>`;
+
+  // Activar el anuncio del modal
+  try { (adsbygoogle = window.adsbygoogle || []).push({}); } catch(e){}
 }
 
 function doReset() {
@@ -1251,8 +1351,7 @@ function doReset() {
     localStorage.removeItem('ff_v2');
     S = JSON.parse(JSON.stringify(DEF));
     S.cfg = Object.assign({},DEF.cfg);
-    initAll();
-    closeAll();
+    initAll(); closeAll();
     toast('t-done','RESET COMPLETO','Empezando desde cero 🌱');
   }
 }
@@ -1281,27 +1380,20 @@ document.querySelectorAll('.mode-tab').forEach(t=>{
   t.addEventListener('click',()=>{ if(S.status==='running')stop(); setMode(t.dataset.mode); });
 });
 
-// Open modals
 document.getElementById('btn-stats').addEventListener('click',()=>{ renderStatsModal(); openOv('ov-stats'); });
 document.getElementById('btn-achs').addEventListener('click', ()=>{ renderAchs();       openOv('ov-achs');  });
 document.getElementById('btn-cfg').addEventListener('click',  ()=>{ loadCfgUI();        openOv('ov-cfg');   });
 
-// Close buttons
 document.querySelectorAll('.mclose').forEach(b=>{
   b.addEventListener('click',()=>closeOv(b.dataset.ov));
 });
-
-// Close on backdrop
 document.querySelectorAll('.overlay').forEach(ov=>{
   ov.addEventListener('click',e=>{ if(e.target===ov) closeOv(ov.id); });
 });
-
-// Toggles
 document.querySelectorAll('.tog').forEach(t=>{
   t.addEventListener('click',()=>t.classList.toggle('on'));
 });
 
-// Save settings
 document.getElementById('btn-save-cfg').addEventListener('click',()=>{
   S.cfg.focus    = Math.max(1, parseInt(document.getElementById('cfg-focus').value)    || 25);
   S.cfg.short    = Math.max(1, parseInt(document.getElementById('cfg-short').value)    || 5);
@@ -1318,25 +1410,20 @@ function openOv(id)  { document.getElementById(id).classList.add('open'); }
 function closeOv(id) { document.getElementById(id).classList.remove('open'); }
 function closeAll()  { document.querySelectorAll('.overlay').forEach(o=>o.classList.remove('open')); }
 
-// Keyboard shortcuts
 document.addEventListener('keydown', e => {
   if (e.target.tagName==='INPUT') return;
-  if (e.code==='Space') {
-    e.preventDefault();
-    if (S.status==='running') stop(); else startTimer();
-  }
+  if (e.code==='Space') { e.preventDefault(); if (S.status==='running') stop(); else startTimer(); }
   if (e.code==='KeyR') resetTimer();
   if (e.code==='Escape') closeAll();
 });
 
-// Page title sync
 setInterval(()=>{
   if (S.status==='running') {
     const m=String(Math.floor(S.timeLeft/60)).padStart(2,'0');
     const s=String(S.timeLeft%60).padStart(2,'0');
-    document.title=`${m}:${s} — FocusFlow`;
+    document.title=`${m}:${s} — PomodoroXP`;
   } else {
-    document.title='FocusFlow — Motor de Estudio';
+    document.title='PomodoroXP — Motor de Estudio';
   }
 }, 1000);
 
@@ -1345,11 +1432,8 @@ setInterval(()=>{
 // =====================================================================
 initAll();
 
-console.log('%cFOCUSFLOW v1.0','font-size:20px;font-weight:900;color:#00d4ff;font-family:monospace');
-console.log('%cMotor de Estudio — Listo para arrancar ⚡','color:#5c78a8;font-family:monospace');
+console.log('%cPOMODOROXP v1.1','font-size:20px;font-weight:900;color:#00d4ff;font-family:monospace');
+console.log('%cMotor de Estudio — AdSense + Gráfica semanal ⚡','color:#5c78a8;font-family:monospace');
 </script>
 </body>
 </html>
-
-<a href="privacy.html">Política de privacidad</a>
-<a href="cookies.html">Cookies</a>
