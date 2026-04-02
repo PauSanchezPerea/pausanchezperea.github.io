@@ -1,3 +1,474 @@
-<h1>Política de Cookies</h1>
-<p>Este sitio web utiliza cookies para mejorar la experiencia del usuario.</p>
-<p>Al continuar navegando, aceptas el uso de cookies.</p>
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9027862604686644" crossorigin="anonymous"></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Política de Cookies — PomodoroXP</title>
+  <meta name="description" content="Política de cookies de PomodoroXP. Información detallada sobre las cookies utilizadas, su finalidad y cómo gestionarlas.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg:      #04060d;
+      --bg2:     #070c18;
+      --bg3:     #0c1425;
+      --card:    rgba(8,14,28,0.85);
+      --border:  rgba(0,180,255,0.10);
+      --focus:   #00d4ff;
+      --focus-d: rgba(0,212,255,0.12);
+      --text:    #dce8f8;
+      --text-dim:#5c78a8;
+      --text-faint:#2a3a5a;
+      --xp:      #ff7043;
+      --short:   #00ff98;
+      --radius:  14px;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Outfit', sans-serif;
+      min-height: 100vh;
+      line-height: 1.7;
+    }
+    .bg-grid {
+      position: fixed; inset: 0;
+      background-image:
+        linear-gradient(rgba(0,212,255,0.022) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0,212,255,0.022) 1px, transparent 1px);
+      background-size: 44px 44px;
+      pointer-events: none; z-index: 0;
+    }
+    .topbar {
+      position: sticky; top: 0; z-index: 100;
+      background: rgba(4,6,13,0.92);
+      backdrop-filter: blur(14px);
+      border-bottom: 1px solid var(--border);
+      padding: 14px 24px;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .topbar-logo {
+      font-family: 'Orbitron', monospace;
+      font-size: 14px; font-weight: 900;
+      letter-spacing: 0.12em;
+      background: linear-gradient(135deg, var(--focus) 0%, #fff 70%);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      background-clip: text; text-decoration: none;
+    }
+    .topbar-back {
+      font-size: 12px; color: var(--text-dim);
+      text-decoration: none; transition: color 0.2s;
+    }
+    .topbar-back:hover { color: var(--focus); }
+    .page-wrap {
+      position: relative; z-index: 1;
+      max-width: 760px; margin: 0 auto;
+      padding: 48px 24px 80px;
+    }
+    .page-hero { margin-bottom: 40px; }
+    .page-tag {
+      font-size: 10px; color: var(--focus);
+      text-transform: uppercase; letter-spacing: 0.26em;
+      font-weight: 700; margin-bottom: 12px;
+    }
+    .page-title {
+      font-family: 'Orbitron', monospace;
+      font-size: clamp(22px, 4vw, 32px);
+      font-weight: 900; color: var(--text);
+      margin-bottom: 14px; line-height: 1.3;
+    }
+    .page-meta { font-size: 12px; color: var(--text-dim); display: flex; gap: 20px; flex-wrap: wrap; }
+    .toc {
+      background: var(--card); border: 1px solid var(--border);
+      border-radius: var(--radius); padding: 20px 24px;
+      margin-bottom: 36px; backdrop-filter: blur(10px);
+    }
+    .toc-title {
+      font-size: 9px; color: var(--focus);
+      text-transform: uppercase; letter-spacing: 0.22em;
+      font-weight: 700; margin-bottom: 14px;
+    }
+    .toc ol { padding-left: 18px; }
+    .toc li { margin-bottom: 6px; }
+    .toc a { font-size: 13px; color: var(--text-dim); text-decoration: none; transition: color 0.2s; }
+    .toc a:hover { color: var(--focus); }
+    .legal-section {
+      background: var(--card); border: 1px solid var(--border);
+      border-radius: var(--radius); padding: 28px;
+      margin-bottom: 20px; backdrop-filter: blur(10px);
+      scroll-margin-top: 80px;
+    }
+    .sec-num {
+      font-family: 'Orbitron', monospace;
+      font-size: 9px; color: var(--focus);
+      letter-spacing: 0.2em; font-weight: 700; margin-bottom: 8px;
+    }
+    .sec-title {
+      font-family: 'Orbitron', monospace;
+      font-size: 15px; font-weight: 700;
+      color: var(--text); margin-bottom: 16px; line-height: 1.4;
+    }
+    .sec-p { font-size: 14px; color: var(--text-dim); margin-bottom: 12px; line-height: 1.75; }
+    .sec-p:last-child { margin-bottom: 0; }
+    .sec-p strong { color: var(--text); font-weight: 600; }
+    .sec-p a { color: var(--focus); text-decoration: none; }
+    .sec-p a:hover { text-decoration: underline; }
+    .sec-ul { padding-left: 20px; margin: 10px 0 12px; }
+    .sec-ul li { font-size: 14px; color: var(--text-dim); margin-bottom: 6px; line-height: 1.65; }
+    .sec-ul li strong { color: var(--text); }
+    .data-table { width: 100%; border-collapse: collapse; margin: 16px 0; font-size: 13px; }
+    .data-table th {
+      background: var(--bg2); color: var(--focus);
+      font-size: 9px; text-transform: uppercase;
+      letter-spacing: 0.16em; font-weight: 700;
+      padding: 10px 14px; text-align: left; border: 1px solid var(--border);
+    }
+    .data-table td { padding: 10px 14px; border: 1px solid var(--border); color: var(--text-dim); vertical-align: top; }
+    .data-table tr:nth-child(even) td { background: rgba(0,212,255,0.02); }
+    .info-box {
+      background: rgba(0,212,255,0.05); border: 1px solid rgba(0,212,255,0.18);
+      border-radius: 10px; padding: 14px 16px; margin: 14px 0;
+      font-size: 13px; color: var(--text-dim); line-height: 1.6;
+    }
+    .info-box strong { color: var(--focus); }
+    .warn-box {
+      background: rgba(255,112,67,0.06); border: 1px solid rgba(255,112,67,0.2);
+      border-radius: 10px; padding: 14px 16px; margin: 14px 0;
+      font-size: 13px; color: var(--text-dim); line-height: 1.6;
+    }
+    .warn-box strong { color: var(--xp); }
+    .ok-box {
+      background: rgba(0,255,152,0.05); border: 1px solid rgba(0,255,152,0.18);
+      border-radius: 10px; padding: 14px 16px; margin: 14px 0;
+      font-size: 13px; color: var(--text-dim); line-height: 1.6;
+    }
+    .ok-box strong { color: var(--short); }
+
+    /* Cookie type badges */
+    .cookie-card {
+      background: var(--bg2); border: 1px solid var(--border);
+      border-radius: 11px; padding: 16px 18px; margin-bottom: 12px;
+    }
+    .cookie-header { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; flex-wrap: wrap; }
+    .cookie-name { font-size: 14px; font-weight: 700; color: var(--text); }
+    .badge {
+      font-size: 9px; font-weight: 700; letter-spacing: 0.14em;
+      text-transform: uppercase; padding: 3px 8px; border-radius: 20px;
+    }
+    .badge-tech   { background: rgba(0,212,255,0.12); color: var(--focus); border: 1px solid rgba(0,212,255,0.2); }
+    .badge-ads    { background: rgba(255,112,67,0.12); color: var(--xp);   border: 1px solid rgba(255,112,67,0.2); }
+    .badge-stats  { background: rgba(176,106,255,0.12); color: #b06aff;    border: 1px solid rgba(176,106,255,0.2); }
+    .badge-func   { background: rgba(0,255,152,0.10); color: var(--short); border: 1px solid rgba(0,255,152,0.2); }
+    .cookie-desc  { font-size: 13px; color: var(--text-dim); line-height: 1.6; }
+
+    /* Browser guides */
+    .browser-grid { display: grid; grid-template-columns: repeat(2,1fr); gap: 10px; margin-top: 14px; }
+    .browser-card {
+      background: var(--bg2); border: 1px solid var(--border);
+      border-radius: 10px; padding: 14px;
+    }
+    .browser-name { font-size: 13px; font-weight: 700; color: var(--text); margin-bottom: 6px; }
+    .browser-steps { font-size: 12px; color: var(--text-dim); line-height: 1.7; }
+
+    .ad-legal {
+      width: 100%; min-height: 90px;
+      background: rgba(0,212,255,0.02);
+      border: 1px dashed rgba(0,212,255,0.1);
+      border-radius: var(--radius); margin: 28px 0; overflow: hidden;
+    }
+    .legal-footer { text-align: center; padding-top: 36px; border-top: 1px solid var(--border); margin-top: 10px; }
+    .legal-footer a { color: var(--text-faint); font-size: 11px; text-decoration: none; margin: 0 10px; transition: color 0.2s; }
+    .legal-footer a:hover { color: var(--text-dim); }
+    .legal-footer p { font-size: 11px; color: var(--text-faint); margin-top: 10px; }
+    ::-webkit-scrollbar { width: 4px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+    @media (max-width: 560px) {
+      .page-wrap { padding: 32px 16px 60px; }
+      .legal-section { padding: 20px 16px; }
+      .data-table { font-size: 12px; }
+      .data-table th, .data-table td { padding: 8px 10px; }
+      .browser-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+<div class="bg-grid"></div>
+
+<nav class="topbar">
+  <a href="index.html" class="topbar-logo">🍅 POMODOROXP</a>
+  <a href="index.html" class="topbar-back">← Volver a la app</a>
+</nav>
+
+<div class="page-wrap">
+
+  <div class="page-hero">
+    <div class="page-tag">Legal · Cookies</div>
+    <h1 class="page-title">Política de Cookies</h1>
+    <div class="page-meta">
+      <span>📅 Última actualización: abril 2026</span>
+      <span>🌐 Aplicable a: pausanchezperea.github.io</span>
+    </div>
+  </div>
+
+  <div class="toc">
+    <div class="toc-title">Índice de contenidos</div>
+    <ol>
+      <li><a href="#c1">¿Qué son las cookies?</a></li>
+      <li><a href="#c2">Tipos de cookies que utilizamos</a></li>
+      <li><a href="#c3">Cookies propias</a></li>
+      <li><a href="#c4">Cookies de terceros — Google AdSense</a></li>
+      <li><a href="#c5">Cookies de terceros — Google Firebase y Analytics</a></li>
+      <li><a href="#c6">Tabla resumen de todas las cookies</a></li>
+      <li><a href="#c7">Base legal para el uso de cookies</a></li>
+      <li><a href="#c8">Cómo gestionar y desactivar las cookies</a></li>
+      <li><a href="#c9">Actualizaciones de esta política</a></li>
+      <li><a href="#c10">Contacto</a></li>
+    </ol>
+  </div>
+
+  <div class="info-box">
+    <strong>En resumen:</strong> PomodoroXP utiliza cookies técnicas propias (necesarias para el funcionamiento), cookies de Google Firebase (autenticación de usuarios), cookies de Google Analytics (estadísticas anonimizadas) y cookies de Google AdSense (publicidad personalizada). Puedes gestionar tus preferencias de cookies desde la configuración de tu navegador.
+  </div>
+
+  <!-- 1 -->
+  <div class="legal-section" id="c1">
+    <div class="sec-num">Sección 01</div>
+    <h2 class="sec-title">¿Qué son las Cookies?</h2>
+    <p class="sec-p">Las cookies son pequeños archivos de texto que los sitios web almacenan en el dispositivo del usuario cuando este los visita. Sirven para que el sitio web recuerde información sobre tu visita, como tu idioma preferido y otras opciones, lo que puede facilitar tu próxima visita y hacer que el sitio te resulte más útil.</p>
+    <p class="sec-p">Además de las cookies, esta aplicación también puede utilizar tecnologías similares como <strong>localStorage</strong> (almacenamiento local del navegador), <strong>sessionStorage</strong> o <strong>IndexedDB</strong> para el almacenamiento de datos en el lado del cliente. Estas tecnologías funcionan de manera similar a las cookies pero con algunas diferencias técnicas.</p>
+    <p class="sec-p">Las cookies pueden clasificarse según:</p>
+    <ul class="sec-ul">
+      <li><strong>Su duración:</strong> Cookies de sesión (se eliminan al cerrar el navegador) o cookies persistentes (permanecen durante un periodo determinado).</li>
+      <li><strong>Su procedencia:</strong> Cookies propias (instaladas por este sitio web) o cookies de terceros (instaladas por dominios externos).</li>
+      <li><strong>Su finalidad:</strong> Técnicas/necesarias, funcionales, analíticas o publicitarias.</li>
+    </ul>
+  </div>
+
+  <!-- 2 -->
+  <div class="legal-section" id="c2">
+    <div class="sec-num">Sección 02</div>
+    <h2 class="sec-title">Tipos de Cookies que Utilizamos</h2>
+    <p class="sec-p">En PomodoroXP utilizamos cuatro categorías de cookies y tecnologías de almacenamiento:</p>
+
+    <div class="cookie-card">
+      <div class="cookie-header">
+        <span class="cookie-name">🔧 Técnicas / Necesarias</span>
+        <span class="badge badge-tech">Siempre activas</span>
+      </div>
+      <p class="cookie-desc">Son imprescindibles para el funcionamiento básico de la aplicación. Sin ellas, la app no puede guardar tu progreso, configuración o estado de sesión. No requieren consentimiento previo según la normativa europea.</p>
+    </div>
+
+    <div class="cookie-card">
+      <div class="cookie-header">
+        <span class="cookie-name">⚙️ Funcionales</span>
+        <span class="badge badge-func">Opt-in</span>
+      </div>
+      <p class="cookie-desc">Permiten recordar las preferencias del usuario (como la configuración del temporizador) y mantener la sesión iniciada entre visitas. Su uso requiere consentimiento cuando no son estrictamente necesarias.</p>
+    </div>
+
+    <div class="cookie-card">
+      <div class="cookie-header">
+        <span class="cookie-name">📊 Analíticas</span>
+        <span class="badge badge-stats">Opt-in</span>
+      </div>
+      <p class="cookie-desc">Recopilan información anonimizada sobre cómo los usuarios interactúan con la aplicación. Nos ayudan a entender qué funciones se usan más y a mejorar la experiencia. No permiten identificar a usuarios individuales.</p>
+    </div>
+
+    <div class="cookie-card">
+      <div class="cookie-header">
+        <span class="cookie-name">📢 Publicitarias</span>
+        <span class="badge badge-ads">Opt-in</span>
+      </div>
+      <p class="cookie-desc">Son instaladas por Google AdSense para mostrar anuncios relevantes basados en tus intereses. Pueden rastrear tu actividad en múltiples sitios web para crear un perfil de intereses. Requieren consentimiento explícito.</p>
+    </div>
+  </div>
+
+  <!-- 3 -->
+  <div class="legal-section" id="c3">
+    <div class="sec-num">Sección 03</div>
+    <h2 class="sec-title">Cookies Propias</h2>
+    <p class="sec-p">PomodoroXP no instala cookies propias en sentido estricto. En cambio, utilizamos el <strong>localStorage</strong> del navegador para almacenar datos de forma local:</p>
+    <table class="data-table">
+      <thead>
+        <tr><th>Clave</th><th>Tecnología</th><th>Contenido</th><th>Duración</th></tr>
+      </thead>
+      <tbody>
+        <tr><td><code>ff_v2</code></td><td>localStorage</td><td>Estado completo de la app: pomodoros, XP, logros, configuración, datos semanales</td><td>Indefinida (hasta borrado manual)</td></tr>
+      </tbody>
+    </table>
+    <div class="ok-box">
+      <strong>Importante:</strong> El contenido de <code>ff_v2</code> nunca abandona tu dispositivo a menos que decidas crear una cuenta y sincronizar tus datos con Firebase. No es una cookie y no puede ser leída por terceros.
+    </div>
+  </div>
+
+  <!-- 4 -->
+  <div class="legal-section" id="c4">
+    <div class="sec-num">Sección 04</div>
+    <h2 class="sec-title">Cookies de Terceros — Google AdSense</h2>
+    <p class="sec-p">Google AdSense (servicio de publicidad de Google LLC) instala cookies en tu dispositivo para ofrecer publicidad personalizada. El identificador de editor es <strong>ca-pub-9027862604686644</strong>.</p>
+    <p class="sec-p">Las principales cookies que puede instalar AdSense son:</p>
+
+    <div class="cookie-card">
+      <div class="cookie-header"><span class="cookie-name">IDE</span><span class="badge badge-ads">Publicitaria</span></div>
+      <p class="cookie-desc"><strong>Dominio:</strong> .doubleclick.net · <strong>Duración:</strong> 13 meses · Utilizada por Google DoubleClick para registrar y reportar las acciones del usuario después de ver o hacer clic en un anuncio. Se usa para medir la eficacia de los anuncios y para mostrar anuncios relevantes.</p>
+    </div>
+
+    <div class="cookie-card">
+      <div class="cookie-header"><span class="cookie-name">__gads / __gpi</span><span class="badge badge-ads">Publicitaria</span></div>
+      <p class="cookie-desc"><strong>Dominio:</strong> pausanchezperea.github.io · <strong>Duración:</strong> 13 meses · Estas cookies están relacionadas con Google AdSense y se utilizan para mejorar la publicidad. Registran información sobre cómo los usuarios utilizan el sitio y qué anuncios han visto.</p>
+    </div>
+
+    <div class="cookie-card">
+      <div class="cookie-header"><span class="cookie-name">NID / DSID</span><span class="badge badge-ads">Publicitaria</span></div>
+      <p class="cookie-desc"><strong>Dominio:</strong> .google.com · <strong>Duración:</strong> 6 meses · Utilizadas para recordar las preferencias del usuario y personalizar los anuncios en los servicios de Google.</p>
+    </div>
+
+    <div class="warn-box">
+      <strong>Opt-out publicitario:</strong> Puedes desactivar la publicidad personalizada de Google en <a href="https://www.google.com/settings/ads" target="_blank" rel="noopener" style="color:var(--xp)">google.com/settings/ads</a>. También puedes visitar <a href="https://www.youronlinechoices.com/es/" target="_blank" rel="noopener" style="color:var(--xp)">youronlinechoices.com</a> para gestionar las preferencias publicitarias de múltiples empresas.
+    </div>
+  </div>
+
+  <!-- AD -->
+  <div class="ad-legal">
+    <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-9027862604686644" data-ad-slot="auto" data-ad-format="auto" data-full-width-responsive="true"></ins>
+    <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+  </div>
+
+  <!-- 5 -->
+  <div class="legal-section" id="c5">
+    <div class="sec-num">Sección 05</div>
+    <h2 class="sec-title">Cookies de Terceros — Google Firebase y Analytics</h2>
+    <p class="sec-p">Los servicios de Google Firebase utilizados en PomodoroXP pueden instalar las siguientes cookies y tecnologías de almacenamiento:</p>
+
+    <div class="cookie-card">
+      <div class="cookie-header"><span class="cookie-name">firebase:authUser</span><span class="badge badge-func">Funcional</span></div>
+      <p class="cookie-desc"><strong>Tecnología:</strong> localStorage · <strong>Duración:</strong> Hasta cierre de sesión · Almacena el token de autenticación del usuario registrado para mantener la sesión activa entre visitas sin necesidad de volver a introducir credenciales.</p>
+    </div>
+
+    <div class="cookie-card">
+      <div class="cookie-header"><span class="cookie-name">_ga / _ga_XXXXXXX</span><span class="badge badge-stats">Analítica</span></div>
+      <p class="cookie-desc"><strong>Dominio:</strong> pausanchezperea.github.io · <strong>Duración:</strong> 2 años / 13 meses · Cookies de Google Analytics (integrado vía Firebase). Se utilizan para distinguir usuarios únicos y enviar datos sobre sesiones a Google Analytics. Los datos son anonimizados.</p>
+    </div>
+
+    <div class="cookie-card">
+      <div class="cookie-header"><span class="cookie-name">_gid</span><span class="badge badge-stats">Analítica</span></div>
+      <p class="cookie-desc"><strong>Dominio:</strong> pausanchezperea.github.io · <strong>Duración:</strong> 24 horas · Utilizada por Google Analytics para distinguir usuarios. Se actualiza en cada sesión.</p>
+    </div>
+
+    <div class="cookie-card">
+      <div class="cookie-header"><span class="cookie-name">_gat</span><span class="badge badge-stats">Analítica</span></div>
+      <p class="cookie-desc"><strong>Dominio:</strong> pausanchezperea.github.io · <strong>Duración:</strong> 1 minuto · Utilizada para limitar la tasa de solicitudes a Google Analytics (throttling). No recopila datos personales.</p>
+    </div>
+  </div>
+
+  <!-- 6 -->
+  <div class="legal-section" id="c6">
+    <div class="sec-num">Sección 06</div>
+    <h2 class="sec-title">Tabla Resumen de Todas las Cookies</h2>
+    <table class="data-table">
+      <thead>
+        <tr><th>Nombre</th><th>Tipo</th><th>Proveedor</th><th>Finalidad</th><th>Duración</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>ff_v2</td><td>localStorage (propia)</td><td>PomodoroXP</td><td>Guardar progreso local</td><td>Indefinida</td></tr>
+        <tr><td>firebase:authUser</td><td>localStorage (funcional)</td><td>Google Firebase</td><td>Mantener sesión</td><td>Hasta logout</td></tr>
+        <tr><td>_ga</td><td>Cookie analítica</td><td>Google Analytics</td><td>Identificar usuarios únicos</td><td>2 años</td></tr>
+        <tr><td>_ga_*</td><td>Cookie analítica</td><td>Google Analytics</td><td>Sesiones de Analytics</td><td>13 meses</td></tr>
+        <tr><td>_gid</td><td>Cookie analítica</td><td>Google Analytics</td><td>Distinguir usuarios</td><td>24 horas</td></tr>
+        <tr><td>_gat</td><td>Cookie analítica</td><td>Google Analytics</td><td>Limitar solicitudes</td><td>1 minuto</td></tr>
+        <tr><td>IDE</td><td>Cookie publicitaria</td><td>Google AdSense</td><td>Publicidad personalizada</td><td>13 meses</td></tr>
+        <tr><td>__gads</td><td>Cookie publicitaria</td><td>Google AdSense</td><td>Seguimiento de anuncios</td><td>13 meses</td></tr>
+        <tr><td>__gpi</td><td>Cookie publicitaria</td><td>Google AdSense</td><td>Rendimiento de anuncios</td><td>13 meses</td></tr>
+        <tr><td>NID</td><td>Cookie publicitaria</td><td>Google</td><td>Personalización de anuncios</td><td>6 meses</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- 7 -->
+  <div class="legal-section" id="c7">
+    <div class="sec-num">Sección 07</div>
+    <h2 class="sec-title">Base Legal para el Uso de Cookies</h2>
+    <p class="sec-p">El uso de cookies en la Unión Europea está regulado por la <strong>Directiva ePrivacy (2002/58/CE)</strong>, modificada por la Directiva 2009/136/CE, y en España por el <strong>artículo 22.2 de la LSSI-CE</strong>. Adicionalmente, el RGPD es aplicable cuando las cookies implican el tratamiento de datos personales.</p>
+    <ul class="sec-ul">
+      <li><strong>Cookies técnicas/necesarias:</strong> No requieren consentimiento previo. Base legal: interés legítimo y necesidad contractual.</li>
+      <li><strong>Cookies funcionales:</strong> Requieren consentimiento cuando no son estrictamente necesarias. Base legal: consentimiento (Art. 6.1.a RGPD).</li>
+      <li><strong>Cookies analíticas:</strong> Requieren consentimiento. Base legal: consentimiento o interés legítimo cuando los datos son completamente anonimizados.</li>
+      <li><strong>Cookies publicitarias:</strong> Requieren consentimiento explícito previo. Base legal: consentimiento (Art. 6.1.a RGPD).</li>
+    </ul>
+  </div>
+
+  <!-- 8 -->
+  <div class="legal-section" id="c8">
+    <div class="sec-num">Sección 08</div>
+    <h2 class="sec-title">Cómo Gestionar y Desactivar las Cookies</h2>
+    <p class="sec-p">Puedes controlar y gestionar las cookies a través de diferentes métodos:</p>
+
+    <p class="sec-p"><strong>Desde tu navegador web:</strong> Todos los navegadores modernos permiten gestionar las cookies desde su configuración. A continuación encontrarás los accesos directos para los navegadores más utilizados:</p>
+
+    <div class="browser-grid">
+      <div class="browser-card">
+        <div class="browser-name">🌐 Google Chrome</div>
+        <div class="browser-steps">Menú (⋮) → Configuración → Privacidad y seguridad → Cookies y otros datos de sitios</div>
+      </div>
+      <div class="browser-card">
+        <div class="browser-name">🦊 Mozilla Firefox</div>
+        <div class="browser-steps">Menú (☰) → Configuración → Privacidad y seguridad → Cookies y datos del sitio</div>
+      </div>
+      <div class="browser-card">
+        <div class="browser-name">🧭 Safari</div>
+        <div class="browser-steps">Preferencias → Privacidad → Gestionar datos del sitio web</div>
+      </div>
+      <div class="browser-card">
+        <div class="browser-name">🔷 Microsoft Edge</div>
+        <div class="browser-steps">Menú (···) → Configuración → Privacidad, búsqueda y servicios → Cookies</div>
+      </div>
+    </div>
+
+    <p class="sec-p" style="margin-top:16px"><strong>Para cookies publicitarias de Google específicamente:</strong></p>
+    <ul class="sec-ul">
+      <li>Visita <a href="https://www.google.com/settings/ads" target="_blank" rel="noopener">google.com/settings/ads</a> para desactivar la publicidad personalizada de Google.</li>
+      <li>Instala el <a href="https://tools.google.com/dlpage/gaoptout" target="_blank" rel="noopener">complemento de inhabilitación de Google Analytics</a>.</li>
+      <li>Visita <a href="https://www.youronlinechoices.com/es/" target="_blank" rel="noopener">youronlinechoices.com</a> para gestionar preferencias de múltiples empresas publicitarias.</li>
+      <li>Utiliza el servicio <a href="https://optout.networkadvertising.org/" target="_blank" rel="noopener">NAI opt-out</a> de la Network Advertising Initiative.</li>
+    </ul>
+
+    <div class="warn-box">
+      <strong>Atención:</strong> Desactivar determinadas cookies puede afectar al funcionamiento de partes de la aplicación. Las cookies técnicas y de sesión de Firebase son necesarias para el correcto funcionamiento del login y la sincronización de datos.
+    </div>
+  </div>
+
+  <!-- 9 -->
+  <div class="legal-section" id="c9">
+    <div class="sec-num">Sección 09</div>
+    <h2 class="sec-title">Actualizaciones de esta Política</h2>
+    <p class="sec-p">Esta Política de Cookies puede ser actualizada periódicamente para reflejar cambios en las cookies que utilizamos, cambios legislativos o nuevas funcionalidades de la aplicación. La fecha de última actualización figura siempre en la cabecera de este documento.</p>
+    <p class="sec-p">Te recomendamos revisar esta página de forma regular. Los cambios significativos serán notificados a los usuarios registrados a través de la aplicación.</p>
+  </div>
+
+  <!-- 10 -->
+  <div class="legal-section" id="c10">
+    <div class="sec-num">Sección 10</div>
+    <h2 class="sec-title">Contacto</h2>
+    <p class="sec-p">Si tienes alguna pregunta sobre esta Política de Cookies o sobre el uso que hacemos de las cookies, puedes contactarnos a través de la sección <strong>Issues</strong> del repositorio del proyecto en GitHub o mediante el formulario de contacto que habilitaremos próximamente.</p>
+    <p class="sec-p">También puedes consultar la <a href="privacy.html">Política de Privacidad completa</a> para obtener más información sobre cómo tratamos tus datos personales.</p>
+  </div>
+
+  <!-- Ad -->
+  <div class="ad-legal">
+    <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-9027862604686644" data-ad-slot="auto" data-ad-format="auto" data-full-width-responsive="true"></ins>
+    <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+  </div>
+
+  <div class="legal-footer">
+    <a href="index.html">← Volver a PomodoroXP</a>
+    <a href="privacy.html">Política de Privacidad</a>
+    <p>© 2026 PomodoroXP · Todos los derechos reservados</p>
+  </div>
+
+</div>
+</body>
+</html>
