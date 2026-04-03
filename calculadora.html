@@ -1,0 +1,574 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9027862604686644" crossorigin="anonymous"></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Calculadora de Notas — PomodoroXP</title>
+  <meta name="description" content="Calcula exactamente qué nota necesitas para aprobar cada asignatura. Gestiona tus evaluaciones y porcentajes fácilmente.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;900&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+:root {
+  --bg:        #04060d;
+  --bg2:       #070c18;
+  --bg3:       #0c1425;
+  --card:      rgba(8,14,28,0.85);
+  --border:    rgba(0,180,255,0.10);
+  --border-h:  rgba(0,212,255,0.30);
+  --focus:     #00d4ff;
+  --focus-d:   rgba(0,212,255,0.13);
+  --short:     #00ff98;
+  --long:      #b06aff;
+  --xp:        #ff7043;
+  --gold:      #ffd600;
+  --text:      #dce8f8;
+  --text-dim:  #5c78a8;
+  --text-faint:#2a3a5a;
+  --radius:    14px;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Outfit', sans-serif;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* BACKGROUND */
+.bg-grid {
+  position: fixed; inset: 0;
+  background-image:
+    linear-gradient(rgba(0,212,255,0.025) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0,212,255,0.025) 1px, transparent 1px);
+  background-size: 44px 44px;
+  pointer-events: none; z-index: 0;
+}
+.bg-orb {
+  position: fixed; pointer-events: none; z-index: 0;
+  border-radius: 50%; filter: blur(90px);
+}
+.bg-orb-1 {
+  width: 500px; height: 500px; top: -150px; left: 50%;
+  transform: translateX(-50%);
+  background: radial-gradient(circle, rgba(255,214,0,0.05) 0%, transparent 70%);
+}
+.bg-orb-2 {
+  width: 380px; height: 380px; bottom: 10%; right: -80px;
+  background: radial-gradient(circle, rgba(0,212,255,0.05) 0%, transparent 70%);
+}
+
+/* TOPBAR */
+.topbar {
+  position: sticky; top: 0; z-index: 200;
+  background: rgba(4,6,13,0.94);
+  backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--border);
+  padding: 0 24px; height: 60px;
+  display: flex; align-items: center; justify-content: space-between;
+}
+.topbar-left { display: flex; align-items: center; gap: 16px; }
+.topbar-logo {
+  font-family: 'Orbitron', monospace;
+  font-size: 15px; font-weight: 900;
+  letter-spacing: 0.1em;
+  background: linear-gradient(135deg, var(--focus) 0%, #fff 70%);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  background-clip: text; text-decoration: none;
+}
+.topbar-sep { color: var(--text-faint); font-size: 18px; }
+.topbar-page { font-size: 11px; color: var(--text-dim); text-transform: uppercase; letter-spacing: 0.2em; font-weight: 600; }
+.topbar-back {
+  display: flex; align-items: center; gap: 7px;
+  background: var(--focus-d); border: 1px solid var(--focus);
+  color: var(--focus); padding: 7px 14px; border-radius: 9px;
+  font-family: 'Outfit', sans-serif; font-size: 12px; font-weight: 600;
+  text-decoration: none; transition: all 0.22s; letter-spacing: 0.06em;
+}
+.topbar-back:hover { background: rgba(0,212,255,0.22); box-shadow: 0 0 14px var(--focus-d); }
+
+/* PAGE */
+.page {
+  position: relative; z-index: 1;
+  max-width: 780px; margin: 0 auto;
+  padding: 40px 24px 80px;
+}
+
+/* HERO */
+.hero { margin-bottom: 32px; }
+.hero-tag {
+  font-size: 10px; color: var(--gold);
+  text-transform: uppercase; letter-spacing: 0.28em;
+  font-weight: 700; margin-bottom: 12px;
+}
+.hero-title {
+  font-family: 'Orbitron', monospace;
+  font-size: clamp(22px, 4vw, 32px);
+  font-weight: 900; color: var(--text);
+  margin-bottom: 10px; line-height: 1.3;
+}
+.hero-sub { font-size: 14px; color: var(--text-dim); line-height: 1.7; }
+
+/* INFO BOX */
+.info-box {
+  background: rgba(255,214,0,0.05);
+  border: 1px solid rgba(255,214,0,0.2);
+  border-radius: 10px; padding: 12px 16px;
+  font-size: 13px; color: var(--text-dim);
+  line-height: 1.6; margin-bottom: 28px;
+}
+.info-box strong { color: var(--gold); }
+
+/* SUBJECT PANEL */
+.subject-panel {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  margin-bottom: 18px;
+  overflow: hidden;
+  transition: border-color 0.22s;
+  backdrop-filter: blur(10px);
+}
+.subject-panel:hover { border-color: rgba(255,214,0,0.2); }
+
+.subject-header {
+  display: flex; align-items: center; gap: 10px;
+  padding: 14px 18px;
+  border-bottom: 1px solid var(--border);
+  background: rgba(255,214,0,0.03);
+}
+.subject-name-input {
+  flex: 1; background: transparent;
+  border: none; border-bottom: 1px solid var(--border);
+  color: var(--text);
+  font-family: 'Orbitron', monospace;
+  font-size: 14px; font-weight: 700;
+  padding: 3px 6px; transition: border-color 0.2s;
+  letter-spacing: 0.06em;
+}
+.subject-name-input:focus { outline: none; border-color: var(--gold); }
+.subject-name-input::placeholder { color: var(--text-faint); font-weight: 400; font-family: 'Outfit', sans-serif; font-size: 13px; }
+
+.btn-del-subject {
+  width: 28px; height: 28px; border-radius: 7px;
+  border: 1px solid rgba(255,50,50,0.2);
+  background: rgba(255,50,50,0.07);
+  color: #ff6b6b; font-size: 14px;
+  cursor: pointer; transition: all 0.2s;
+  display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+}
+.btn-del-subject:hover { background: rgba(255,50,50,0.18); border-color: rgba(255,50,50,0.4); }
+
+/* ITEMS TABLE */
+.subject-body { padding: 16px 18px; }
+
+.items-table-head {
+  display: grid;
+  grid-template-columns: 2fr 90px 90px 32px;
+  gap: 8px; margin-bottom: 8px; padding: 0 2px;
+}
+.items-table-head span {
+  font-size: 9px; color: var(--focus);
+  text-transform: uppercase; letter-spacing: 0.16em; font-weight: 700;
+}
+
+.item-row {
+  display: grid;
+  grid-template-columns: 2fr 90px 90px 32px;
+  gap: 8px; margin-bottom: 8px; align-items: center;
+}
+.item-input {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: 8px; color: var(--text);
+  font-family: 'Outfit', sans-serif;
+  font-size: 13px; padding: 8px 10px;
+  width: 100%; transition: border-color 0.2s;
+}
+.item-input:focus { outline: none; border-color: var(--gold); box-shadow: 0 0 8px rgba(255,214,0,0.15); }
+.item-input::placeholder { color: var(--text-faint); font-size: 11px; }
+.item-input.pct  { font-family: 'Orbitron', monospace; font-size: 12px; text-align: center; }
+.item-input.nota { font-family: 'Orbitron', monospace; font-size: 12px; text-align: center; }
+
+.btn-del-item {
+  width: 28px; height: 28px; border-radius: 6px;
+  border: 1px solid var(--border);
+  background: transparent; color: var(--text-faint);
+  font-size: 14px; cursor: pointer; transition: all 0.2s;
+  display: flex; align-items: center; justify-content: center;
+}
+.btn-del-item:hover { border-color: rgba(255,50,50,0.3); color: #ff6b6b; background: rgba(255,50,50,0.07); }
+
+.btn-add-item {
+  background: transparent;
+  border: 1px dashed var(--border);
+  border-radius: 8px; color: var(--text-dim);
+  font-family: 'Outfit', sans-serif;
+  font-size: 12px; font-weight: 500;
+  padding: 7px 14px; cursor: pointer;
+  transition: all 0.22s; margin-bottom: 16px; width: 100%;
+}
+.btn-add-item:hover { border-color: var(--gold); color: var(--gold); background: rgba(255,214,0,0.06); }
+
+/* RESULT BOX */
+.grade-result {
+  border-radius: 10px; padding: 14px 16px;
+  border: 1px solid var(--border);
+  background: var(--bg2); transition: all 0.35s;
+}
+.grade-result.ok   { border-color: rgba(0,255,152,0.35);  background: rgba(0,255,152,0.05);  }
+.grade-result.warn { border-color: rgba(255,214,0,0.35);  background: rgba(255,214,0,0.05);  }
+.grade-result.fail { border-color: rgba(255,50,50,0.35);  background: rgba(255,50,50,0.05);  }
+.grade-result.done { border-color: rgba(0,212,255,0.35);  background: rgba(0,212,255,0.05);  }
+
+.grade-result-main {
+  font-family: 'Orbitron', monospace;
+  font-size: 15px; font-weight: 700; margin-bottom: 5px;
+}
+.grade-result.ok   .grade-result-main { color: var(--short); }
+.grade-result.warn .grade-result-main { color: var(--gold);  }
+.grade-result.fail .grade-result-main { color: #ff6b6b;      }
+.grade-result.done .grade-result-main { color: var(--focus); }
+.grade-result-sub  { font-size: 12px; color: var(--text-dim); line-height: 1.6; }
+.pct-warning { font-size: 11px; color: var(--xp); margin-top: 6px; }
+
+/* ADD SUBJECT BTN */
+.btn-add-subject {
+  width: 100%; padding: 14px;
+  background: rgba(255,214,0,0.07);
+  border: 1px dashed rgba(255,214,0,0.3);
+  border-radius: var(--radius);
+  color: var(--gold);
+  font-family: 'Outfit', sans-serif;
+  font-size: 14px; font-weight: 600;
+  cursor: pointer; transition: all 0.22s;
+  letter-spacing: 0.06em;
+}
+.btn-add-subject:hover {
+  background: rgba(255,214,0,0.14);
+  border-style: solid;
+  box-shadow: 0 0 16px rgba(255,214,0,0.1);
+}
+
+/* AD */
+.ad-calc {
+  width: 100%; min-height: 90px;
+  background: rgba(0,212,255,0.02);
+  border: 1px dashed rgba(0,212,255,0.1);
+  border-radius: var(--radius); margin: 28px 0; overflow: hidden;
+}
+
+/* EMPTY STATE */
+.empty-state {
+  text-align: center; padding: 40px 20px;
+  color: var(--text-dim);
+}
+.empty-state-icon { font-size: 40px; margin-bottom: 12px; }
+.empty-state-text { font-size: 14px; line-height: 1.7; }
+
+/* SCROLLBAR */
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+
+/* RESPONSIVE */
+@media (max-width: 560px) {
+  .page { padding: 28px 16px 60px; }
+  .items-table-head, .item-row { grid-template-columns: 1fr 72px 72px 28px; gap: 6px; }
+  .topbar-page { display: none; }
+}
+</style>
+</head>
+
+<body>
+<div class="bg-grid"></div>
+<div class="bg-orb bg-orb-1"></div>
+<div class="bg-orb bg-orb-2"></div>
+
+<!-- TOPBAR -->
+<nav class="topbar">
+  <div class="topbar-left">
+    <a href="index.html" class="topbar-logo">🍅 POMODOROXP</a>
+    <span class="topbar-sep">/</span>
+    <span class="topbar-page">Calculadora de Notas</span>
+  </div>
+  <a href="toolkit.html" class="topbar-back">← Toolkit</a>
+</nav>
+
+<div class="page">
+
+  <!-- HERO -->
+  <div class="hero">
+    <div class="hero-tag">🎓 Calculadora Versátil</div>
+    <h1 class="hero-title">Calculadora de Notas</h1>
+    <p class="hero-sub">Gestiona tus asignaturas y calcula exactamente qué nota necesitas en cada evaluación para aprobar. Los datos se guardan automáticamente en tu navegador.</p>
+  </div>
+
+  <div class="info-box">
+    <strong>¿Cómo funciona?</strong> Añade una asignatura, luego añade cada evaluación con su peso (%) y la nota obtenida. Si dejas la nota en blanco, la calculadora te dirá qué necesitas en ese % para llegar al <strong>5</strong>.
+  </div>
+
+  <!-- AD -->
+  <div class="ad-calc">
+    <ins class="adsbygoogle" style="display:block"
+      data-ad-client="ca-pub-9027862604686644"
+      data-ad-slot="auto" data-ad-format="auto"
+      data-full-width-responsive="true"></ins>
+    <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+  </div>
+
+  <!-- SUBJECTS LIST -->
+  <div id="subjects-list"></div>
+
+  <button class="btn-add-subject" id="btn-add-subject">＋ Añadir Asignatura</button>
+
+  <!-- AD -->
+  <div class="ad-calc">
+    <ins class="adsbygoogle" style="display:block"
+      data-ad-client="ca-pub-9027862604686644"
+      data-ad-slot="auto" data-ad-format="auto"
+      data-full-width-responsive="true"></ins>
+    <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+  </div>
+
+  <!-- FOOTER -->
+  <div style="text-align:center;padding:24px 0 0;border-top:1px solid var(--border)">
+    <a href="toolkit.html" style="color:var(--text-faint);font-size:11px;text-decoration:none;margin:0 10px">← Volver al Toolkit</a>
+    <a href="index.html"   style="color:var(--text-faint);font-size:11px;text-decoration:none;margin:0 10px">⏱ Timer</a>
+    <a href="privacy.html" style="color:var(--text-faint);font-size:11px;text-decoration:none;margin:0 10px">Privacidad</a>
+  </div>
+
+</div>
+
+<script>
+'use strict';
+
+// ================================================================
+// ESTADO — localStorage
+// ================================================================
+const GRADES_KEY = 'pxp_grades_v1';
+let subjects = loadGrades();
+
+function loadGrades() {
+  try {
+    const raw = localStorage.getItem(GRADES_KEY);
+    if (raw) return JSON.parse(raw);
+  } catch(e) {}
+  return [];
+}
+
+function saveGrades() {
+  try { localStorage.setItem(GRADES_KEY, JSON.stringify(subjects)); } catch(e) {}
+}
+
+function newSubject() {
+  return { id: Date.now(), name: '', items: [newItem()] };
+}
+
+function newItem() {
+  return { id: Date.now() + Math.random(), name: '', pct: '', nota: '' };
+}
+
+// ================================================================
+// CÁLCULO (bug fix: parámetro renombrado a "asignatura")
+// ================================================================
+function calcResult(asignatura) {
+  const items = asignatura.items;
+
+  if (!items.length) return {
+    cls: '', main: 'Sin evaluaciones',
+    sub: 'Añade evaluaciones para calcular.', pctWarn: ''
+  };
+
+  const totalPct  = items.reduce((a, i) => a + (parseFloat(i.pct)  || 0), 0);
+  const doneItems = items.filter(i => i.pct !== '' && i.nota !== '');
+  const pendItems = items.filter(i => i.pct !== '' && i.nota === '');
+  const donePct   = doneItems.reduce((a, i) => a + (parseFloat(i.pct) || 0), 0);
+  const pendPct   = pendItems.reduce((a, i) => a + (parseFloat(i.pct) || 0), 0);
+
+  // Puntos acumulados (nota × peso/100)
+  const accumulated = doneItems.reduce(
+    (a, i) => a + (parseFloat(i.nota) || 0) * (parseFloat(i.pct) || 0) / 100, 0
+  );
+
+  const pctWarnMsg = totalPct > 100
+    ? `La suma de porcentajes es ${totalPct.toFixed(1)}% (supera el 100%)`
+    : '';
+
+  if (donePct === 0 && pendPct === 0) return {
+    cls: '', main: 'Sin datos',
+    sub: 'Introduce porcentajes y notas para calcular.', pctWarn: pctWarnMsg
+  };
+
+  // Todo completado
+  if (pendPct === 0) {
+    const notaFinal = totalPct > 0 ? (accumulated / totalPct * 100) : 0;
+    const aprueba   = notaFinal >= 5;
+    return {
+      cls:  aprueba ? 'done' : 'fail',
+      main: `Nota final: ${notaFinal.toFixed(2)} / 10`,
+      sub:  aprueba
+        ? `✅ Asignatura aprobada con ${notaFinal.toFixed(2)}.`
+        : `❌ Suspenso con ${notaFinal.toFixed(2)}. Necesitabas un 5.`,
+      pctWarn: pctWarnMsg
+    };
+  }
+
+  // Hay pendientes — ¿qué nota necesitas?
+  // accumulated + (pendPct/100) * X = 5  →  X = (5 - accumulated) / (pendPct/100)
+  const needed = (5 - accumulated) / (pendPct / 100);
+
+  let cls, main, resultSub;
+
+  if (needed <= 0) {
+    cls       = 'done';
+    main      = `Ya tienes el aprobado asegurado 🎉`;
+    resultSub = `Llevas ${accumulated.toFixed(2)} pts. Con el ${pendPct.toFixed(0)}% restante es imposible bajar del 5.`;
+  } else if (needed <= 5) {
+    cls       = 'ok';
+    main      = `Necesitas un ${needed.toFixed(2)} en el ${pendPct.toFixed(0)}% restante`;
+    resultSub = `Llevas ${accumulated.toFixed(2)} pts acumulados. ¡Vas por buen camino!`;
+  } else if (needed <= 10) {
+    cls       = 'warn';
+    main      = `Necesitas un ${needed.toFixed(2)} en el ${pendPct.toFixed(0)}% restante`;
+    resultSub = `Es exigente pero posible. Llevas ${accumulated.toFixed(2)} pts de los ${(donePct / 10).toFixed(2)} posibles evaluados.`;
+  } else {
+    cls       = 'fail';
+    main      = `Imposible llegar al 5 (necesitarías un ${needed.toFixed(2)})`;
+    resultSub = `Con el ${pendPct.toFixed(0)}% restante no es suficiente. Llevas solo ${accumulated.toFixed(2)} pts.`;
+  }
+
+  return { cls, main, sub: resultSub, pctWarn: pctWarnMsg };
+}
+
+// ================================================================
+// RENDER
+// ================================================================
+function escH(s) {
+  return String(s)
+    .replace(/&/g,'&amp;').replace(/"/g,'&quot;')
+    .replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+
+function renderGrades() {
+  const list = document.getElementById('subjects-list');
+  if (!list) return;
+
+  if (!subjects.length) {
+    list.innerHTML = `
+      <div class="empty-state">
+        <div class="empty-state-icon">🎓</div>
+        <div class="empty-state-text">Sin asignaturas todavía.<br>Pulsa <strong style="color:var(--gold)">+ Añadir Asignatura</strong> para empezar.</div>
+      </div>`;
+    return;
+  }
+
+  list.innerHTML = subjects.map((asig, si) => {
+    const itemsHTML = asig.items.map((item, ii) => `
+      <div class="item-row">
+        <input class="item-input" type="text" placeholder="Nombre (ej: Parcial 1)"
+          value="${escH(item.name)}"
+          onchange="updateItem(${si},${ii},'name',this.value)">
+        <input class="item-input pct" type="number" min="0" max="100" placeholder="%"
+          value="${item.pct !== '' ? item.pct : ''}"
+          onchange="updateItem(${si},${ii},'pct',this.value)">
+        <input class="item-input nota" type="number" min="0" max="10" step="0.01" placeholder="nota"
+          value="${item.nota !== '' ? item.nota : ''}"
+          onchange="updateItem(${si},${ii},'nota',this.value)">
+        <button class="btn-del-item" onclick="delItem(${si},${ii})" title="Eliminar">✕</button>
+      </div>`).join('');
+
+    const r = calcResult(asig);
+
+    return `
+      <div class="subject-panel">
+        <div class="subject-header">
+          <input class="subject-name-input" type="text" placeholder="Nombre de la asignatura"
+            value="${escH(asig.name)}"
+            onchange="updateSubjectName(${si}, this.value)">
+          <button class="btn-del-subject" onclick="delSubject(${si})" title="Eliminar asignatura">🗑</button>
+        </div>
+        <div class="subject-body">
+          <div class="items-table">
+            <div class="items-table-head">
+              <span>Evaluación</span><span>% peso</span><span>Nota /10</span><span></span>
+            </div>
+            ${itemsHTML}
+          </div>
+          <button class="btn-add-item" onclick="addItem(${si})">＋ Añadir evaluación</button>
+          <div class="grade-result ${r.cls}" id="result-${si}">
+            <div class="grade-result-main">${r.main}</div>
+            <div class="grade-result-sub">${r.sub}</div>
+            ${r.pctWarn ? `<div class="pct-warning">⚠️ ${r.pctWarn}</div>` : ''}
+          </div>
+        </div>
+      </div>`;
+  }).join('');
+}
+
+// ================================================================
+// ACCIONES
+// ================================================================
+function updateSubjectName(si, val) {
+  subjects[si].name = val;
+  saveGrades();
+}
+
+function updateItem(si, ii, field, val) {
+  subjects[si].items[ii][field] = val;
+  saveGrades();
+  // Actualizar solo el result box sin re-render completo (mantiene foco)
+  const box = document.getElementById(`result-${si}`);
+  if (box) {
+    const r = calcResult(subjects[si]);
+    box.className = `grade-result ${r.cls}`;
+    box.innerHTML = `
+      <div class="grade-result-main">${r.main}</div>
+      <div class="grade-result-sub">${r.sub}</div>
+      ${r.pctWarn ? `<div class="pct-warning">⚠️ ${r.pctWarn}</div>` : ''}`;
+  }
+}
+
+function addItem(si) {
+  subjects[si].items.push(newItem());
+  saveGrades();
+  renderGrades();
+}
+
+function delItem(si, ii) {
+  subjects[si].items.splice(ii, 1);
+  saveGrades();
+  renderGrades();
+}
+
+function delSubject(si) {
+  const nombre = subjects[si].name || 'Sin nombre';
+  const tieneContenido = subjects[si].name || subjects[si].items.some(i => i.name || i.nota);
+  if (tieneContenido && !confirm(`¿Eliminar la asignatura "${nombre}"? Se perderán todos sus datos.`)) return;
+  subjects.splice(si, 1);
+  saveGrades();
+  renderGrades();
+}
+
+function addSubject() {
+  subjects.push(newSubject());
+  saveGrades();
+  renderGrades();
+  setTimeout(() => {
+    const panels = document.querySelectorAll('.subject-panel');
+    if (panels.length) panels[panels.length - 1].scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  }, 80);
+}
+
+document.getElementById('btn-add-subject').addEventListener('click', addSubject);
+
+// Render inicial
+renderGrades();
+</script>
+</body>
+</html>
