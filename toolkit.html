@@ -236,6 +236,118 @@ body {
 }
 
 /* ================================================================
+   HELP BUTTON & MODAL
+   ================================================================ */
+.help-btn {
+  width: 28px; height: 28px;
+  border-radius: 50%;
+  border: 1px solid var(--border);
+  background: var(--card);
+  color: var(--text-dim);
+  font-size: 13px; font-weight: 700;
+  cursor: pointer; transition: all 0.2s;
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'Outfit', sans-serif;
+  margin-left: 8px; flex-shrink: 0;
+}
+.help-btn:hover {
+  border-color: var(--focus);
+  color: var(--focus);
+  box-shadow: 0 0 10px var(--focus-d);
+  background: var(--focus-d);
+}
+.help-overlay {
+  display: none; position: fixed; inset: 0;
+  background: rgba(2,4,10,0.82);
+  backdrop-filter: blur(10px);
+  z-index: 500;
+  align-items: center; justify-content: center;
+  padding: 20px;
+}
+.help-overlay.open { display: flex; }
+.help-box {
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  width: 100%; max-width: 480px;
+  max-height: 80vh; overflow-y: auto;
+  box-shadow: 0 0 50px rgba(0,212,255,0.08);
+  animation: help-in 0.3s cubic-bezier(0.34,1.56,0.64,1);
+}
+@keyframes help-in {
+  from { opacity:0; transform: scale(0.9) translateY(20px); }
+  to   { opacity:1; transform: scale(1) translateY(0); }
+}
+.help-head {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 18px 22px;
+  border-bottom: 1px solid var(--border);
+  position: sticky; top: 0;
+  background: var(--bg3); z-index: 1;
+  border-radius: 18px 18px 0 0;
+}
+.help-title {
+  font-family: 'Orbitron', monospace;
+  font-size: 11px; font-weight: 700;
+  letter-spacing: 0.16em; color: var(--focus);
+}
+.help-close {
+  width: 28px; height: 28px; border-radius: 7px;
+  border: 1px solid var(--border); background: transparent;
+  color: var(--text-dim); font-size: 12px; cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  transition: all 0.2s;
+}
+.help-close:hover { border-color: var(--focus); color: var(--text); }
+.help-body { padding: 20px 22px; }
+.help-section { margin-bottom: 18px; }
+.help-sec-title {
+  font-size: 12px; font-weight: 700; color: var(--text);
+  margin-bottom: 7px;
+}
+.help-p {
+  font-size: 13px; color: var(--text-dim);
+  line-height: 1.7; margin-bottom: 6px;
+}
+
+/* ================================================================
+   COLLAPSIBLE SECTION
+   ================================================================ */
+.collapsible-header { transition: opacity 0.2s; }
+.collapsible-header:hover { opacity: 0.85; }
+.collapse-toggle {
+  display: flex; align-items: center; gap: 7px;
+  background: var(--focus-d);
+  border: 1px solid rgba(0,212,255,0.2);
+  border-radius: 9px; padding: 6px 12px;
+  flex-shrink: 0;
+  transition: all 0.22s;
+}
+.collapsible-header:hover .collapse-toggle {
+  border-color: var(--focus);
+  box-shadow: 0 0 10px var(--focus-d);
+}
+.collapse-icon {
+  font-size: 10px; color: var(--focus);
+  transition: transform 0.32s cubic-bezier(0.34,1.56,0.64,1);
+  display: inline-block;
+}
+.collapse-icon.collapsed { transform: rotate(180deg); }
+.collapse-label { font-size: 10px; color: var(--focus); font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; }
+.collapsible-body {
+  overflow: hidden;
+  max-height: 2000px;
+  transition: max-height 0.5s cubic-bezier(0.4,0,0.2,1), opacity 0.35s ease, margin 0.35s ease;
+  opacity: 1;
+  margin-top: 0;
+}
+.collapsible-body.collapsed {
+  max-height: 0;
+  opacity: 0;
+  margin-top: -8px;
+}
+
+/* ================================================================
    LINK CARDS (recursos externos)
    ================================================================ */
 .link-card {
@@ -427,7 +539,44 @@ body {
     <span class="topbar-page">Student Toolkit</span>
   </div>
   <a href="index.html" class="topbar-back">⏱ Volver al Timer</a>
+  <button class="help-btn" id="btn-help" title="Ayuda">?</button>
 </nav>
+
+<!-- ====== MODAL: AYUDA ====== -->
+<div class="help-overlay" id="help-overlay">
+  <div class="help-box">
+    <div class="help-head">
+      <div class="help-title">❓ AYUDA — Student Toolkit</div>
+      <button class="help-close" id="help-close">✕</button>
+    </div>
+    <div class="help-body">
+      <div class="help-section">
+        <div class="help-sec-title">🔍 Buscador</div>
+        <p class="help-p">Usa la barra de búsqueda para filtrar herramientas y recursos en tiempo real. Escribe el nombre o categoría y las tarjetas se filtran automáticamente.</p>
+      </div>
+      <div class="help-section">
+        <div class="help-sec-title">🌐 Enlaces de Interés</div>
+        <p class="help-p">Colección de recursos académicos externos. Haz clic en cualquier tarjeta para abrir el recurso en una pestaña nueva. La sección es desplegable — usa el botón "Ocultar/Mostrar" para contraerla.</p>
+      </div>
+      <div class="help-section">
+        <div class="help-sec-title">⚖️ Conversor de Unidades</div>
+        <p class="help-p">Selecciona la categoría con las pestañas superiores. Introduce un valor en cualquiera de los dos campos y la conversión se calcula automáticamente en tiempo real. Puedes convertir en ambas direcciones.</p>
+        <p class="help-p">Categorías disponibles: Longitud, Masa, Volumen, Temperatura, Ángulo, Velocidad, Área, Tiempo y Energía.</p>
+      </div>
+      <div class="help-section">
+        <div class="help-sec-title">🔬 Calculadora Versátil</div>
+        <p class="help-p">Las herramientas marcadas como "Próximamente" están en desarrollo y se irán activando en futuras versiones del toolkit.</p>
+      </div>
+      <div class="help-section">
+        <div class="help-sec-title">⏱ Volver al Timer</div>
+        <p class="help-p">Usa el botón superior derecho para volver a la app principal de PomodoroXP sin perder tu progreso.</p>
+      </div>
+      <div style="text-align:center;margin-top:20px;padding-top:16px;border-top:1px solid var(--border)">
+        <div style="font-size:11px;color:var(--text-faint)">PomodoroXP Student Toolkit · v1.1</div>
+      </div>
+    </div>
+  </div>
+</div>
 
 <!-- ================================================================
      PAGE
@@ -454,16 +603,21 @@ body {
   </div>
 
   <!-- ============================================================
-       SECCIÓN 1 — ENLACES DE INTERÉS
+       SECCIÓN 1 — ENLACES DE INTERÉS (desplegable)
        ============================================================ -->
   <div class="section-block" data-section="enlaces recursos internet">
-    <div class="sec-header">
+    <div class="sec-header collapsible-header" id="enlaces-header" onclick="toggleSection('enlaces')" style="cursor:pointer;user-select:none">
       <div class="sec-icon">🌐</div>
-      <div class="sec-info">
+      <div class="sec-info" style="flex:1">
         <div class="sec-title">Enlaces de Interés</div>
         <div class="sec-sub">Recursos académicos y herramientas online esenciales</div>
       </div>
+      <div class="collapse-toggle" id="enlaces-toggle">
+        <span class="collapse-icon">▲</span>
+        <span class="collapse-label" id="enlaces-label">Ocultar</span>
+      </div>
     </div>
+    <div class="collapsible-body" id="enlaces-body">
     <div class="cards-grid">
 
       <a class="link-card" href="https://wuolah.com" target="_blank" rel="noopener" data-tags="wuolah apuntes universidad examenes">
@@ -550,7 +704,8 @@ body {
         <span class="link-card-tag">Vídeos</span>
       </a>
 
-    </div>
+    </div><!-- /.cards-grid -->
+    </div><!-- /.collapsible-body -->
   </div>
 
   <!-- AD -->
@@ -1017,6 +1172,43 @@ body {
      ================================================================ -->
 <script>
 'use strict';
+
+// ================================================================
+// MODAL AYUDA
+// ================================================================
+document.getElementById('btn-help').addEventListener('click', () => {
+  document.getElementById('help-overlay').classList.add('open');
+});
+document.getElementById('help-close').addEventListener('click', () => {
+  document.getElementById('help-overlay').classList.remove('open');
+});
+document.getElementById('help-overlay').addEventListener('click', e => {
+  if (e.target === document.getElementById('help-overlay'))
+    document.getElementById('help-overlay').classList.remove('open');
+});
+document.addEventListener('keydown', e => {
+  if (e.code === 'Escape') document.getElementById('help-overlay').classList.remove('open');
+});
+
+// ================================================================
+// DESPLEGABLE — Sección de enlaces
+// ================================================================
+function toggleSection(id) {
+  const body    = document.getElementById(id + '-body');
+  const icon    = document.querySelector('#' + id + '-toggle .collapse-icon');
+  const label   = document.getElementById(id + '-label');
+  const isOpen  = !body.classList.contains('collapsed');
+
+  if (isOpen) {
+    body.classList.add('collapsed');
+    icon.classList.add('collapsed');
+    label.textContent = 'Mostrar';
+  } else {
+    body.classList.remove('collapsed');
+    icon.classList.remove('collapsed');
+    label.textContent = 'Ocultar';
+  }
+}
 
 // ================================================================
 // CONVERSOR — Tabs
