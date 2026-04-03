@@ -1536,13 +1536,16 @@ function addSubject() {
   }, 100);
 }
 
-document.getElementById('btn-add-subject')?.addEventListener('click', addSubject);
+document.addEventListener('click', e => {
+  if (e.target && e.target.id === 'btn-add-subject') addSubject();
+});
 
 // Render inicial
 renderGrades();
 
 function openGradesModal() {
   document.getElementById('grades-overlay').classList.add('open');
+  renderGrades();
 }
 function closeGradesModal() {
   document.getElementById('grades-overlay').classList.remove('open');
@@ -1565,7 +1568,10 @@ document.getElementById('help-overlay').addEventListener('click', e => {
     document.getElementById('help-overlay').classList.remove('open');
 });
 document.addEventListener('keydown', e => {
-  if (e.code === 'Escape') document.getElementById('help-overlay').classList.remove('open');
+  if (e.code === 'Escape') {
+    document.getElementById('help-overlay').classList.remove('open');
+    closeGradesModal();
+  }
 });
 
 // ================================================================
