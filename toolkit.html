@@ -236,6 +236,143 @@ body {
 }
 
 /* ================================================================
+   CALCULADORA DE NOTAS
+   ================================================================ */
+.btn-add-subject {
+  width: 100%; padding: 12px;
+  background: var(--focus-d);
+  border: 1px dashed rgba(0,212,255,0.3);
+  border-radius: 10px;
+  color: var(--focus);
+  font-family: 'Outfit', sans-serif;
+  font-size: 13px; font-weight: 600;
+  cursor: pointer; transition: all 0.22s;
+  letter-spacing: 0.06em; margin-top: 8px;
+}
+.btn-add-subject:hover {
+  background: rgba(0,212,255,0.2);
+  border-style: solid;
+  box-shadow: 0 0 14px var(--focus-d);
+}
+
+/* Subject panel */
+.subject-panel {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  margin-bottom: 16px;
+  overflow: hidden;
+  transition: border-color 0.22s;
+}
+.subject-panel:hover { border-color: rgba(0,212,255,0.2); }
+
+.subject-header {
+  display: flex; align-items: center; gap: 10px;
+  padding: 14px 16px;
+  border-bottom: 1px solid var(--border);
+  background: rgba(0,212,255,0.03);
+}
+.subject-name-input {
+  flex: 1;
+  background: transparent;
+  border: none; border-bottom: 1px solid var(--border);
+  color: var(--text);
+  font-family: 'Orbitron', monospace;
+  font-size: 13px; font-weight: 700;
+  padding: 3px 6px;
+  transition: border-color 0.2s;
+  letter-spacing: 0.06em;
+}
+.subject-name-input:focus { outline: none; border-color: var(--focus); }
+.subject-name-input::placeholder { color: var(--text-faint); font-weight: 400; }
+.btn-del-subject {
+  width: 26px; height: 26px; border-radius: 7px;
+  border: 1px solid rgba(255,50,50,0.2);
+  background: rgba(255,50,50,0.08);
+  color: #ff6b6b; font-size: 13px;
+  cursor: pointer; transition: all 0.2s;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+.btn-del-subject:hover { background: rgba(255,50,50,0.2); border-color: rgba(255,50,50,0.4); }
+
+/* Items table */
+.subject-body { padding: 14px 16px; }
+.items-table { width: 100%; margin-bottom: 12px; }
+.items-table-head {
+  display: grid;
+  grid-template-columns: 2fr 90px 90px 30px;
+  gap: 8px; margin-bottom: 6px;
+}
+.items-table-head span {
+  font-size: 9px; color: var(--focus);
+  text-transform: uppercase; letter-spacing: 0.16em; font-weight: 700;
+  padding: 0 4px;
+}
+.item-row {
+  display: grid;
+  grid-template-columns: 2fr 90px 90px 30px;
+  gap: 8px; margin-bottom: 8px; align-items: center;
+}
+.item-input {
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  color: var(--text);
+  font-family: 'Outfit', sans-serif;
+  font-size: 13px; padding: 7px 10px;
+  width: 100%; transition: border-color 0.2s;
+}
+.item-input:focus { outline: none; border-color: var(--focus); }
+.item-input::placeholder { color: var(--text-faint); font-size: 12px; }
+.item-input.pct { font-family: 'Orbitron', monospace; font-size: 12px; }
+.item-input.nota { font-family: 'Orbitron', monospace; font-size: 12px; }
+.btn-del-item {
+  width: 26px; height: 26px; border-radius: 6px;
+  border: 1px solid var(--border);
+  background: transparent;
+  color: var(--text-faint); font-size: 14px;
+  cursor: pointer; transition: all 0.2s;
+  display: flex; align-items: center; justify-content: center;
+}
+.btn-del-item:hover { border-color: rgba(255,50,50,0.3); color: #ff6b6b; background: rgba(255,50,50,0.07); }
+
+.btn-add-item {
+  background: transparent;
+  border: 1px dashed var(--border);
+  border-radius: 8px;
+  color: var(--text-dim);
+  font-family: 'Outfit', sans-serif;
+  font-size: 12px; font-weight: 500;
+  padding: 7px 14px; cursor: pointer;
+  transition: all 0.22s; margin-bottom: 14px;
+}
+.btn-add-item:hover { border-color: var(--focus); color: var(--focus); background: var(--focus-d); }
+
+/* Result box */
+.grade-result {
+  border-radius: 10px; padding: 12px 16px;
+  font-size: 13px; line-height: 1.6;
+  border: 1px solid var(--border);
+  background: var(--bg3);
+  transition: all 0.3s;
+}
+.grade-result.ok    { border-color: rgba(0,255,152,0.3); background: rgba(0,255,152,0.05); }
+.grade-result.warn  { border-color: rgba(255,214,0,0.3); background: rgba(255,214,0,0.05); }
+.grade-result.fail  { border-color: rgba(255,50,50,0.3);  background: rgba(255,50,50,0.05);  }
+.grade-result.done  { border-color: rgba(0,212,255,0.3); background: rgba(0,212,255,0.05); }
+.grade-result-main {
+  font-family: 'Orbitron', monospace;
+  font-size: 14px; font-weight: 700; margin-bottom: 4px;
+}
+.grade-result.ok   .grade-result-main { color: var(--short); }
+.grade-result.warn .grade-result-main { color: var(--gold); }
+.grade-result.fail .grade-result-main { color: #ff6b6b; }
+.grade-result.done .grade-result-main { color: var(--focus); }
+.grade-result-sub { font-size: 12px; color: var(--text-dim); }
+.pct-warning { font-size: 11px; color: var(--xp); margin-top: 6px; }
+
+/* ================================================================
    HELP BUTTON & MODAL
    ================================================================ */
 .help-btn {
@@ -613,11 +750,11 @@ body {
         <div class="sec-sub">Recursos académicos y herramientas online esenciales</div>
       </div>
       <div class="collapse-toggle" id="enlaces-toggle">
-        <span class="collapse-icon">▲</span>
-        <span class="collapse-label" id="enlaces-label">Ocultar</span>
+        <span class="collapse-icon collapsed">▲</span>
+        <span class="collapse-label" id="enlaces-label">Mostrar</span>
       </div>
     </div>
-    <div class="collapsible-body" id="enlaces-body">
+    <div class="collapsible-body collapsed" id="enlaces-body">
     <div class="cards-grid">
 
       <a class="link-card" href="https://wuolah.com" target="_blank" rel="noopener" data-tags="wuolah apuntes universidad examenes">
@@ -1093,17 +1230,25 @@ body {
   </div>
 
   <!-- ============================================================
-       SECCIÓN 3 — PRÓXIMAMENTE
+       SECCIÓN 3 — CALCULADORA VERSÁTIL
        ============================================================ -->
-  <div class="section-block" data-section="calculadora cientifica matrices proximamente">
+  <div class="section-block" data-section="calculadora notas media ponderada cientifica matrices proximamente universidad aprobar">
     <div class="sec-header" data-color="purple">
       <div class="sec-icon">🔬</div>
       <div class="sec-info">
         <div class="sec-title">Calculadora Versátil</div>
-        <div class="sec-sub">Herramientas de cálculo avanzado — En desarrollo</div>
+        <div class="sec-sub">Herramientas de cálculo avanzado</div>
       </div>
     </div>
     <div class="cards-grid-wide">
+
+      <!-- TARJETA ACTIVA — Calculadora de Notas -->
+      <div class="link-card" onclick="openGradesModal()" data-tags="notas media ponderada calificaciones universidad aprobar suspenso asignatura" style="cursor:pointer;border-color:rgba(255,214,0,0.25);background:rgba(255,214,0,0.04)">
+        <div class="link-card-icon">🎓</div>
+        <div class="link-card-name" style="color:var(--gold)">Calculadora de Notas</div>
+        <div class="link-card-desc">¿Cuánto necesito para aprobar? Gestiona tus asignaturas y calcula exactamente qué nota necesitas en cada examen.</div>
+        <span class="link-card-tag" style="background:rgba(255,214,0,0.12);color:var(--gold);border-color:rgba(255,214,0,0.25)">Disponible ✓</span>
+      </div>
 
       <div class="soon-card" data-tags="calculadora cientifica trigonometria logaritmos">
         <div class="soon-icon">🧮</div>
@@ -1133,13 +1278,6 @@ body {
         <span class="soon-badge">Próximamente</span>
       </div>
 
-      <div class="soon-card" data-tags="notas media ponderada calificaciones universidad">
-        <div class="soon-icon">🎓</div>
-        <div class="soon-title">Calculadora de Nota Media</div>
-        <div class="soon-desc">Calcula tu nota final introduciendo las notas parciales y sus porcentajes o pesos correspondientes.</div>
-        <span class="soon-badge">Próximamente</span>
-      </div>
-
       <div class="soon-card" data-tags="bibliografia apa cita referencia">
         <div class="soon-icon">📚</div>
         <div class="soon-title">Generador APA</div>
@@ -1147,6 +1285,20 @@ body {
         <span class="soon-badge">Próximamente</span>
       </div>
 
+    </div>
+  </div>
+
+  <!-- ====== MODAL: CALCULADORA DE NOTAS ====== -->
+  <div class="help-overlay" id="grades-overlay">
+    <div class="help-box" style="max-width:680px;max-height:90vh">
+      <div class="help-head">
+        <div class="help-title">🎓 CALCULADORA DE NOTAS</div>
+        <button class="help-close" onclick="closeGradesModal()">✕</button>
+      </div>
+      <div class="help-body" style="padding:20px">
+        <div id="subjects-list"></div>
+        <button class="btn-add-subject" id="btn-add-subject">＋ Añadir Asignatura</button>
+      </div>
     </div>
   </div>
 
@@ -1172,6 +1324,232 @@ body {
      ================================================================ -->
 <script>
 'use strict';
+
+// ================================================================
+// CALCULADORA DE NOTAS AVANZADA
+// ================================================================
+const GRADES_KEY = 'pxp_grades_v1';
+let subjects = loadGrades();
+
+function loadGrades() {
+  try {
+    const raw = localStorage.getItem(GRADES_KEY);
+    if (raw) return JSON.parse(raw);
+  } catch(e) {}
+  return [];
+}
+
+function saveGrades() {
+  try { localStorage.setItem(GRADES_KEY, JSON.stringify(subjects)); } catch(e) {}
+}
+
+function newSubject() {
+  return {
+    id: Date.now(),
+    name: '',
+    items: [newItem()]
+  };
+}
+
+function newItem() {
+  return { id: Date.now() + Math.random(), name: '', pct: '', nota: '' };
+}
+
+function renderGrades() {
+  const list = document.getElementById('subjects-list');
+  if (!list) return;
+
+  if (subjects.length === 0) {
+    list.innerHTML = `<div style="text-align:center;padding:24px;color:var(--text-faint);font-size:13px">
+      Sin asignaturas. Pulsa "+ Añadir Asignatura" para empezar.
+    </div>`;
+    return;
+  }
+
+  list.innerHTML = subjects.map((sub, si) => {
+    const itemsHTML = sub.items.map((item, ii) => `
+      <div class="item-row" data-si="${si}" data-ii="${ii}">
+        <input class="item-input" type="text" placeholder="Nombre (ej: Parcial 1)"
+          value="${escH(item.name)}"
+          onchange="updateItem(${si},${ii},'name',this.value)">
+        <input class="item-input pct" type="number" min="0" max="100" placeholder="%" 
+          value="${item.pct}"
+          onchange="updateItem(${si},${ii},'pct',this.value)">
+        <input class="item-input nota" type="number" min="0" max="10" step="0.01" placeholder="nota"
+          value="${item.nota}"
+          onchange="updateItem(${si},${ii},'nota',this.value)">
+        <button class="btn-del-item" onclick="delItem(${si},${ii})" title="Eliminar">✕</button>
+      </div>`).join('');
+
+    const result = calcResult(sub);
+
+    return `
+      <div class="subject-panel">
+        <div class="subject-header">
+          <input class="subject-name-input" type="text" placeholder="Nombre de la asignatura"
+            value="${escH(sub.name)}"
+            onchange="updateSubjectName(${si},this.value)">
+          <button class="btn-del-subject" onclick="delSubject(${si})" title="Eliminar asignatura">🗑</button>
+        </div>
+        <div class="subject-body">
+          <div class="items-table">
+            <div class="items-table-head">
+              <span>Evaluación</span><span>% peso</span><span>Nota</span><span></span>
+            </div>
+            ${itemsHTML}
+          </div>
+          <button class="btn-add-item" onclick="addItem(${si})">＋ Añadir evaluación</button>
+          <div class="grade-result ${result.cls}">
+            <div class="grade-result-main">${result.main}</div>
+            <div class="grade-result-sub">${result.sub}</div>
+            ${result.pctWarn ? `<div class="pct-warning">⚠️ ${result.pctWarn}</div>` : ''}
+          </div>
+        </div>
+      </div>`;
+  }).join('');
+}
+
+function escH(s) {
+  return String(s).replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+
+function calcResult(sub) {
+  const items = sub.items;
+  if (!items.length) return { cls:'', main:'Sin evaluaciones', sub:'Añade evaluaciones para calcular.', pctWarn:'' };
+
+  const totalPct   = items.reduce((a,i) => a + (parseFloat(i.pct)||0), 0);
+  const doneItems  = items.filter(i => i.pct !== '' && i.nota !== '');
+  const pendItems  = items.filter(i => i.pct !== '' && i.nota === '');
+
+  const donePct    = doneItems.reduce((a,i) => a + (parseFloat(i.pct)||0), 0);
+  const pendPct    = pendItems.reduce((a,i) => a + (parseFloat(i.pct)||0), 0);
+
+  // Nota acumulada de lo hecho
+  const accumulated = doneItems.reduce((a,i) => a + (parseFloat(i.nota)||0) * (parseFloat(i.pct)||0) / 100, 0);
+
+  // Porcentaje sin relleno (ni hecho ni pendiente con %)
+  const pctWarnMsg = totalPct > 100 ? `La suma de porcentajes es ${totalPct.toFixed(1)}% (supera el 100%)` : '';
+
+  // Caso: nada introducido aún
+  if (donePct === 0 && pendPct === 0) {
+    return { cls:'', main:'Sin datos', sub:'Introduce porcentajes y notas para calcular.', pctWarn: pctWarnMsg };
+  }
+
+  // Nota actual sobre lo evaluado
+  const notaActual = donePct > 0 ? (accumulated / donePct * 100) : null;
+  // Proyección si se aprueba justo (5) todo lo pendiente
+  const notaProyectada = accumulated + (pendPct / 100) * 5;
+
+  // Todo completado
+  if (pendPct === 0) {
+    const notaFinal = (totalPct > 0) ? (accumulated / totalPct * 100) : 0;
+    const aprueba   = notaFinal >= 5;
+    return {
+      cls:  aprueba ? 'done' : 'fail',
+      main: `Nota final: ${notaFinal.toFixed(2)} / 10`,
+      sub:  aprueba
+        ? `✅ Asignatura aprobada con ${notaFinal.toFixed(2)}.`
+        : `❌ Suspenso con ${notaFinal.toFixed(2)}. Necesitabas un 5.`,
+      pctWarn: pctWarnMsg
+    };
+  }
+
+  // Hay pendientes — calcular qué nota necesitas
+  // accumulated + (pendPct/100)*X = 5  =>  X = (5 - accumulated) / (pendPct/100)
+  const needed = (5 - accumulated) / (pendPct / 100);
+
+  let cls, main, sub;
+
+  if (needed <= 0) {
+    cls  = 'done';
+    main = `Ya tienes asegurado el aprobado 🎉`;
+    sub  = `Llevas ${(accumulated).toFixed(2)} pts acumulados. Con ${pendPct}% pendiente es imposible bajar del 5.`;
+  } else if (needed <= 5) {
+    cls  = 'ok';
+    main = `Necesitas un ${needed.toFixed(2)} en el ${pendPct.toFixed(0)}% restante`;
+    sub  = `Llevas ${(accumulated * (100/Math.max(donePct,1))).toFixed(2)} de media en lo evaluado. ¡Estás en buen camino!`;
+  } else if (needed <= 10) {
+    cls  = 'warn';
+    main = `Necesitas un ${needed.toFixed(2)} en el ${pendPct.toFixed(0)}% restante`;
+    sub  = `Es exigente pero posible. Llevas ${accumulated.toFixed(2)} pts acumulados de los ${(donePct/100*10).toFixed(2)} posibles evaluados.`;
+  } else {
+    cls  = 'fail';
+    main = `Imposible llegar al 5 (necesitarías un ${needed.toFixed(2)})`;
+    sub  = `Con el ${pendPct.toFixed(0)}% restante no es suficiente para aprobar. Llevas solo ${accumulated.toFixed(2)} pts.`;
+  }
+
+  return { cls, main, sub, pctWarn: pctWarnMsg };
+}
+
+function updateSubjectName(si, val) {
+  subjects[si].name = val;
+  saveGrades();
+}
+
+function updateItem(si, ii, field, val) {
+  subjects[si].items[ii][field] = val;
+  saveGrades();
+  // Re-render solo el result box sin perder el foco
+  const panels = document.querySelectorAll('.subject-panel');
+  if (panels[si]) {
+    const result = calcResult(subjects[si]);
+    const box = panels[si].querySelector('.grade-result');
+    if (box) {
+      box.className = `grade-result ${result.cls}`;
+      box.innerHTML = `
+        <div class="grade-result-main">${result.main}</div>
+        <div class="grade-result-sub">${result.sub}</div>
+        ${result.pctWarn ? `<div class="pct-warning">⚠️ ${result.pctWarn}</div>` : ''}`;
+    }
+  }
+}
+
+function addItem(si) {
+  subjects[si].items.push(newItem());
+  saveGrades();
+  renderGrades();
+}
+
+function delItem(si, ii) {
+  subjects[si].items.splice(ii, 1);
+  saveGrades();
+  renderGrades();
+}
+
+function delSubject(si) {
+  if (subjects[si].name || subjects[si].items.some(i => i.name || i.nota)) {
+    if (!confirm(`¿Eliminar la asignatura "${subjects[si].name || 'Sin nombre'}"?`)) return;
+  }
+  subjects.splice(si, 1);
+  saveGrades();
+  renderGrades();
+}
+
+function addSubject() {
+  subjects.push(newSubject());
+  saveGrades();
+  renderGrades();
+  // Scroll al nuevo panel
+  setTimeout(() => {
+    const panels = document.querySelectorAll('.subject-panel');
+    if (panels.length) panels[panels.length-1].scrollIntoView({ behavior:'smooth', block:'nearest' });
+  }, 100);
+}
+
+document.getElementById('btn-add-subject')?.addEventListener('click', addSubject);
+
+// Render inicial
+renderGrades();
+
+function openGradesModal() {
+  document.getElementById('grades-overlay').classList.add('open');
+}
+function closeGradesModal() {
+  document.getElementById('grades-overlay').classList.remove('open');
+}
+document.getElementById('grades-overlay')?.addEventListener('click', e => {
+  if (e.target === document.getElementById('grades-overlay')) closeGradesModal();
+});
 
 // ================================================================
 // MODAL AYUDA
