@@ -645,6 +645,88 @@ body[data-mode="long"]  .btn-play { border-color: var(--long);  background: var(
 .px { position: fixed; pointer-events: none; z-index: 998; border-radius: 50%; animation: px-fly 1s ease-out forwards; }
 @keyframes px-fly { 0% { opacity:1; transform: translate(0,0) scale(1); } 100% { opacity:0; transform: translate(var(--dx),var(--dy)) scale(0.4); } }
 
+/* ---- TOOLKIT BUTTON ---- */
+.toolkit-btn {
+  display: block; width: 100%;
+  position: relative; overflow: hidden;
+  background: var(--bg3);
+  border: 1px solid rgba(0,212,255,0.25);
+  border-radius: var(--radius);
+  padding: 22px 24px;
+  text-decoration: none;
+  margin-bottom: 20px;
+  transition: all 0.32s cubic-bezier(0.34,1.56,0.64,1);
+  backdrop-filter: blur(12px);
+}
+.toolkit-btn::before {
+  content: '';
+  position: absolute; inset: 0;
+  background: linear-gradient(135deg,
+    rgba(0,212,255,0.08) 0%,
+    rgba(0,255,152,0.06) 50%,
+    rgba(176,106,255,0.08) 100%);
+  opacity: 0; transition: opacity 0.32s;
+}
+.toolkit-btn:hover {
+  border-color: var(--focus);
+  transform: translateY(-3px);
+  box-shadow: 0 12px 40px rgba(0,212,255,0.18), 0 0 0 1px rgba(0,212,255,0.15);
+}
+.toolkit-btn:hover::before { opacity: 1; }
+.toolkit-btn:active { transform: translateY(-1px); }
+.toolkit-btn-glow {
+  position: absolute; inset: -2px;
+  background: linear-gradient(90deg,
+    var(--focus), var(--short), var(--long), var(--focus));
+  background-size: 300% 100%;
+  border-radius: calc(var(--radius) + 2px);
+  opacity: 0; z-index: -1;
+  transition: opacity 0.32s;
+  animation: tk-glow-move 3s linear infinite;
+  filter: blur(8px);
+}
+.toolkit-btn:hover .toolkit-btn-glow { opacity: 0.5; }
+@keyframes tk-glow-move {
+  0%   { background-position: 0% 50%; }
+  100% { background-position: 300% 50%; }
+}
+.toolkit-btn-content {
+  position: relative; z-index: 1;
+  display: flex; align-items: center; justify-content: space-between; gap: 16px;
+}
+.toolkit-btn-left { display: flex; align-items: center; gap: 16px; }
+.toolkit-btn-icon {
+  font-size: 30px;
+  width: 54px; height: 54px;
+  background: linear-gradient(135deg, var(--focus-d), rgba(0,255,152,0.1));
+  border: 1px solid rgba(0,212,255,0.25);
+  border-radius: 14px;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+  transition: transform 0.32s cubic-bezier(0.34,1.56,0.64,1);
+}
+.toolkit-btn:hover .toolkit-btn-icon { transform: scale(1.12) rotate(-5deg); }
+.toolkit-btn-title {
+  font-family: 'Orbitron', monospace;
+  font-size: 16px; font-weight: 900;
+  letter-spacing: 0.08em;
+  background: linear-gradient(135deg, var(--focus) 0%, var(--short) 60%, #fff 100%);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin-bottom: 4px;
+}
+.toolkit-btn-sub {
+  font-size: 11px; color: var(--text-dim);
+  letter-spacing: 0.04em; font-weight: 500;
+}
+.toolkit-btn-arrow {
+  font-size: 24px; color: var(--focus);
+  font-weight: 700; flex-shrink: 0;
+  transition: transform 0.28s cubic-bezier(0.34,1.56,0.64,1);
+  font-family: 'Orbitron', monospace;
+}
+.toolkit-btn:hover .toolkit-btn-arrow { transform: translateX(6px); }
+
 /* ---- FOOTER ---- */
 .app-footer {
   text-align: center; padding: 20px 0 0;
@@ -833,19 +915,20 @@ body[data-mode="long"]  .btn-play { border-color: var(--long);  background: var(
     <button class="btn-circle" id="btn-skip" title="Saltar">⏭</button>
   </div>
 
-  <!-- ══════════════════════════════════════════
-       ANUNCIO 1 — Banner principal (728x90 / responsive)
-       Se activa automáticamente cuando AdSense apruebe
-       ══════════════════════════════════════════ -->
-  <div class="ad-banner">
-    <ins class="adsbygoogle"
-         style="display:block"
-         data-ad-client="ca-pub-9027862604686644"
-         data-ad-slot="auto"
-         data-ad-format="auto"
-         data-full-width-responsive="true"></ins>
-    <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
-  </div>
+  <!-- BOTÓN TOOLKIT — alta visibilidad entre controles y XP -->
+  <a href="toolkit.html" class="toolkit-btn">
+    <div class="toolkit-btn-glow"></div>
+    <div class="toolkit-btn-content">
+      <div class="toolkit-btn-left">
+        <div class="toolkit-btn-icon">🧰</div>
+        <div class="toolkit-btn-text">
+          <div class="toolkit-btn-title">Student Toolkit</div>
+          <div class="toolkit-btn-sub">Conversor de unidades · Recursos académicos · Calculadoras</div>
+        </div>
+      </div>
+      <div class="toolkit-btn-arrow">→</div>
+    </div>
+  </a>
 
   <!-- XP Bar -->
   <div class="xp-panel">
@@ -886,6 +969,19 @@ body[data-mode="long"]  .btn-play { border-color: var(--long);  background: var(
       <div class="week-total" id="week-total">0 pomodoros</div>
     </div>
     <div class="week-bars" id="week-bars"></div>
+  </div>
+
+  <!-- ══════════════════════════════════════════
+       ANUNCIO 1 — Banner principal
+       ══════════════════════════════════════════ -->
+  <div class="ad-banner">
+    <ins class="adsbygoogle"
+         style="display:block"
+         data-ad-client="ca-pub-9027862604686644"
+         data-ad-slot="auto"
+         data-ad-format="auto"
+         data-full-width-responsive="true"></ins>
+    <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
   </div>
 
   <!-- Footer legal -->
