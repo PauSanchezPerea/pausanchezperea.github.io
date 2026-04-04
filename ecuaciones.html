@@ -1,0 +1,805 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9027862604686644" crossorigin="anonymous"></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Resolvedor de Ecuaciones — PomodoroXP</title>
+  <meta name="description" content="Resuelve sistemas de ecuaciones lineales 2x2 y 3x3, ecuaciones polinómicas y ecuaciones arbitrarias. Calculadora matemática avanzada para estudiantes.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;900&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+:root {
+  --bg:        #04060d;
+  --bg2:       #070c18;
+  --bg3:       #0c1425;
+  --card:      rgba(8,14,28,0.85);
+  --border:    rgba(0,180,255,0.10);
+  --border-h:  rgba(0,212,255,0.30);
+  --focus:     #00d4ff;
+  --focus-d:   rgba(0,212,255,0.13);
+  --short:     #00ff98;
+  --short-d:   rgba(0,255,152,0.12);
+  --long:      #b06aff;
+  --long-d:    rgba(176,106,255,0.12);
+  --xp:        #ff7043;
+  --gold:      #ffd600;
+  --text:      #dce8f8;
+  --text-dim:  #5c78a8;
+  --text-faint:#2a3a5a;
+  --radius:    14px;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body { background: var(--bg); color: var(--text); font-family: 'Outfit', sans-serif; min-height: 100vh; overflow-x: hidden; }
+
+/* BG */
+.bg-grid {
+  position: fixed; inset: 0;
+  background-image: linear-gradient(rgba(0,212,255,0.025) 1px, transparent 1px), linear-gradient(90deg, rgba(0,212,255,0.025) 1px, transparent 1px);
+  background-size: 44px 44px; pointer-events: none; z-index: 0;
+}
+.bg-orb { position: fixed; pointer-events: none; z-index: 0; border-radius: 50%; filter: blur(90px); }
+.bg-orb-1 { width: 500px; height: 500px; top: -150px; left: 50%; transform: translateX(-50%); background: radial-gradient(circle, rgba(0,212,255,0.06) 0%, transparent 70%); }
+.bg-orb-2 { width: 380px; height: 380px; bottom: 10%; right: -80px; background: radial-gradient(circle, rgba(176,106,255,0.05) 0%, transparent 70%); }
+
+/* TOPBAR */
+.topbar { position: sticky; top: 0; z-index: 200; background: rgba(4,6,13,0.94); backdrop-filter: blur(16px); border-bottom: 1px solid var(--border); padding: 0 24px; height: 60px; display: flex; align-items: center; justify-content: space-between; }
+.topbar-left { display: flex; align-items: center; gap: 16px; }
+.topbar-logo { font-family: 'Orbitron', monospace; font-size: 15px; font-weight: 900; letter-spacing: 0.1em; background: linear-gradient(135deg, var(--focus) 0%, #fff 70%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; text-decoration: none; }
+.topbar-sep { color: var(--text-faint); font-size: 18px; }
+.topbar-page { font-size: 11px; color: var(--text-dim); text-transform: uppercase; letter-spacing: 0.2em; font-weight: 600; }
+.topbar-back { display: flex; align-items: center; gap: 7px; background: var(--focus-d); border: 1px solid var(--focus); color: var(--focus); padding: 7px 14px; border-radius: 9px; font-family: 'Outfit', sans-serif; font-size: 12px; font-weight: 600; text-decoration: none; transition: all 0.22s; letter-spacing: 0.06em; }
+.topbar-back:hover { background: rgba(0,212,255,0.22); box-shadow: 0 0 14px var(--focus-d); }
+
+/* PAGE */
+.page { position: relative; z-index: 1; max-width: 820px; margin: 0 auto; padding: 40px 24px 80px; }
+
+/* HERO */
+.hero { margin-bottom: 32px; }
+.hero-tag { font-size: 10px; color: var(--focus); text-transform: uppercase; letter-spacing: 0.28em; font-weight: 700; margin-bottom: 12px; }
+.hero-title { font-family: 'Orbitron', monospace; font-size: clamp(20px,4vw,30px); font-weight: 900; color: var(--text); margin-bottom: 10px; line-height: 1.3; }
+.hero-sub { font-size: 14px; color: var(--text-dim); line-height: 1.7; }
+
+/* MAIN TABS */
+.main-tabs { display: flex; gap: 4px; background: var(--bg2); border: 1px solid var(--border); border-radius: 12px; padding: 4px; margin-bottom: 28px; }
+.main-tab { flex: 1; padding: 11px 8px; border: 1px solid transparent; border-radius: 9px; background: transparent; color: var(--text-dim); font-family: 'Outfit', sans-serif; font-size: 12px; font-weight: 600; cursor: pointer; transition: all 0.25s; text-align: center; letter-spacing: 0.04em; line-height: 1.3; }
+.main-tab:hover { color: var(--text); }
+.main-tab.active { background: var(--focus-d); border-color: var(--focus); color: var(--focus); box-shadow: 0 0 12px var(--focus-d); }
+
+/* PANEL */
+.panel { display: none; }
+.panel.active { display: block; animation: pan-in 0.3s ease; }
+@keyframes pan-in { from { opacity:0; transform: translateY(8px); } to { opacity:1; transform: none; } }
+
+/* CARD */
+.card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 24px; backdrop-filter: blur(10px); margin-bottom: 16px; }
+
+/* SUB TABS */
+.sub-tabs { display: flex; gap: 4px; background: var(--bg2); border: 1px solid var(--border); border-radius: 10px; padding: 4px; margin-bottom: 22px; }
+.sub-tab { flex: 1; padding: 8px 6px; border: 1px solid transparent; border-radius: 7px; background: transparent; color: var(--text-dim); font-family: 'Outfit', sans-serif; font-size: 12px; font-weight: 600; cursor: pointer; transition: all 0.22s; text-align: center; }
+.sub-tab:hover { color: var(--text); }
+.sub-tab.active { background: var(--long-d); border-color: var(--long); color: var(--long); }
+
+/* MATRIX GRID */
+.matrix-wrap { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; margin-bottom: 20px; }
+.matrix-label { font-family: 'Orbitron', monospace; font-size: 11px; color: var(--text-dim); letter-spacing: 0.1em; margin-bottom: 8px; }
+.matrix { display: inline-grid; gap: 8px; position: relative; }
+.matrix::before, .matrix::after {
+  content: ''; position: absolute; top: 0; bottom: 0; width: 3px;
+  border: 2px solid var(--border); border-radius: 2px;
+}
+.matrix::before { left: -10px; border-right: none; }
+.matrix::after  { right: -10px; border-left: none; }
+.m-input {
+  width: 64px; height: 40px;
+  background: var(--bg2); border: 1px solid var(--border);
+  border-radius: 8px; color: var(--text);
+  font-family: 'Orbitron', monospace; font-size: 14px; font-weight: 700;
+  text-align: center; padding: 0 6px; transition: border-color 0.2s;
+}
+.m-input:focus { outline: none; border-color: var(--focus); box-shadow: 0 0 8px var(--focus-d); }
+.m-input.rhs { border-color: rgba(0,212,255,0.25); background: rgba(0,212,255,0.04); }
+.m-input.rhs:focus { border-color: var(--focus); }
+.matrix-equals { font-family: 'Orbitron', monospace; font-size: 20px; color: var(--text-dim); align-self: center; }
+.matrix-rhs { display: inline-grid; gap: 8px; }
+
+/* VAR LABELS */
+.var-row { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; }
+.var-label { font-size: 12px; color: var(--text-dim); width: 18px; text-align: right; flex-shrink: 0; font-family: 'Orbitron', monospace; }
+
+/* POLY INPUTS */
+.poly-row { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; margin-bottom: 18px; }
+.poly-term { display: flex; align-items: center; gap: 4px; }
+.poly-input {
+  width: 70px; height: 42px;
+  background: var(--bg2); border: 1px solid var(--border);
+  border-radius: 8px; color: var(--text);
+  font-family: 'Orbitron', monospace; font-size: 14px; font-weight: 700;
+  text-align: center; padding: 0 6px; transition: border-color 0.2s;
+}
+.poly-input:focus { outline: none; border-color: var(--long); box-shadow: 0 0 8px var(--long-d); }
+.poly-suffix { font-size: 13px; color: var(--text-dim); white-space: nowrap; }
+.poly-op { font-size: 18px; color: var(--text-faint); padding: 0 2px; }
+
+/* FREE EQUATION */
+.eq-input-wrap { position: relative; margin-bottom: 16px; }
+.eq-input {
+  width: 100%; background: var(--bg2); border: 1px solid var(--border);
+  border-radius: 10px; color: var(--text); font-family: 'Outfit', sans-serif;
+  font-size: 16px; padding: 14px 16px; transition: all 0.22s;
+}
+.eq-input:focus { outline: none; border-color: var(--focus); box-shadow: 0 0 14px var(--focus-d); }
+.eq-hint { font-size: 11px; color: var(--text-dim); margin-bottom: 16px; line-height: 1.6; }
+
+.seed-row { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; margin-bottom: 16px; }
+.seed-label { font-size: 12px; color: var(--text-dim); white-space: nowrap; }
+.seed-input {
+  width: 80px; height: 36px;
+  background: var(--bg2); border: 1px solid var(--border);
+  border-radius: 8px; color: var(--text);
+  font-family: 'Orbitron', monospace; font-size: 13px;
+  text-align: center; padding: 0 8px; transition: border-color 0.2s;
+}
+.seed-input:focus { outline: none; border-color: var(--focus); }
+
+/* SOLVE BUTTON */
+.btn-solve {
+  width: 100%; padding: 13px;
+  background: var(--focus-d); border: 1px solid var(--focus);
+  border-radius: var(--radius); color: var(--focus);
+  font-family: 'Orbitron', monospace; font-size: 12px; font-weight: 700;
+  cursor: pointer; transition: all 0.28s; letter-spacing: 0.1em;
+  box-shadow: 0 0 18px var(--focus-d);
+}
+.btn-solve:hover { background: rgba(0,212,255,0.22); box-shadow: 0 0 30px rgba(0,212,255,0.25); transform: translateY(-1px); }
+.btn-solve:active { transform: none; }
+
+/* RESULTS */
+.result-box {
+  background: var(--bg2); border: 1px solid var(--border);
+  border-radius: var(--radius); padding: 20px 24px;
+  margin-top: 18px; display: none;
+}
+.result-box.visible { display: block; animation: pan-in 0.35s ease; }
+.result-title { font-size: 9px; color: var(--focus); text-transform: uppercase; letter-spacing: 0.22em; font-weight: 700; margin-bottom: 14px; }
+
+.res-row { display: flex; align-items: baseline; gap: 10px; margin-bottom: 10px; }
+.res-var { font-family: 'Orbitron', monospace; font-size: 13px; color: var(--text-dim); min-width: 28px; }
+.res-val { font-family: 'Orbitron', monospace; font-size: 22px; font-weight: 700; color: var(--short); }
+.res-val.approx { color: var(--gold); font-size: 18px; }
+.res-val.complex { color: var(--long); font-size: 16px; }
+.res-val.error   { color: var(--xp); font-size: 15px; font-family: 'Outfit', sans-serif; font-weight: 500; }
+.res-check { font-size: 11px; color: var(--text-faint); margin-left: 4px; }
+
+.det-row { font-size: 12px; color: var(--text-dim); margin-bottom: 5px; font-family: 'Orbitron', monospace; }
+.det-row span { color: var(--text); }
+.step-sep { height: 1px; background: var(--border); margin: 12px 0; }
+
+/* SEO TEXT */
+.seo-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 22px 26px; backdrop-filter: blur(10px); margin-bottom: 20px; }
+.seo-tag { font-size: 9px; color: var(--focus); text-transform: uppercase; letter-spacing: 0.22em; font-weight: 700; margin-bottom: 10px; }
+.seo-p { font-size: 14px; color: var(--text-dim); line-height: 1.75; margin-bottom: 11px; }
+.seo-p:last-child { margin-bottom: 0; }
+.seo-p strong { color: var(--text); }
+
+/* AD */
+.ad-eq { width: 100%; min-height: 90px; background: rgba(0,212,255,0.02); border: 1px dashed rgba(0,212,255,0.1); border-radius: var(--radius); margin: 24px 0; overflow: hidden; }
+
+/* RESPONSIVE */
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+
+@media (max-width: 600px) {
+  .page { padding: 28px 14px 60px; }
+  .topbar-page { display: none; }
+  .m-input { width: 52px; font-size: 12px; }
+  .matrix-wrap { gap: 10px; }
+  .poly-input { width: 58px; }
+  .main-tab { font-size: 10px; padding: 9px 4px; }
+}
+</style>
+</head>
+
+<body>
+<div class="bg-grid"></div>
+<div class="bg-orb bg-orb-1"></div>
+<div class="bg-orb bg-orb-2"></div>
+
+<nav class="topbar">
+  <div class="topbar-left">
+    <a href="index.html" class="topbar-logo">🍅 POMODOROXP</a>
+    <span class="topbar-sep">/</span>
+    <span class="topbar-page">Resolvedor de Ecuaciones</span>
+  </div>
+  <a href="toolkit.html" class="topbar-back">← Toolkit</a>
+</nav>
+
+<div class="page">
+
+  <div class="hero">
+    <div class="hero-tag">🔬 Calculadora Versátil</div>
+    <h1 class="hero-title">Resolvedor de Ecuaciones</h1>
+    <p class="hero-sub">Tres métodos en uno: sistemas lineales por la Regla de Cramer, ecuaciones polinómicas hasta grado 4 y ecuaciones arbitrarias por Newton-Raphson.</p>
+  </div>
+
+  <!-- AD -->
+  <div class="ad-eq">
+    <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-9027862604686644" data-ad-slot="auto" data-ad-format="auto" data-full-width-responsive="true"></ins>
+    <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+  </div>
+
+  <!-- MAIN TABS -->
+  <div class="main-tabs">
+    <button class="main-tab active" data-tab="linear" onclick="setTab('linear')">🔢 Sistemas Lineales</button>
+    <button class="main-tab" data-tab="poly" onclick="setTab('poly')">📈 Polinómica</button>
+    <button class="main-tab" data-tab="free" onclick="setTab('free')">✏️ Ecuación Libre</button>
+  </div>
+
+  <!-- ============================================================
+       PANEL 1: SISTEMAS LINEALES
+       ============================================================ -->
+  <div class="panel active" id="panel-linear">
+    <div class="card">
+      <div class="sub-tabs">
+        <button class="sub-tab active" data-lin="2x2" onclick="setLinSize(2)">Sistema 2×2</button>
+        <button class="sub-tab" data-lin="3x3" onclick="setLinSize(3)">Sistema 3×3</button>
+      </div>
+
+      <div id="lin-form-2x2">
+        <p style="font-size:12px;color:var(--text-dim);margin-bottom:18px">Introduce los coeficientes y el término independiente de cada ecuación:</p>
+        <!-- Eq 1 -->
+        <div class="var-row">
+          <span class="var-label" style="color:var(--focus);font-size:10px;width:auto">Ec.1</span>
+          <input class="m-input" id="l2-a1" placeholder="a₁" value="2">
+          <span style="font-size:13px;color:var(--text-dim)">x +</span>
+          <input class="m-input" id="l2-b1" placeholder="b₁" value="3">
+          <span style="font-size:13px;color:var(--text-dim)">y =</span>
+          <input class="m-input rhs" id="l2-c1" placeholder="c₁" value="8">
+        </div>
+        <!-- Eq 2 -->
+        <div class="var-row">
+          <span class="var-label" style="color:var(--focus);font-size:10px;width:auto">Ec.2</span>
+          <input class="m-input" id="l2-a2" placeholder="a₂" value="5">
+          <span style="font-size:13px;color:var(--text-dim)">x +</span>
+          <input class="m-input" id="l2-b2" placeholder="b₂" value="1">
+          <span style="font-size:13px;color:var(--text-dim)">y =</span>
+          <input class="m-input rhs" id="l2-c2" placeholder="c₂" value="7">
+        </div>
+      </div>
+
+      <div id="lin-form-3x3" style="display:none">
+        <p style="font-size:12px;color:var(--text-dim);margin-bottom:18px">Sistema 3×3: ax + by + cz = d</p>
+        <div id="lin-3x3-rows"></div>
+      </div>
+
+      <button class="btn-solve" style="margin-top:18px" onclick="solveLinear()">⚡ RESOLVER SISTEMA</button>
+
+      <div class="result-box" id="res-linear">
+        <div class="result-title">📐 Solución — Regla de Cramer</div>
+        <div id="res-linear-body"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============================================================
+       PANEL 2: POLINÓMICA
+       ============================================================ -->
+  <div class="panel" id="panel-poly">
+    <div class="card">
+      <div class="sub-tabs">
+        <button class="sub-tab active" data-deg="2" onclick="setDegree(2)">Cuadrática (x²)</button>
+        <button class="sub-tab" data-deg="3" onclick="setDegree(3)">Cúbica (x³)</button>
+        <button class="sub-tab" data-deg="4" onclick="setDegree(4)">Cuártica (x⁴)</button>
+      </div>
+
+      <p style="font-size:12px;color:var(--text-dim);margin-bottom:16px">Introduce los coeficientes. La ecuación se iguala a 0.</p>
+      <div class="poly-row" id="poly-row"></div>
+
+      <button class="btn-solve" onclick="solvePoly()">⚡ CALCULAR RAÍCES</button>
+
+      <div class="result-box" id="res-poly">
+        <div class="result-title">📐 Raíces de la ecuación</div>
+        <div id="res-poly-body"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============================================================
+       PANEL 3: ECUACIÓN LIBRE
+       ============================================================ -->
+  <div class="panel" id="panel-free">
+    <div class="card">
+      <p class="eq-hint">
+        Escribe cualquier ecuación en x usando <code style="color:var(--focus)">+  -  *  /  ^  (  )</code> y funciones como <code style="color:var(--focus)">sin  cos  tan  ln  log  sqrt  abs  exp</code>.<br>
+        Ejemplos: <em style="color:var(--text-dim)">x^3 - 2*x = 5</em> &nbsp;·&nbsp; <em style="color:var(--text-dim)">ln(x) = x/3</em> &nbsp;·&nbsp; <em style="color:var(--text-dim)">cos(x) = x</em>
+      </p>
+
+      <div class="eq-input-wrap">
+        <input class="eq-input" id="free-eq" type="text" placeholder="ej: x^3 - 2*x = 5" value="x^3 - 2*x = 5">
+      </div>
+
+      <div class="seed-row">
+        <span class="seed-label">Semilla (x₀):</span>
+        <input class="seed-input" id="free-seed" type="number" value="1" step="any">
+        <span class="seed-label">Rango búsqueda:</span>
+        <input class="seed-input" id="free-a" type="number" value="-10" step="any">
+        <span class="seed-label">a</span>
+        <input class="seed-input" id="free-b" type="number" value="10" step="any">
+        <span class="seed-label">b</span>
+      </div>
+
+      <button class="btn-solve" onclick="solveFree()">⚡ ENCONTRAR RAÍZ</button>
+
+      <div class="result-box" id="res-free">
+        <div class="result-title">📐 Resultado — Newton-Raphson + Bisección</div>
+        <div id="res-free-body"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- AD -->
+  <div class="ad-eq">
+    <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-9027862604686644" data-ad-slot="auto" data-ad-format="auto" data-full-width-responsive="true"></ins>
+    <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+  </div>
+
+  <!-- SEO TEXT -->
+  <div class="seo-card">
+    <div class="seo-tag">📐 Métodos numéricos y algebraicos</div>
+    <p class="seo-p">Este resolvedor combina métodos <strong>analíticos</strong> (Regla de Cramer para sistemas lineales, fórmula cuadrática, método de Cardano para cúbicas) con métodos <strong>numéricos</strong> (Newton-Raphson y Bisección) para cubrir prácticamente cualquier tipo de ecuación que puedas encontrar en tus estudios de matemáticas, física o ingeniería.</p>
+    <p class="seo-p">La <strong>Regla de Cramer</strong> resuelve sistemas de ecuaciones lineales calculando el determinante principal y los determinantes de las matrices sustituidas. Es el método estándar en álgebra lineal para sistemas de hasta 3×3. Para grado 2, se aplica la <strong>fórmula cuadrática general</strong> (discriminante), que distingue entre raíces reales, dobles o complejas. Para grado 3 y 4 se usa el <strong>método de Durand-Kerner</strong>, que converge numéricamente a todas las raíces simultáneamente.</p>
+    <p class="seo-p">El <strong>método de Newton-Raphson</strong> es uno de los algoritmos de búsqueda de raíces más rápidos que existen: dado un valor inicial x₀, calcula iterativamente x₁ = x₀ − f(x₀)/f′(x₀) hasta converger. Como complemento, el <strong>método de Bisección</strong> garantiza encontrar una raíz en cualquier intervalo [a,b] donde f(a) y f(b) tienen signos opuestos, siendo más lento pero siempre convergente.</p>
+  </div>
+
+  <div style="text-align:center;padding:24px 0 0;border-top:1px solid var(--border)">
+    <a href="toolkit.html" style="color:var(--text-faint);font-size:11px;text-decoration:none;margin:0 10px">← Volver al Toolkit</a>
+    <a href="index.html"   style="color:var(--text-faint);font-size:11px;text-decoration:none;margin:0 10px">⏱ Timer</a>
+    <a href="privacy.html" style="color:var(--text-faint);font-size:11px;text-decoration:none;margin:0 10px">Privacidad</a>
+  </div>
+
+</div>
+
+<script>
+'use strict';
+
+// ================================================================
+// TAB NAVIGATION
+// ================================================================
+function setTab(name) {
+  document.querySelectorAll('.main-tab').forEach(t => t.classList.toggle('active', t.dataset.tab === name));
+  document.querySelectorAll('.panel').forEach(p => p.classList.toggle('active', p.id === 'panel-' + name));
+}
+
+// ================================================================
+// HELPERS
+// ================================================================
+function r(n, d=6) {
+  if (!isFinite(n)) return '∞';
+  const f = parseFloat(n.toFixed(d));
+  // Remove trailing zeros
+  return f % 1 === 0 ? String(f) : f.toPrecision(8).replace(/\.?0+$/, '');
+}
+function fmt(n) { return r(n, 8); }
+
+function showRes(id, html) {
+  const box = document.getElementById(id);
+  document.getElementById(id + '-body').innerHTML = html;
+  box.classList.add('visible');
+}
+function hideRes(id) { document.getElementById(id).classList.remove('visible'); }
+
+function getNum(id) { return parseFloat(document.getElementById(id).value) || 0; }
+
+// ================================================================
+// PANEL 1 — SISTEMAS LINEALES (CRAMER)
+// ================================================================
+let linSize = 2;
+
+function setLinSize(n) {
+  linSize = n;
+  document.querySelectorAll('.sub-tab[data-lin]').forEach(t => t.classList.toggle('active', t.dataset.lin === n + 'x' + n));
+  document.getElementById('lin-form-2x2').style.display = n === 2 ? '' : 'none';
+  document.getElementById('lin-form-3x3').style.display = n === 3 ? '' : 'none';
+  if (n === 3) build3x3();
+  hideRes('res-linear');
+}
+
+function build3x3() {
+  const defaults = [
+    [2,-1,3,1],
+    [4, 2,1,9],
+    [1,-3,2,2]
+  ];
+  const labels = ['Ec.1','Ec.2','Ec.3'];
+  const vars   = ['x','y','z'];
+  let html = '';
+  for (let i = 0; i < 3; i++) {
+    html += `<div class="var-row" style="margin-bottom:10px">
+      <span style="font-size:10px;color:var(--focus);font-family:'Orbitron',monospace;min-width:32px">${labels[i]}</span>`;
+    for (let j = 0; j < 3; j++) {
+      html += `<input class="m-input" id="l3-${i}-${j}" value="${defaults[i][j]}">`;
+      if (j < 2) html += `<span style="font-size:12px;color:var(--text-dim);padding:0 2px">${vars[j]}+</span>`;
+      else       html += `<span style="font-size:12px;color:var(--text-dim);padding:0 2px">${vars[j]}=</span>`;
+    }
+    html += `<input class="m-input rhs" id="l3-${i}-3" value="${defaults[i][3]}">`;
+    html += `</div>`;
+  }
+  document.getElementById('lin-3x3-rows').innerHTML = html;
+}
+
+// Determinant helpers
+function det2(a,b,c,d) { return a*d - b*c; }
+function det3(m) {
+  return m[0][0]*(m[1][1]*m[2][2]-m[1][2]*m[2][1])
+       - m[0][1]*(m[1][0]*m[2][2]-m[1][2]*m[2][0])
+       + m[0][2]*(m[1][0]*m[2][1]-m[1][1]*m[2][0]);
+}
+
+function solveLinear() {
+  let html = '';
+  if (linSize === 2) {
+    const a1=getNum('l2-a1'), b1=getNum('l2-b1'), c1=getNum('l2-c1');
+    const a2=getNum('l2-a2'), b2=getNum('l2-b2'), c2=getNum('l2-c2');
+    const D  = det2(a1,b1,a2,b2);
+    const Dx = det2(c1,b1,c2,b2);
+    const Dy = det2(a1,c1,a2,c2);
+
+    html += `<div class="det-row">D&nbsp;&nbsp;= |${a1} ${b1}|·|${a2} ${b2}| = <span>${fmt(D)}</span></div>`;
+    html += `<div class="det-row">Dx = |${c1} ${b1}|·|${c2} ${b2}| = <span>${fmt(Dx)}</span></div>`;
+    html += `<div class="det-row">Dy = |${a1} ${c1}|·|${a2} ${c2}| = <span>${fmt(Dy)}</span></div>`;
+    html += '<div class="step-sep"></div>';
+
+    if (Math.abs(D) < 1e-12) {
+      html += `<div class="res-row"><span class="res-val error">Sistema incompatible o indeterminado (D = 0)</span></div>`;
+    } else {
+      const x = Dx/D, y = Dy/D;
+      html += `<div class="res-row"><span class="res-var">x =</span><span class="res-val">${fmt(x)}</span><span class="res-check">✓ verif: ${fmt(a1*x+b1*y)} = ${fmt(c1)}</span></div>`;
+      html += `<div class="res-row"><span class="res-var">y =</span><span class="res-val">${fmt(y)}</span></div>`;
+    }
+  } else {
+    // 3x3
+    const A = [], b = [];
+    for (let i=0;i<3;i++) {
+      A.push([]); b.push(getNum(`l3-${i}-3`));
+      for (let j=0;j<3;j++) A[i].push(getNum(`l3-${i}-${j}`));
+    }
+    const D = det3(A);
+    const sub = (col, vec) => A.map((row,i) => row.map((v,j) => j===col ? vec[i] : v));
+    const Dx = det3(sub(0,b)), Dy = det3(sub(1,b)), Dz = det3(sub(2,b));
+
+    html += `<div class="det-row">D &nbsp;= <span>${fmt(D)}</span></div>`;
+    html += `<div class="det-row">Dx = <span>${fmt(Dx)}</span></div>`;
+    html += `<div class="det-row">Dy = <span>${fmt(Dy)}</span></div>`;
+    html += `<div class="det-row">Dz = <span>${fmt(Dz)}</span></div>`;
+    html += '<div class="step-sep"></div>';
+
+    if (Math.abs(D) < 1e-12) {
+      html += `<div class="res-row"><span class="res-val error">Sistema incompatible o indeterminado (D = 0)</span></div>`;
+    } else {
+      const x=Dx/D, y=Dy/D, z=Dz/D;
+      html += `<div class="res-row"><span class="res-var">x =</span><span class="res-val">${fmt(x)}</span></div>`;
+      html += `<div class="res-row"><span class="res-var">y =</span><span class="res-val">${fmt(y)}</span></div>`;
+      html += `<div class="res-row"><span class="res-var">z =</span><span class="res-val">${fmt(z)}</span></div>`;
+      // Verificación
+      const v1=A[0][0]*x+A[0][1]*y+A[0][2]*z;
+      html += `<div class="res-check" style="margin-top:6px">✓ Verificación ec.1: ${fmt(v1)} ≈ ${fmt(b[0])}</div>`;
+    }
+  }
+  showRes('res-linear', html);
+}
+
+// ================================================================
+// PANEL 2 — POLINÓMICA
+// ================================================================
+let polyDeg = 2;
+
+function setDegree(d) {
+  polyDeg = d;
+  document.querySelectorAll('.sub-tab[data-deg]').forEach(t => t.classList.toggle('active', parseInt(t.dataset.deg)===d));
+  buildPolyRow(d);
+  hideRes('res-poly');
+}
+
+const COEFF_LABELS = ['a','b','c','d','e'];
+const POWER_LABELS = ['⁴','³','²','¹','⁰'];
+
+function buildPolyRow(d) {
+  const row = document.getElementById('poly-row');
+  let html = '';
+  for (let i=0; i<=d; i++) {
+    const power = d - i;
+    const label = COEFF_LABELS[i];
+    const def   = [1, 0, -4, 0][i] !== undefined ? [1,0,-4,0][i] : 0;
+    html += `<div class="poly-term">
+      <input class="poly-input" id="pc-${i}" value="${def}" placeholder="${label}">`;
+    if (power > 1)      html += `<span class="poly-suffix">x${POWER_LABELS[4-power]}</span>`;
+    else if (power===1) html += `<span class="poly-suffix">x</span>`;
+    html += `</div>`;
+    if (i < d) html += `<span class="poly-op">+</span>`;
+  }
+  html += `<span class="poly-op">=</span><span class="poly-suffix" style="font-size:16px;color:var(--text)">0</span>`;
+  row.innerHTML = html;
+}
+
+function getCoeffs(d) {
+  const c = [];
+  for (let i=0;i<=d;i++) c.push(parseFloat(document.getElementById('pc-'+i).value)||0);
+  return c;
+}
+
+// Quadratic
+function solveQuad(a,b,c) {
+  const D = b*b - 4*a*c;
+  if (Math.abs(a) < 1e-14) {
+    if (Math.abs(b) < 1e-14) return [{ type:'info', msg: 'a=b=0: ecuación degenerada' }];
+    return [{ type:'real', val: -c/b, label:'x' }];
+  }
+  if (D > 1e-10) {
+    const sd = Math.sqrt(D);
+    return [
+      { type:'real', val:(-b+sd)/(2*a), label:'x₁' },
+      { type:'real', val:(-b-sd)/(2*a), label:'x₂' }
+    ];
+  } else if (D > -1e-10) {
+    return [{ type:'real', val:-b/(2*a), label:'x (doble)' }];
+  } else {
+    const re = -b/(2*a), im = Math.sqrt(-D)/(2*a);
+    return [
+      { type:'complex', re, im:+im, label:'x₁' },
+      { type:'complex', re, im:-im, label:'x₂' }
+    ];
+  }
+}
+
+// Durand-Kerner for degree 3 & 4
+function durandKerner(coeffs) {
+  const d = coeffs.length - 1;
+  if (d < 1) return [];
+  const a = coeffs[0];
+  const monic = coeffs.map(c=>c/a);
+
+  // Evaluate polynomial
+  const evalP = x => {
+    let s = 0;
+    for (let i=0;i<monic.length;i++) s = s*x + monic[i];
+    return s;
+  };
+  // Complex multiply
+  const cmul = ([ar,ai],[br,bi]) => [ar*br-ai*bi, ar*bi+ai*br];
+  const cdiv = ([ar,ai],[br,bi]) => { const den=br*br+bi*bi; return [(ar*br+ai*bi)/den,(ai*br-ar*bi)/den]; };
+  const csub = ([ar,ai],[br,bi]) => [ar-br,ai-bi];
+  const ceval = (x) => {
+    let s=[0,0];
+    for (let i=0;i<monic.length;i++) s = [s[0]*x[0]-s[1]*x[1]+monic[i], s[0]*x[1]+s[1]*x[0]];
+    return s;
+  };
+
+  // Initial guesses on circle
+  let roots = [];
+  for (let i=0;i<d;i++) {
+    const ang = 2*Math.PI*i/d + 0.1;
+    roots.push([0.4*Math.cos(ang), 0.4*Math.sin(ang)]);
+  }
+
+  for (let iter=0;iter<500;iter++) {
+    for (let i=0;i<d;i++) {
+      let prod=[1,0];
+      for (let j=0;j<d;j++) if(j!==i) prod = cmul(prod, csub(roots[i],roots[j]));
+      const pval = ceval(roots[i]);
+      const delta = cdiv(pval, prod);
+      roots[i] = csub(roots[i], delta);
+    }
+  }
+  return roots;
+}
+
+function solvePoly() {
+  const c = getCoeffs(polyDeg);
+  let roots = [];
+
+  if (polyDeg === 2) {
+    roots = solveQuad(c[0],c[1],c[2]);
+    renderPolyResults(roots);
+    return;
+  }
+
+  const dk = durandKerner(c);
+  roots = dk.map(([re,im], i) => {
+    if (Math.abs(im) < 1e-7) return { type:'real', val:re, label:'x'+(i+1) };
+    return { type:'complex', re, im, label:'x'+(i+1) };
+  });
+
+  // Sort: real first
+  roots.sort((a,b) => (a.type==='real'?0:1) - (b.type==='real'?0:1));
+  roots.forEach((r,i) => r.label = 'x'+(i+1));
+  renderPolyResults(roots);
+}
+
+function renderPolyResults(roots) {
+  let html = '';
+  for (const root of roots) {
+    if (root.type === 'real') {
+      html += `<div class="res-row"><span class="res-var">${root.label} =</span><span class="res-val">${fmt(root.val)}</span></div>`;
+    } else if (root.type === 'complex') {
+      const sign = root.im >= 0 ? '+' : '-';
+      html += `<div class="res-row"><span class="res-var">${root.label} =</span><span class="res-val complex">${fmt(root.re)} ${sign} ${fmt(Math.abs(root.im))}i</span></div>`;
+    } else {
+      html += `<div class="res-row"><span class="res-val error">${root.msg}</span></div>`;
+    }
+  }
+  if (!roots.length) html = '<div class="res-row"><span class="res-val error">No se encontraron raíces</span></div>';
+  showRes('res-poly', html);
+}
+
+// ================================================================
+// PANEL 3 — ECUACIÓN LIBRE (Newton-Raphson + Bisección)
+// ================================================================
+function parseEquation(raw) {
+  // Split on = sign
+  const parts = raw.split('=');
+  if (parts.length !== 2) throw new Error('La ecuación debe contener exactamente un signo =');
+  const lhs = parts[0].trim();
+  const rhs = parts[1].trim();
+  // Build f(x) = lhs - rhs
+  const expr = `(${lhs}) - (${rhs})`;
+  return sanitizeAndBuild(expr);
+}
+
+function sanitizeAndBuild(expr) {
+  // Replace math functions and operators
+  let s = expr
+    .replace(/\^/g, '**')
+    .replace(/\bln\b/g, 'Math.log')
+    .replace(/\blog\b/g, 'Math.log10')
+    .replace(/\bsqrt\b/g, 'Math.sqrt')
+    .replace(/\babs\b/g, 'Math.abs')
+    .replace(/\bsin\b/g, 'Math.sin')
+    .replace(/\bcos\b/g, 'Math.cos')
+    .replace(/\btan\b/g, 'Math.tan')
+    .replace(/\basin\b/g, 'Math.asin')
+    .replace(/\bacos\b/g, 'Math.acos')
+    .replace(/\batan\b/g, 'Math.atan')
+    .replace(/\bexp\b/g, 'Math.exp')
+    .replace(/\bpi\b/gi, 'Math.PI')
+    .replace(/\be\b/g, 'Math.E');
+
+  // Security: only allow safe chars
+  if (/[a-wyz]/i.test(s.replace(/Math\.[a-zA-Z]+/g,'').replace(/\bx\b/g,''))) {
+    throw new Error('Expresión contiene caracteres no permitidos');
+  }
+
+  return new Function('x', `'use strict'; try { return (${s}); } catch(e) { return NaN; }`);
+}
+
+function numericalDerivative(f, x, h=1e-7) {
+  return (f(x+h) - f(x-h)) / (2*h);
+}
+
+function newtonRaphson(f, x0, maxIter=200, tol=1e-10) {
+  let x = x0;
+  for (let i=0;i<maxIter;i++) {
+    const fx = f(x);
+    if (Math.abs(fx) < tol) return { root:x, iters:i, method:'Newton-Raphson' };
+    const dfx = numericalDerivative(f, x);
+    if (Math.abs(dfx) < 1e-14) break; // derivative too small
+    const xn = x - fx/dfx;
+    if (Math.abs(xn-x) < tol) return { root:xn, iters:i+1, method:'Newton-Raphson' };
+    x = xn;
+    if (!isFinite(x)) break;
+  }
+  return null;
+}
+
+function bisection(f, a, b, maxIter=1000, tol=1e-10) {
+  let fa = f(a), fb = f(b);
+  if (!isFinite(fa) || !isFinite(fb)) return null;
+  if (fa*fb > 0) return null; // no sign change
+  for (let i=0;i<maxIter;i++) {
+    const mid = (a+b)/2;
+    const fm  = f(mid);
+    if (Math.abs(fm) < tol || (b-a)/2 < tol) return { root:mid, iters:i+1, method:'Bisección' };
+    if (fa*fm < 0) { b=mid; fb=fm; } else { a=mid; fa=fm; }
+  }
+  return { root:(a+b)/2, iters:maxIter, method:'Bisección' };
+}
+
+function findAllRoots(f, a, b, steps=500) {
+  const roots = [];
+  const dx = (b-a)/steps;
+  let prev = f(a);
+  for (let i=1;i<=steps;i++) {
+    const xi = a + i*dx;
+    const fi = f(xi);
+    if (isFinite(prev) && isFinite(fi) && prev*fi <= 0) {
+      const res = bisection(f, xi-dx, xi);
+      if (res) {
+        // Avoid duplicates
+        if (!roots.some(r=>Math.abs(r.root-res.root)<1e-6)) roots.push(res);
+      }
+    }
+    prev = fi;
+  }
+  return roots;
+}
+
+function solveFree() {
+  const raw  = document.getElementById('free-eq').value.trim();
+  const seed = parseFloat(document.getElementById('free-seed').value) || 1;
+  const a    = parseFloat(document.getElementById('free-a').value) || -10;
+  const b    = parseFloat(document.getElementById('free-b').value) || 10;
+
+  let f;
+  try { f = parseEquation(raw); } catch(e) {
+    showRes('res-free', `<div class="res-row"><span class="res-val error">Error al parsear: ${e.message}</span></div>`);
+    return;
+  }
+
+  // Test function
+  const test = f(0);
+  if (isNaN(test) && isNaN(f(1)) && isNaN(f(-1))) {
+    showRes('res-free', `<div class="res-row"><span class="res-val error">No se pudo evaluar la función. Revisa la sintaxis.</span></div>`);
+    return;
+  }
+
+  let html = `<div class="det-row" style="margin-bottom:12px">f(x) = <span style="color:var(--text);font-size:11px">${raw.replace('=','−(').replace(/$/,')')}</span></div>`;
+
+  // Try Newton-Raphson from seed first
+  const nr = newtonRaphson(f, seed);
+
+  // Also scan interval for all roots
+  const allRoots = findAllRoots(f, a, b);
+
+  // Combine: if Newton found something not in allRoots, add it
+  if (nr && isFinite(nr.root)) {
+    if (!allRoots.some(r=>Math.abs(r.root-nr.root)<1e-6)) allRoots.unshift(nr);
+  }
+
+  if (!allRoots.length) {
+    // Try wider range
+    const wider = findAllRoots(f, a*10, b*10, 1000);
+    if (wider.length) {
+      html += `<div class="det-row">ℹ️ No se encontraron raíces en [${a},${b}]. Resultados en rango ampliado [${a*10},${b*10}]:</div><div class="step-sep"></div>`;
+      allRoots.push(...wider);
+    }
+  }
+
+  if (!allRoots.length) {
+    html += `<div class="res-row"><span class="res-val error">No se encontró raíz real en el intervalo [${a},${b}]. Prueba otro rango o semilla.</span></div>`;
+  } else {
+    allRoots.forEach((res,i) => {
+      const fval = f(res.root);
+      html += `<div class="res-row">
+        <span class="res-var">x${allRoots.length>1?'₁₂₃₄₅₆'[i]||i+1:''} =</span>
+        <span class="res-val approx">${fmt(res.root)}</span>
+        <span class="res-check">(${res.method}, ${res.iters} iter.) · f(x)≈${fmt(fval)}</span>
+      </div>`;
+    });
+  }
+
+  showRes('res-free', html);
+}
+
+// Enter key to solve
+document.addEventListener('keydown', e => {
+  if (e.key === 'Enter' && e.target.tagName === 'INPUT') {
+    e.preventDefault();
+    const active = document.querySelector('.panel.active');
+    if (active.id === 'panel-linear') solveLinear();
+    else if (active.id === 'panel-poly') solvePoly();
+    else solveFree();
+  }
+});
+
+// ================================================================
+// INIT
+// ================================================================
+buildPolyRow(2);
+build3x3();
+</script>
+</body>
+</html>
