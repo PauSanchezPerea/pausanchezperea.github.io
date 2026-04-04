@@ -1,0 +1,811 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9027862604686644" crossorigin="anonymous"></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Generador de Citas APA — PomodoroXP</title>
+  <meta name="description" content="Genera citas bibliográficas en formato APA 7ª edición gratis. Libros, artículos de revista y páginas web. Copia al portapapeles con un clic.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;900&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+:root {
+  --bg:        #04060d;
+  --bg2:       #070c18;
+  --bg3:       #0c1425;
+  --card:      rgba(8,14,28,0.85);
+  --border:    rgba(0,180,255,0.10);
+  --border-h:  rgba(0,212,255,0.30);
+  --focus:     #00d4ff;
+  --focus-d:   rgba(0,212,255,0.13);
+  --short:     #00ff98;
+  --long:      #b06aff;
+  --xp:        #ff7043;
+  --gold:      #ffd600;
+  --text:      #dce8f8;
+  --text-dim:  #5c78a8;
+  --text-faint:#2a3a5a;
+  --radius:    14px;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Outfit', sans-serif;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* BACKGROUND */
+.bg-grid {
+  position: fixed; inset: 0;
+  background-image:
+    linear-gradient(rgba(0,212,255,0.025) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0,212,255,0.025) 1px, transparent 1px);
+  background-size: 44px 44px;
+  pointer-events: none; z-index: 0;
+}
+.bg-orb {
+  position: fixed; pointer-events: none; z-index: 0;
+  border-radius: 50%; filter: blur(90px);
+}
+.bg-orb-1 {
+  width: 500px; height: 500px; top: -150px; left: 50%;
+  transform: translateX(-50%);
+  background: radial-gradient(circle, rgba(176,106,255,0.06) 0%, transparent 70%);
+}
+.bg-orb-2 {
+  width: 380px; height: 380px; bottom: 10%; right: -80px;
+  background: radial-gradient(circle, rgba(0,212,255,0.05) 0%, transparent 70%);
+}
+
+/* TOPBAR */
+.topbar {
+  position: sticky; top: 0; z-index: 200;
+  background: rgba(4,6,13,0.94);
+  backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--border);
+  padding: 0 24px; height: 60px;
+  display: flex; align-items: center; justify-content: space-between;
+}
+.topbar-left { display: flex; align-items: center; gap: 16px; }
+.topbar-logo {
+  font-family: 'Orbitron', monospace;
+  font-size: 15px; font-weight: 900; letter-spacing: 0.1em;
+  background: linear-gradient(135deg, var(--focus) 0%, #fff 70%);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  background-clip: text; text-decoration: none;
+}
+.topbar-sep { color: var(--text-faint); font-size: 18px; }
+.topbar-page { font-size: 11px; color: var(--text-dim); text-transform: uppercase; letter-spacing: 0.2em; font-weight: 600; }
+.topbar-back {
+  display: flex; align-items: center; gap: 7px;
+  background: var(--focus-d); border: 1px solid var(--focus);
+  color: var(--focus); padding: 7px 14px; border-radius: 9px;
+  font-family: 'Outfit', sans-serif; font-size: 12px; font-weight: 600;
+  text-decoration: none; transition: all 0.22s; letter-spacing: 0.06em;
+}
+.topbar-back:hover { background: rgba(0,212,255,0.22); box-shadow: 0 0 14px var(--focus-d); }
+
+/* PAGE */
+.page {
+  position: relative; z-index: 1;
+  max-width: 780px; margin: 0 auto;
+  padding: 40px 24px 80px;
+}
+
+/* HERO */
+.hero { margin-bottom: 32px; }
+.hero-tag {
+  font-size: 10px; color: var(--long);
+  text-transform: uppercase; letter-spacing: 0.28em;
+  font-weight: 700; margin-bottom: 12px;
+}
+.hero-title {
+  font-family: 'Orbitron', monospace;
+  font-size: clamp(20px, 4vw, 30px);
+  font-weight: 900; color: var(--text);
+  margin-bottom: 10px; line-height: 1.3;
+}
+.hero-sub { font-size: 14px; color: var(--text-dim); line-height: 1.7; }
+
+/* INFO BOX */
+.info-box {
+  background: rgba(176,106,255,0.05);
+  border: 1px solid rgba(176,106,255,0.2);
+  border-radius: 10px; padding: 12px 16px;
+  font-size: 13px; color: var(--text-dim);
+  line-height: 1.6; margin-bottom: 28px;
+}
+.info-box strong { color: var(--long); }
+
+/* FORM CARD */
+.form-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 28px;
+  backdrop-filter: blur(10px);
+  margin-bottom: 20px;
+}
+
+/* TYPE SELECTOR */
+.type-tabs {
+  display: flex; gap: 4px;
+  background: var(--bg2); border: 1px solid var(--border);
+  border-radius: 10px; padding: 4px;
+  margin-bottom: 24px;
+}
+.type-tab {
+  flex: 1; padding: 9px 10px;
+  border: 1px solid transparent; border-radius: 8px;
+  background: transparent; color: var(--text-dim);
+  font-family: 'Outfit', sans-serif; font-size: 13px; font-weight: 600;
+  cursor: pointer; transition: all 0.25s; text-align: center;
+}
+.type-tab:hover { color: var(--text); }
+.type-tab.active {
+  background: rgba(176,106,255,0.13);
+  border-color: var(--long); color: var(--long);
+  box-shadow: 0 0 12px rgba(176,106,255,0.15);
+}
+
+/* FIELD GROUPS */
+.field-group { margin-bottom: 18px; }
+.field-label {
+  font-size: 11px; color: var(--focus);
+  text-transform: uppercase; letter-spacing: 0.18em;
+  font-weight: 700; margin-bottom: 6px; display: block;
+}
+.field-hint {
+  font-size: 11px; color: var(--text-faint);
+  margin-bottom: 7px; line-height: 1.5;
+}
+.field-input {
+  width: 100%;
+  background: var(--bg2); border: 1px solid var(--border);
+  border-radius: 9px; color: var(--text);
+  font-family: 'Outfit', sans-serif; font-size: 14px;
+  padding: 10px 14px; transition: all 0.22s;
+}
+.field-input:focus {
+  outline: none; border-color: var(--long);
+  box-shadow: 0 0 10px rgba(176,106,255,0.15);
+}
+.field-input::placeholder { color: var(--text-faint); }
+
+/* Author rows */
+.authors-wrap { display: flex; flex-direction: column; gap: 8px; }
+.author-row { display: grid; grid-template-columns: 1fr 1fr 28px; gap: 8px; align-items: center; }
+.btn-del-author {
+  width: 28px; height: 28px; border-radius: 7px;
+  border: 1px solid var(--border); background: transparent;
+  color: var(--text-faint); font-size: 14px; cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  transition: all 0.2s; flex-shrink: 0;
+}
+.btn-del-author:hover { border-color: rgba(255,50,50,0.3); color: #ff6b6b; background: rgba(255,50,50,0.07); }
+.btn-add-author {
+  background: transparent; border: 1px dashed var(--border);
+  border-radius: 8px; color: var(--text-dim);
+  font-family: 'Outfit', sans-serif; font-size: 12px; font-weight: 500;
+  padding: 7px 14px; cursor: pointer; transition: all 0.22s;
+  margin-top: 4px; width: 100%;
+}
+.btn-add-author:hover { border-color: var(--long); color: var(--long); background: rgba(176,106,255,0.07); }
+
+/* Row of inputs side by side */
+.field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.field-row-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; }
+
+/* Dynamic fields */
+.dyn-fields { display: none; }
+.dyn-fields.active { display: block; }
+
+/* Divider */
+.divider {
+  height: 1px; background: var(--border); margin: 22px 0;
+}
+
+/* GENERATE BUTTON */
+.btn-generate {
+  width: 100%; padding: 14px;
+  background: linear-gradient(135deg, rgba(176,106,255,0.2), rgba(0,212,255,0.15));
+  border: 1px solid var(--long);
+  border-radius: var(--radius);
+  color: var(--text);
+  font-family: 'Orbitron', monospace;
+  font-size: 13px; font-weight: 700;
+  cursor: pointer; transition: all 0.28s;
+  letter-spacing: 0.1em;
+  box-shadow: 0 0 20px rgba(176,106,255,0.1);
+}
+.btn-generate:hover {
+  background: linear-gradient(135deg, rgba(176,106,255,0.32), rgba(0,212,255,0.22));
+  box-shadow: 0 0 30px rgba(176,106,255,0.25);
+  transform: translateY(-1px);
+}
+.btn-generate:active { transform: translateY(0); }
+
+/* RESULT CARD */
+.result-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 24px 28px;
+  backdrop-filter: blur(10px);
+  margin-bottom: 20px;
+  display: none;
+}
+.result-card.visible { display: block; animation: res-in 0.35s cubic-bezier(0.34,1.56,0.64,1); }
+@keyframes res-in {
+  from { opacity:0; transform: translateY(12px); }
+  to   { opacity:1; transform: translateY(0); }
+}
+.result-label {
+  font-size: 9px; color: var(--long);
+  text-transform: uppercase; letter-spacing: 0.24em;
+  font-weight: 700; margin-bottom: 12px;
+}
+.result-text {
+  font-size: 14px; color: var(--text);
+  line-height: 1.8;
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: 10px; padding: 16px 18px;
+  font-style: italic;
+  white-space: pre-wrap; word-break: break-word;
+  margin-bottom: 14px; min-height: 60px;
+  cursor: text; user-select: all;
+}
+.result-text em { font-style: normal; color: var(--text-dim); }
+
+.btn-copy {
+  display: flex; align-items: center; gap: 8px;
+  background: var(--focus-d); border: 1px solid var(--focus);
+  border-radius: 9px; color: var(--focus);
+  font-family: 'Outfit', sans-serif; font-size: 13px; font-weight: 600;
+  padding: 9px 18px; cursor: pointer; transition: all 0.22s;
+  letter-spacing: 0.04em;
+}
+.btn-copy:hover { background: rgba(0,212,255,0.22); box-shadow: 0 0 14px var(--focus-d); }
+.btn-copy.copied {
+  background: rgba(0,255,152,0.12); border-color: var(--short); color: var(--short);
+}
+
+/* APA FORMAT REFERENCE */
+.apa-ref {
+  background: var(--bg2); border: 1px solid var(--border);
+  border-radius: var(--radius); padding: 20px 24px; margin-bottom: 20px;
+}
+.apa-ref-title {
+  font-size: 9px; color: var(--focus);
+  text-transform: uppercase; letter-spacing: 0.22em;
+  font-weight: 700; margin-bottom: 14px;
+}
+.apa-format {
+  font-size: 12px; color: var(--text-dim);
+  line-height: 1.9; border-left: 2px solid var(--border);
+  padding-left: 14px; margin-bottom: 10px;
+}
+.apa-format:last-child { margin-bottom: 0; }
+.apa-format strong { color: var(--text); font-weight: 600; }
+.apa-format .apa-type {
+  font-size: 9px; color: var(--long);
+  text-transform: uppercase; letter-spacing: 0.16em;
+  font-weight: 700; display: block; margin-bottom: 4px;
+}
+
+/* AD */
+.ad-apa {
+  width: 100%; min-height: 90px;
+  background: rgba(0,212,255,0.02);
+  border: 1px dashed rgba(0,212,255,0.1);
+  border-radius: var(--radius); margin: 24px 0; overflow: hidden;
+}
+
+/* TOAST */
+.toast-wrap {
+  position: fixed; bottom: 24px; right: 24px;
+  z-index: 999; display: flex; flex-direction: column; gap: 8px;
+  pointer-events: none;
+}
+.toast {
+  background: var(--bg3); border: 1px solid rgba(0,255,152,0.3);
+  border-radius: 12px; padding: 11px 16px;
+  font-size: 13px; font-weight: 600; color: var(--short);
+  box-shadow: 0 6px 24px rgba(0,0,0,0.5);
+  animation: t-in 0.3s cubic-bezier(0.34,1.56,0.64,1);
+  backdrop-filter: blur(12px);
+}
+@keyframes t-in  { from { opacity:0; transform: translateX(20px); } to { opacity:1; transform: none; } }
+@keyframes t-out { from { opacity:1; } to { opacity:0; transform: translateX(20px); } }
+
+/* SCROLLBAR */
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+
+/* RESPONSIVE */
+@media (max-width: 560px) {
+  .page { padding: 28px 16px 60px; }
+  .form-card { padding: 20px 16px; }
+  .field-row, .field-row-3 { grid-template-columns: 1fr; }
+  .author-row { grid-template-columns: 1fr 1fr 28px; }
+  .topbar-page { display: none; }
+}
+@media (max-width: 400px) {
+  .author-row { grid-template-columns: 1fr; }
+  .author-row .btn-del-author { display: none; }
+}
+</style>
+</head>
+
+<body>
+<div class="bg-grid"></div>
+<div class="bg-orb bg-orb-1"></div>
+<div class="bg-orb bg-orb-2"></div>
+
+<!-- TOPBAR -->
+<nav class="topbar">
+  <div class="topbar-left">
+    <a href="index.html" class="topbar-logo">🍅 POMODOROXP</a>
+    <span class="topbar-sep">/</span>
+    <span class="topbar-page">Generador APA</span>
+  </div>
+  <a href="toolkit.html" class="topbar-back">← Toolkit</a>
+</nav>
+
+<div class="page">
+
+  <!-- HERO -->
+  <div class="hero">
+    <div class="hero-tag">📚 Calculadora Versátil</div>
+    <h1 class="hero-title">Generador de Citas APA</h1>
+    <p class="hero-sub">Genera citas bibliográficas en formato <strong style="color:var(--long)">APA 7ª edición</strong> para libros, artículos de revista y páginas web. Rellena los campos y copia el resultado con un clic.</p>
+  </div>
+
+  <!-- AD -->
+  <div class="ad-apa">
+    <ins class="adsbygoogle" style="display:block"
+      data-ad-client="ca-pub-9027862604686644"
+      data-ad-slot="auto" data-ad-format="auto"
+      data-full-width-responsive="true"></ins>
+    <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+  </div>
+
+  <!-- FORM -->
+  <div class="form-card">
+
+    <!-- TYPE TABS -->
+    <div class="type-tabs">
+      <button class="type-tab" data-type="web" onclick="setType('web')">🌐 Página Web</button>
+      <button class="type-tab" data-type="libro" onclick="setType('libro')">📖 Libro</button>
+      <button class="type-tab" data-type="articulo" onclick="setType('articulo')">📄 Artículo</button>
+    </div>
+
+    <!-- AUTORES -->
+    <div class="field-group">
+      <label class="field-label">Autor(es)</label>
+      <div class="field-hint">Introduce los apellidos e iniciales de cada autor (ej: García, J. A.)</div>
+      <div class="authors-wrap" id="authors-wrap">
+        <div class="author-row">
+          <input class="field-input" type="text" placeholder="Apellido(s)" id="aut-ap-0">
+          <input class="field-input" type="text" placeholder="Iniciales (ej: J. A.)" id="aut-in-0">
+          <button class="btn-del-author" onclick="delAuthor(0)" title="Eliminar autor" style="visibility:hidden">✕</button>
+        </div>
+      </div>
+      <button class="btn-add-author" onclick="addAuthor()">＋ Añadir otro autor</button>
+    </div>
+
+    <!-- AÑO -->
+    <div class="field-group">
+      <label class="field-label">Año de publicación</label>
+      <input class="field-input" type="number" id="field-year" placeholder="ej: 2023" min="1000" max="2099" style="max-width:160px">
+    </div>
+
+    <!-- TÍTULO -->
+    <div class="field-group">
+      <label class="field-label">Título del trabajo</label>
+      <div class="field-hint" id="title-hint">Título de la página o artículo tal como aparece en la fuente.</div>
+      <input class="field-input" type="text" id="field-title" placeholder="Título completo del trabajo">
+    </div>
+
+    <div class="divider"></div>
+
+    <!-- CAMPOS LIBRO -->
+    <div class="dyn-fields" id="fields-libro">
+      <div class="field-group">
+        <label class="field-label">Editorial</label>
+        <input class="field-input" type="text" id="field-editorial" placeholder="ej: Pearson, McGraw-Hill, Alianza Editorial">
+      </div>
+      <div class="field-row">
+        <div class="field-group">
+          <label class="field-label">Ciudad (opcional)</label>
+          <input class="field-input" type="text" id="field-ciudad" placeholder="ej: Madrid">
+        </div>
+        <div class="field-group">
+          <label class="field-label">Edición (opcional)</label>
+          <input class="field-input" type="text" id="field-edicion" placeholder="ej: 3.ª ed.">
+        </div>
+      </div>
+    </div>
+
+    <!-- CAMPOS ARTÍCULO -->
+    <div class="dyn-fields" id="fields-articulo">
+      <div class="field-group">
+        <label class="field-label">Nombre de la Revista</label>
+        <input class="field-input" type="text" id="field-revista" placeholder="ej: Revista de Psicología Educativa">
+      </div>
+      <div class="field-row-3">
+        <div class="field-group">
+          <label class="field-label">Volumen</label>
+          <input class="field-input" type="text" id="field-vol" placeholder="ej: 12">
+        </div>
+        <div class="field-group">
+          <label class="field-label">Número</label>
+          <input class="field-input" type="text" id="field-num" placeholder="ej: 3">
+        </div>
+        <div class="field-group">
+          <label class="field-label">Páginas</label>
+          <input class="field-input" type="text" id="field-pags" placeholder="ej: 45-67">
+        </div>
+      </div>
+      <div class="field-group">
+        <label class="field-label">DOI o URL (opcional)</label>
+        <input class="field-input" type="text" id="field-doi" placeholder="ej: https://doi.org/10.xxxx/xxxxx">
+      </div>
+    </div>
+
+    <!-- CAMPOS WEB -->
+    <div class="dyn-fields" id="fields-web">
+      <div class="field-group">
+        <label class="field-label">Nombre del sitio web</label>
+        <input class="field-input" type="text" id="field-sitio" placeholder="ej: Wikipedia, BBC Mundo, Ministerio de Educación">
+      </div>
+      <div class="field-group">
+        <label class="field-label">URL</label>
+        <input class="field-input" type="url" id="field-url" placeholder="https://www.ejemplo.com/pagina">
+      </div>
+      <div class="field-group">
+        <label class="field-label">Fecha de acceso (opcional)</label>
+        <input class="field-input" type="date" id="field-acceso">
+      </div>
+    </div>
+
+    <button class="btn-generate" onclick="generateCita()">⚡ GENERAR CITA APA</button>
+
+  </div><!-- /.form-card -->
+
+  <!-- RESULT -->
+  <div class="result-card" id="result-card">
+    <div class="result-label">📋 Resultado — APA 7ª Edición</div>
+    <div class="result-text" id="result-text"></div>
+    <button class="btn-copy" id="btn-copy" onclick="copyCita()">
+      <span id="copy-icon">📋</span>
+      <span id="copy-label">Copiar al portapapeles</span>
+    </button>
+  </div>
+
+  <!-- AD -->
+  <div class="ad-apa">
+    <ins class="adsbygoogle" style="display:block"
+      data-ad-client="ca-pub-9027862604686644"
+      data-ad-slot="auto" data-ad-format="auto"
+      data-full-width-responsive="true"></ins>
+    <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+  </div>
+
+  <!-- APA FORMAT REFERENCE -->
+  <div class="apa-ref">
+    <div class="apa-ref-title">📐 Formatos APA 7 de referencia</div>
+
+    <div class="apa-format">
+      <span class="apa-type">🌐 Página Web</span>
+      <strong>Apellido, A. A.</strong> (Año, día de mes). <em>Título de la página.</em> Nombre del sitio web. URL
+    </div>
+
+    <div class="apa-format">
+      <span class="apa-type">📖 Libro</span>
+      <strong>Apellido, A. A., &amp; Apellido, B. B.</strong> (Año). <em>Título del libro</em> (X.ª ed.). Editorial.
+    </div>
+
+    <div class="apa-format">
+      <span class="apa-type">📄 Artículo de Revista</span>
+      <strong>Apellido, A. A.</strong> (Año). Título del artículo. <em>Nombre de la Revista, V</em>(N), pp–pp. https://doi.org/xxxxx
+    </div>
+  </div>
+
+  <!-- INFO BOX -->
+  <div class="info-box">
+    <strong>Nota:</strong> Esta herramienta genera citas siguiendo las directrices de la <strong>APA Publication Manual, 7.ª edición (2020)</strong>. Siempre revisa el resultado antes de entregarlo, ya que algunos casos especiales (múltiples autores corporativos, capítulos de libro, etc.) pueden requerir ajustes manuales.
+  </div>
+
+  <!-- FOOTER -->
+  <div style="text-align:center;padding:24px 0 0;border-top:1px solid var(--border)">
+    <a href="toolkit.html" style="color:var(--text-faint);font-size:11px;text-decoration:none;margin:0 10px">← Volver al Toolkit</a>
+    <a href="index.html"   style="color:var(--text-faint);font-size:11px;text-decoration:none;margin:0 10px">⏱ Timer</a>
+    <a href="privacy.html" style="color:var(--text-faint);font-size:11px;text-decoration:none;margin:0 10px">Privacidad</a>
+  </div>
+
+</div><!-- /.page -->
+
+<!-- Toast container -->
+<div class="toast-wrap" id="toast-wrap"></div>
+
+<script>
+'use strict';
+
+// ================================================================
+// STATE
+// ================================================================
+let currentType = 'web';
+let authorCount = 1;
+
+// ================================================================
+// TYPE TABS
+// ================================================================
+function setType(type) {
+  currentType = type;
+
+  // Update tabs
+  document.querySelectorAll('.type-tab').forEach(t => {
+    t.classList.toggle('active', t.dataset.type === type);
+  });
+
+  // Show/hide dynamic fields
+  document.querySelectorAll('.dyn-fields').forEach(f => f.classList.remove('active'));
+  document.getElementById('fields-' + type)?.classList.add('active');
+
+  // Update title hint
+  const hints = {
+    web:      'Título de la página tal como aparece en el sitio web.',
+    libro:    'Título completo del libro, tal como aparece en la portada.',
+    articulo: 'Título del artículo tal como aparece en la revista. No uses cursiva ni comillas.'
+  };
+  document.getElementById('title-hint').textContent = hints[type] || '';
+
+  // Clear result
+  hideResult();
+}
+
+// Init with web tab active
+setType('web');
+
+// ================================================================
+// AUTHORS
+// ================================================================
+function addAuthor() {
+  authorCount++;
+  const idx  = authorCount - 1;
+  const wrap = document.getElementById('authors-wrap');
+  const row  = document.createElement('div');
+  row.className = 'author-row';
+  row.id = `author-row-${idx}`;
+  row.innerHTML = `
+    <input class="field-input" type="text" placeholder="Apellido(s)" id="aut-ap-${idx}">
+    <input class="field-input" type="text" placeholder="Iniciales (ej: M.)" id="aut-in-${idx}">
+    <button class="btn-del-author" onclick="delAuthor(${idx})" title="Eliminar">✕</button>`;
+  wrap.appendChild(row);
+  updateFirstDelBtn();
+  row.querySelector('input').focus();
+}
+
+function delAuthor(idx) {
+  const row = document.getElementById(`author-row-${idx}`);
+  if (row) row.remove();
+  updateFirstDelBtn();
+}
+
+function updateFirstDelBtn() {
+  const rows = document.querySelectorAll('.author-row');
+  rows.forEach((r, i) => {
+    const btn = r.querySelector('.btn-del-author');
+    if (btn) btn.style.visibility = rows.length > 1 ? 'visible' : 'hidden';
+  });
+}
+
+function getAuthors() {
+  const rows = document.querySelectorAll('.author-row');
+  const authors = [];
+  rows.forEach(row => {
+    const inputs = row.querySelectorAll('.field-input');
+    const apellido = inputs[0]?.value.trim() || '';
+    const iniciales = inputs[1]?.value.trim() || '';
+    if (apellido) authors.push({ apellido, iniciales });
+  });
+  return authors;
+}
+
+// ================================================================
+// FORMAT AUTHORS — APA 7
+// ================================================================
+function formatAuthors(authors) {
+  if (!authors.length) return 'Autor desconocido';
+
+  const formatted = authors.map(a => {
+    const ini = a.iniciales ? `, ${a.iniciales}` : '';
+    return `${a.apellido}${ini}`;
+  });
+
+  if (formatted.length === 1) return formatted[0];
+  if (formatted.length <= 20) {
+    const last = formatted.pop();
+    return `${formatted.join(', ')}, & ${last}`;
+  }
+  // Más de 20 autores: primeros 19 + ... + último
+  const first19 = formatted.slice(0, 19).join(', ');
+  const last    = formatted[formatted.length - 1];
+  return `${first19}, . . . ${last}`;
+}
+
+// ================================================================
+// FORMAT DATE — APA access date
+// ================================================================
+function formatAccessDate(dateStr) {
+  if (!dateStr) return '';
+  const d = new Date(dateStr + 'T12:00:00');
+  const months = ['enero','febrero','marzo','abril','mayo','junio',
+                  'julio','agosto','septiembre','octubre','noviembre','diciembre'];
+  return `${d.getDate()} de ${months[d.getMonth()]} de ${d.getFullYear()}`;
+}
+
+// ================================================================
+// GENERATE CITATION
+// ================================================================
+function generateCita() {
+  const authors  = getAuthors();
+  const year     = document.getElementById('field-year').value.trim();
+  const title    = document.getElementById('field-title').value.trim();
+
+  // Validate minimum fields
+  if (!authors.length || !authors[0].apellido) {
+    showToast('⚠️ Introduce al menos un autor');
+    document.querySelector('#authors-wrap .field-input').focus();
+    return;
+  }
+  if (!year) {
+    showToast('⚠️ Introduce el año de publicación');
+    document.getElementById('field-year').focus();
+    return;
+  }
+  if (!title) {
+    showToast('⚠️ Introduce el título del trabajo');
+    document.getElementById('field-title').focus();
+    return;
+  }
+
+  const authStr = formatAuthors(authors);
+  let cita = '';
+
+  if (currentType === 'web') {
+    const sitio  = document.getElementById('field-sitio').value.trim();
+    const url    = document.getElementById('field-url').value.trim();
+    const acceso = document.getElementById('field-acceso').value;
+
+    // Apellido, A. A. (Año). Título de la página. Nombre del sitio. URL
+    cita = `${authStr} (${year}). ${title}.`;
+    if (sitio) cita += ` ${sitio}.`;
+    if (url)   cita += ` ${url}`;
+    if (acceso) cita += `\n(Recuperado el ${formatAccessDate(acceso)})`;
+
+  } else if (currentType === 'libro') {
+    const editorial = document.getElementById('field-editorial').value.trim();
+    const edicion   = document.getElementById('field-edicion').value.trim();
+
+    // Apellido, A. A. (Año). Título del libro (X.ª ed.). Editorial.
+    cita = `${authStr} (${year}). ${title}`;
+    if (edicion)   cita += ` (${edicion})`;
+    cita += '.';
+    if (editorial) cita += ` ${editorial}.`;
+
+  } else if (currentType === 'articulo') {
+    const revista = document.getElementById('field-revista').value.trim();
+    const vol     = document.getElementById('field-vol').value.trim();
+    const num     = document.getElementById('field-num').value.trim();
+    const pags    = document.getElementById('field-pags').value.trim();
+    const doi     = document.getElementById('field-doi').value.trim();
+
+    if (!revista) {
+      showToast('⚠️ Introduce el nombre de la revista');
+      document.getElementById('field-revista').focus();
+      return;
+    }
+
+    // Apellido, A. A. (Año). Título del artículo. Nombre de la Revista, V(N), pp-pp. DOI
+    cita = `${authStr} (${year}). ${title}. ${revista}`;
+    if (vol) {
+      cita += `, ${vol}`;
+      if (num) cita += `(${num})`;
+    }
+    if (pags) cita += `, ${pags}`;
+    cita += '.';
+    if (doi) cita += ` ${doi}`;
+  }
+
+  showResult(cita.trim());
+}
+
+// ================================================================
+// RESULT UI
+// ================================================================
+function showResult(cita) {
+  const card = document.getElementById('result-card');
+  const text = document.getElementById('result-text');
+  text.textContent = cita;
+  card.classList.add('visible');
+  card.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  // Reset copy button
+  resetCopyBtn();
+}
+
+function hideResult() {
+  document.getElementById('result-card').classList.remove('visible');
+}
+
+function copyCita() {
+  const text = document.getElementById('result-text').textContent;
+  if (!text) return;
+
+  navigator.clipboard.writeText(text).then(() => {
+    const btn   = document.getElementById('btn-copy');
+    const icon  = document.getElementById('copy-icon');
+    const label = document.getElementById('copy-label');
+
+    btn.classList.add('copied');
+    icon.textContent  = '✓';
+    label.textContent = '¡Copiado!';
+
+    showToast('✓ Cita copiada al portapapeles');
+
+    setTimeout(resetCopyBtn, 2200);
+  }).catch(() => {
+    // Fallback para navegadores sin soporte
+    const range = document.createRange();
+    range.selectNode(document.getElementById('result-text'));
+    window.getSelection().removeAllRanges();
+    window.getSelection().addRange(range);
+    showToast('Selecciona el texto y copia con Ctrl+C');
+  });
+}
+
+function resetCopyBtn() {
+  const btn   = document.getElementById('btn-copy');
+  const icon  = document.getElementById('copy-icon');
+  const label = document.getElementById('copy-label');
+  btn.classList.remove('copied');
+  icon.textContent  = '📋';
+  label.textContent = 'Copiar al portapapeles';
+}
+
+// ================================================================
+// TOAST
+// ================================================================
+function showToast(msg) {
+  const wrap = document.getElementById('toast-wrap');
+  const el   = document.createElement('div');
+  el.className   = 'toast';
+  el.textContent = msg;
+  wrap.appendChild(el);
+  setTimeout(() => {
+    el.style.animation = 't-out 0.3s ease forwards';
+    setTimeout(() => el.remove(), 320);
+  }, 2400);
+}
+
+// ================================================================
+// ENTER KEY — genera la cita
+// ================================================================
+document.addEventListener('keydown', e => {
+  if (e.key === 'Enter' && e.target.tagName === 'INPUT' && !e.shiftKey) {
+    e.preventDefault();
+    generateCita();
+  }
+});
+</script>
+</body>
+</html>
