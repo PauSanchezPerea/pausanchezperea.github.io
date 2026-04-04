@@ -727,6 +727,49 @@ body[data-mode="long"]  .btn-play { border-color: var(--long);  background: var(
 }
 .toolkit-btn:hover .toolkit-btn-arrow { transform: translateX(6px); }
 
+/* ---- COOKIE BANNER ---- */
+#cookie-banner {
+  position: fixed; bottom: 0; left: 0; right: 0;
+  z-index: 9999;
+  background: rgba(7,12,24,0.97);
+  border-top: 1px solid rgba(0,212,255,0.2);
+  backdrop-filter: blur(18px);
+  padding: 18px 24px;
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 16px; flex-wrap: wrap;
+  box-shadow: 0 -8px 32px rgba(0,0,0,0.5);
+  transform: translateY(0);
+  transition: transform 0.4s cubic-bezier(0.4,0,0.2,1);
+}
+#cookie-banner.hidden {
+  transform: translateY(110%);
+  pointer-events: none;
+}
+.cookie-text {
+  flex: 1; min-width: 240px;
+  font-size: 13px; color: var(--text-dim); line-height: 1.6;
+}
+.cookie-text strong { color: var(--text); }
+.cookie-text a { color: var(--focus); text-decoration: none; }
+.cookie-text a:hover { text-decoration: underline; }
+.cookie-btns { display: flex; gap: 8px; flex-shrink: 0; flex-wrap: wrap; }
+.btn-cookie-accept {
+  padding: 9px 20px; border-radius: 9px;
+  background: var(--focus-d); border: 1px solid var(--focus);
+  color: var(--focus); font-family: 'Outfit', sans-serif;
+  font-size: 13px; font-weight: 700; cursor: pointer;
+  transition: all 0.22s; letter-spacing: 0.04em; white-space: nowrap;
+}
+.btn-cookie-accept:hover { background: rgba(0,212,255,0.22); box-shadow: 0 0 14px var(--focus-d); }
+.btn-cookie-reject {
+  padding: 9px 16px; border-radius: 9px;
+  background: transparent; border: 1px solid var(--border);
+  color: var(--text-dim); font-family: 'Outfit', sans-serif;
+  font-size: 13px; font-weight: 500; cursor: pointer;
+  transition: all 0.22s; white-space: nowrap;
+}
+.btn-cookie-reject:hover { border-color: var(--border-h); color: var(--text); }
+
 /* ---- FOOTER ---- */
 .app-footer {
   text-align: center; padding: 20px 0 0;
@@ -1996,6 +2039,37 @@ console.log('%cMotor de Estudio — AdSense + Gráfica semanal ⚡','color:#5c78
 
 <!-- Firebase -->
 <script type="module" src="firebase.js"></script>
+
+<!-- ====== BANNER DE COOKIES ====== -->
+<div id="cookie-banner">
+  <div class="cookie-text">
+    🍪 <strong>Usamos cookies</strong> propias y de terceros (Google AdSense, Firebase, Analytics) para mejorar tu experiencia y mostrar publicidad relevante. Puedes aceptar todas o rechazar las no esenciales. <a href="cookies.html">Más información</a>
+  </div>
+  <div class="cookie-btns">
+    <button class="btn-cookie-reject" onclick="cookieChoice(false)">Solo esenciales</button>
+    <button class="btn-cookie-accept" onclick="cookieChoice(true)">✓ Aceptar todas</button>
+  </div>
+</div>
+
+<script>
+(function() {
+  const COOKIE_KEY = 'pxp_cookie_consent';
+  const consent    = localStorage.getItem(COOKIE_KEY);
+  const banner     = document.getElementById('cookie-banner');
+
+  // Si ya decidió, ocultamos de inmediato
+  if (consent !== null) banner.classList.add('hidden');
+
+  window.cookieChoice = function(accepted) {
+    localStorage.setItem(COOKIE_KEY, accepted ? 'accepted' : 'rejected');
+    banner.classList.add('hidden');
+    // Si rechaza, intentamos desactivar AdSense personalizado
+    if (!accepted && window.googletag) {
+      try { googletag.pubads().setRequestNonPersonalizedAds(1); } catch(e){}
+    }
+  };
+})();
+</script>
 
 </body>
 </html>
