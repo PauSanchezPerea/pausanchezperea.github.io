@@ -1,0 +1,537 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9027862604686644" crossorigin="anonymous"></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Multiplicación de Matrices — PomodoroXP</title>
+  <meta name="description" content="Multiplica matrices de hasta 7×7. Introduce los coeficientes, verifica compatibilidad y obtén la matriz resultado paso a paso. Herramienta gratuita para estudiantes.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;900&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+:root {
+  --bg:        #04060d;
+  --bg2:       #070c18;
+  --bg3:       #0c1425;
+  --card:      rgba(8,14,28,0.85);
+  --border:    rgba(0,180,255,0.10);
+  --border-h:  rgba(0,212,255,0.30);
+  --focus:     #00d4ff;
+  --focus-d:   rgba(0,212,255,0.13);
+  --short:     #00ff98;
+  --short-d:   rgba(0,255,152,0.12);
+  --long:      #b06aff;
+  --long-d:    rgba(176,106,255,0.12);
+  --xp:        #ff7043;
+  --gold:      #ffd600;
+  --text:      #dce8f8;
+  --text-dim:  #5c78a8;
+  --text-faint:#2a3a5a;
+  --radius:    14px;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body { background: var(--bg); color: var(--text); font-family: 'Outfit', sans-serif; min-height: 100vh; overflow-x: hidden; }
+
+/* BG */
+.bg-grid { position: fixed; inset: 0; background-image: linear-gradient(rgba(0,212,255,0.025) 1px, transparent 1px), linear-gradient(90deg, rgba(0,212,255,0.025) 1px, transparent 1px); background-size: 44px 44px; pointer-events: none; z-index: 0; }
+.bg-orb { position: fixed; pointer-events: none; z-index: 0; border-radius: 50%; filter: blur(90px); }
+.bg-orb-1 { width: 500px; height: 500px; top: -150px; left: 50%; transform: translateX(-50%); background: radial-gradient(circle, rgba(176,106,255,0.07) 0%, transparent 70%); }
+.bg-orb-2 { width: 380px; height: 380px; bottom: 10%; right: -80px; background: radial-gradient(circle, rgba(0,212,255,0.05) 0%, transparent 70%); }
+
+/* TOPBAR */
+.topbar { position: sticky; top: 0; z-index: 200; background: rgba(4,6,13,0.94); backdrop-filter: blur(16px); border-bottom: 1px solid var(--border); padding: 0 24px; height: 60px; display: flex; align-items: center; justify-content: space-between; }
+.topbar-left { display: flex; align-items: center; gap: 16px; }
+.topbar-logo { font-family: 'Orbitron', monospace; font-size: 15px; font-weight: 900; letter-spacing: 0.1em; background: linear-gradient(135deg, var(--focus) 0%, #fff 70%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; text-decoration: none; }
+.topbar-sep { color: var(--text-faint); font-size: 18px; }
+.topbar-page { font-size: 11px; color: var(--text-dim); text-transform: uppercase; letter-spacing: 0.2em; font-weight: 600; }
+.topbar-back { display: flex; align-items: center; gap: 7px; background: var(--focus-d); border: 1px solid var(--focus); color: var(--focus); padding: 7px 14px; border-radius: 9px; font-family: 'Outfit', sans-serif; font-size: 12px; font-weight: 600; text-decoration: none; transition: all 0.22s; letter-spacing: 0.06em; }
+.topbar-back:hover { background: rgba(0,212,255,0.22); box-shadow: 0 0 14px var(--focus-d); }
+
+/* PAGE */
+.page { position: relative; z-index: 1; max-width: 900px; margin: 0 auto; padding: 40px 24px 80px; }
+
+/* HERO */
+.hero { margin-bottom: 28px; }
+.hero-tag { font-size: 10px; color: var(--long); text-transform: uppercase; letter-spacing: 0.28em; font-weight: 700; margin-bottom: 10px; }
+.hero-title { font-family: 'Orbitron', monospace; font-size: clamp(20px,4vw,30px); font-weight: 900; color: var(--text); margin-bottom: 10px; line-height: 1.3; }
+.hero-sub { font-size: 14px; color: var(--text-dim); line-height: 1.7; }
+
+/* CARD */
+.card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 24px 28px; backdrop-filter: blur(10px); margin-bottom: 18px; }
+.card-title { font-size: 9px; color: var(--long); text-transform: uppercase; letter-spacing: 0.22em; font-weight: 700; margin-bottom: 18px; }
+
+/* SIZE SELECTORS */
+.matrices-row {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  gap: 16px; align-items: start;
+}
+.matrix-block { display: flex; flex-direction: column; gap: 14px; }
+.matrix-header {
+  display: flex; align-items: center; justify-content: space-between; gap: 10px; flex-wrap: wrap;
+}
+.matrix-name {
+  font-family: 'Orbitron', monospace; font-size: 16px; font-weight: 900;
+  color: var(--long); letter-spacing: 0.12em;
+}
+.size-selectors { display: flex; align-items: center; gap: 6px; }
+.size-label { font-size: 11px; color: var(--text-dim); }
+.size-select {
+  background: var(--bg2); border: 1px solid var(--border);
+  border-radius: 8px; color: var(--text);
+  font-family: 'Orbitron', monospace; font-size: 13px; font-weight: 700;
+  padding: 5px 8px; cursor: pointer; transition: border-color 0.2s;
+  width: 52px; text-align: center;
+}
+.size-select:focus { outline: none; border-color: var(--long); }
+.size-sep { color: var(--text-dim); font-size: 13px; }
+
+/* MATRIX GRID */
+.matrix-grid-wrap {
+  overflow-x: auto; padding: 12px 16px;
+  background: var(--bg2); border: 1px solid var(--border);
+  border-radius: 12px; position: relative;
+}
+/* bracket decoration */
+.matrix-grid-wrap::before,
+.matrix-grid-wrap::after {
+  content: ''; position: absolute; top: 8px; bottom: 8px; width: 4px;
+  border: 2px solid rgba(176,106,255,0.4); border-radius: 2px;
+}
+.matrix-grid-wrap::before { left: 4px;  border-right: none; }
+.matrix-grid-wrap::after  { right: 4px; border-left: none;  }
+
+.matrix-grid {
+  display: inline-grid; gap: 6px;
+  margin: 0 auto;
+}
+.m-cell {
+  width: 52px; height: 42px;
+  background: var(--bg3); border: 1px solid var(--border);
+  border-radius: 8px; color: var(--text);
+  font-family: 'Orbitron', monospace; font-size: 14px; font-weight: 700;
+  text-align: center; padding: 0 4px;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+.m-cell:focus { outline: none; border-color: var(--long); box-shadow: 0 0 8px var(--long-d); }
+.m-cell.result-cell {
+  background: rgba(176,106,255,0.08); border-color: rgba(176,106,255,0.3);
+  color: var(--long); cursor: default;
+}
+.m-cell.result-cell.highlight {
+  animation: cell-pop 0.4s cubic-bezier(0.34,1.56,0.64,1);
+}
+@keyframes cell-pop {
+  from { transform: scale(0.7); opacity: 0.3; }
+  to   { transform: scale(1);   opacity: 1; }
+}
+
+/* OPERATOR */
+.operator-col {
+  display: flex; flex-direction: column; align-items: center;
+  justify-content: center; padding-top: 48px;
+}
+.op-symbol {
+  font-family: 'Orbitron', monospace; font-size: 32px; font-weight: 900;
+  color: var(--focus); text-shadow: 0 0 16px var(--focus-d);
+}
+.compat-badge {
+  margin-top: 10px; font-size: 10px; font-weight: 700;
+  padding: 4px 10px; border-radius: 20px;
+  letter-spacing: 0.1em; text-transform: uppercase; white-space: nowrap;
+}
+.compat-badge.ok  { background: var(--short-d); color: var(--short); border: 1px solid rgba(0,255,152,0.3); }
+.compat-badge.err { background: rgba(255,50,50,0.1); color: #ff6b6b; border: 1px solid rgba(255,50,50,0.3); }
+
+/* SOLVE BTN */
+.btn-calc {
+  width: 100%; padding: 14px;
+  background: var(--long-d); border: 1px solid var(--long);
+  border-radius: var(--radius); color: var(--long);
+  font-family: 'Orbitron', monospace; font-size: 12px; font-weight: 700;
+  cursor: pointer; transition: all 0.28s; letter-spacing: 0.1em;
+  box-shadow: 0 0 18px var(--long-d); margin-top: 4px;
+}
+.btn-calc:hover { background: rgba(176,106,255,0.22); box-shadow: 0 0 30px rgba(176,106,255,0.25); transform: translateY(-1px); }
+.btn-calc:active { transform: none; }
+.btn-calc:disabled { opacity: 0.35; cursor: not-allowed; transform: none; box-shadow: none; }
+
+/* RESULT SECTION */
+.result-section { display: none; }
+.result-section.visible { display: block; animation: fade-in 0.4s ease; }
+@keyframes fade-in { from { opacity:0; transform: translateY(10px); } to { opacity:1; transform: none; } }
+
+.result-header {
+  display: flex; align-items: center; gap: 12px;
+  margin-bottom: 16px;
+}
+.result-name {
+  font-family: 'Orbitron', monospace; font-size: 15px; font-weight: 900;
+  color: var(--short);
+}
+.result-dims {
+  font-size: 11px; color: var(--text-dim);
+  background: var(--bg2); border: 1px solid var(--border);
+  border-radius: 6px; padding: 3px 10px;
+  font-family: 'Orbitron', monospace;
+}
+
+/* STEPS */
+.steps-toggle {
+  background: transparent; border: 1px dashed var(--border);
+  border-radius: 8px; color: var(--text-dim);
+  font-family: 'Outfit', sans-serif; font-size: 12px;
+  padding: 6px 14px; cursor: pointer; transition: all 0.2s; margin-top: 14px;
+}
+.steps-toggle:hover { border-color: var(--long); color: var(--long); }
+.steps-box {
+  background: var(--bg2); border: 1px solid var(--border);
+  border-radius: 10px; padding: 16px; margin-top: 10px;
+  display: none; max-height: 320px; overflow-y: auto;
+}
+.steps-box.open { display: block; }
+.step-line {
+  font-size: 12px; color: var(--text-dim); line-height: 1.9;
+  font-family: 'Orbitron', monospace;
+}
+.step-line strong { color: var(--text); }
+.step-sep { height: 1px; background: var(--border); margin: 8px 0; }
+
+/* ERROR BOX */
+.error-box {
+  background: rgba(255,50,50,0.07); border: 1px solid rgba(255,50,50,0.3);
+  border-radius: 10px; padding: 14px 18px;
+  font-size: 13px; color: #ff6b6b; line-height: 1.6;
+  display: none;
+}
+.error-box.visible { display: block; }
+
+/* SEO */
+.seo-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 22px 26px; backdrop-filter: blur(10px); margin-bottom: 20px; }
+.seo-tag { font-size: 9px; color: var(--focus); text-transform: uppercase; letter-spacing: 0.22em; font-weight: 700; margin-bottom: 10px; }
+.seo-p { font-size: 14px; color: var(--text-dim); line-height: 1.75; margin-bottom: 11px; }
+.seo-p:last-child { margin-bottom: 0; }
+.seo-p strong { color: var(--text); }
+
+/* AD */
+.ad-m { width: 100%; min-height: 90px; background: rgba(0,212,255,0.02); border: 1px dashed rgba(0,212,255,0.1); border-radius: var(--radius); margin: 22px 0; overflow: hidden; }
+
+/* SCROLLBAR */
+::-webkit-scrollbar { width: 4px; height: 4px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+
+/* RESPONSIVE */
+@media (max-width: 660px) {
+  .page { padding: 26px 12px 60px; }
+  .topbar-page { display: none; }
+  .matrices-row { grid-template-columns: 1fr; gap: 20px; }
+  .operator-col { flex-direction: row; padding-top: 0; justify-content: center; gap: 10px; }
+  .m-cell { width: 42px; height: 36px; font-size: 12px; }
+  .card { padding: 18px 14px; }
+}
+</style>
+</head>
+
+<body>
+<div class="bg-grid"></div>
+<div class="bg-orb bg-orb-1"></div>
+<div class="bg-orb bg-orb-2"></div>
+
+<nav class="topbar">
+  <div class="topbar-left">
+    <a href="index.html" class="topbar-logo">🍅 POMODOROXP</a>
+    <span class="topbar-sep">/</span>
+    <span class="topbar-page">Multiplicación de Matrices</span>
+  </div>
+  <a href="toolkit.html" class="topbar-back">← Toolkit</a>
+</nav>
+
+<div class="page">
+
+  <div class="hero">
+    <div class="hero-tag">🔢 Calculadora Versátil</div>
+    <h1 class="hero-title">Multiplicación de Matrices</h1>
+    <p class="hero-sub">Define el tamaño de las dos matrices (hasta 7×7), introduce sus coeficientes y obtén A × B al instante con el desarrollo paso a paso de cada elemento.</p>
+  </div>
+
+  <!-- AD -->
+  <div class="ad-m">
+    <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-9027862604686644" data-ad-slot="auto" data-ad-format="auto" data-full-width-responsive="true"></ins>
+    <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+  </div>
+
+  <!-- INPUT CARD -->
+  <div class="card">
+    <div class="card-title">📐 Introduce las matrices</div>
+
+    <div class="matrices-row">
+
+      <!-- MATRIX A -->
+      <div class="matrix-block">
+        <div class="matrix-header">
+          <span class="matrix-name">Matriz A</span>
+          <div class="size-selectors">
+            <span class="size-label">Filas</span>
+            <select class="size-select" id="a-rows" onchange="rebuildAll()">
+              <option>1</option><option>2</option><option selected>3</option>
+              <option>4</option><option>5</option><option>6</option><option>7</option>
+            </select>
+            <span class="size-sep">×</span>
+            <span class="size-label">Cols</span>
+            <select class="size-select" id="a-cols" onchange="rebuildAll()">
+              <option>1</option><option>2</option><option selected>3</option>
+              <option>4</option><option>5</option><option>6</option><option>7</option>
+            </select>
+          </div>
+        </div>
+        <div class="matrix-grid-wrap" id="grid-a"></div>
+      </div>
+
+      <!-- OPERATOR -->
+      <div class="operator-col">
+        <div class="op-symbol">×</div>
+        <div class="compat-badge ok" id="compat-badge">✓ Compatible</div>
+      </div>
+
+      <!-- MATRIX B -->
+      <div class="matrix-block">
+        <div class="matrix-header">
+          <span class="matrix-name">Matriz B</span>
+          <div class="size-selectors">
+            <span class="size-label">Filas</span>
+            <select class="size-select" id="b-rows" onchange="rebuildAll()">
+              <option>1</option><option>2</option><option selected>3</option>
+              <option>4</option><option>5</option><option>6</option><option>7</option>
+            </select>
+            <span class="size-sep">×</span>
+            <span class="size-label">Cols</span>
+            <select class="size-select" id="b-cols" onchange="rebuildAll()">
+              <option>1</option><option>2</option><option selected>3</option>
+              <option>4</option><option>5</option><option>6</option><option>7</option>
+            </select>
+          </div>
+        </div>
+        <div class="matrix-grid-wrap" id="grid-b"></div>
+      </div>
+
+    </div>
+
+    <!-- ERROR -->
+    <div class="error-box" id="error-box">
+      ✕ Las matrices no son compatibles: el número de <strong>columnas de A</strong> debe ser igual al número de <strong>filas de B</strong>.
+    </div>
+
+    <button class="btn-calc" id="btn-calc" onclick="calculate()">⚡ CALCULAR A × B</button>
+  </div>
+
+  <!-- RESULT SECTION -->
+  <div class="result-section" id="result-section">
+    <div class="card">
+      <div class="card-title">✓ Resultado</div>
+      <div class="result-header">
+        <span class="result-name">C = A × B</span>
+        <span class="result-dims" id="result-dims">— × —</span>
+      </div>
+      <div class="matrix-grid-wrap" id="grid-result" style="display:inline-block;min-width:80px"></div>
+      <button class="steps-toggle" id="btn-steps" onclick="toggleSteps()">▼ Ver desarrollo paso a paso</button>
+      <div class="steps-box" id="steps-box"></div>
+    </div>
+  </div>
+
+  <!-- AD -->
+  <div class="ad-m">
+    <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-9027862604686644" data-ad-slot="auto" data-ad-format="auto" data-full-width-responsive="true"></ins>
+    <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+  </div>
+
+  <!-- SEO -->
+  <div class="seo-card">
+    <div class="seo-tag">📐 Reglas matemáticas de la multiplicación de matrices</div>
+    <p class="seo-p">La multiplicación de matrices es una operación fundamental en álgebra lineal con una regla de compatibilidad estricta: <strong>solo se puede multiplicar A × B si el número de columnas de A es igual al número de filas de B</strong>. Si A tiene dimensión m×n y B tiene dimensión n×p, el resultado C tendrá dimensión m×p. Esto significa que la multiplicación de matrices no es conmutativa en general: A×B ≠ B×A, e incluso puede darse el caso de que A×B exista pero B×A no.</p>
+    <p class="seo-p">Cada elemento <strong>C[i][j]</strong> de la matriz resultado se calcula como el <strong>producto escalar</strong> de la fila i de A por la columna j de B: se multiplican los elementos correspondientes y se suman todos los productos. Formalmente: C[i][j] = Σ A[i][k] × B[k][j] para k de 1 a n. Esta operación aparece constantemente en informática (transformaciones 3D, redes neuronales), física (mecánica cuántica, relatividad) e ingeniería (sistemas de control, circuitos), lo que la convierte en una de las operaciones matemáticas más importantes que aprenderás en tu carrera.</p>
+  </div>
+
+  <div style="text-align:center;padding:24px 0 0;border-top:1px solid var(--border)">
+    <a href="toolkit.html" style="color:var(--text-faint);font-size:11px;text-decoration:none;margin:0 10px">← Volver al Toolkit</a>
+    <a href="index.html"   style="color:var(--text-faint);font-size:11px;text-decoration:none;margin:0 10px">⏱ Timer</a>
+    <a href="privacy.html" style="color:var(--text-faint);font-size:11px;text-decoration:none;margin:0 10px">Privacidad</a>
+  </div>
+
+</div>
+
+<script>
+'use strict';
+
+// ================================================================
+// HELPERS
+// ================================================================
+function getSize(id) { return parseInt(document.getElementById(id).value); }
+
+function fmt(n) {
+  if (!isFinite(n)) return '?';
+  const f = parseFloat(n.toPrecision(10));
+  return f % 1 === 0 ? String(f) : String(parseFloat(f.toFixed(6)));
+}
+
+function getMatrix(prefix, rows, cols) {
+  const M = [];
+  for (let i = 0; i < rows; i++) {
+    M.push([]);
+    for (let j = 0; j < cols; j++) {
+      M[i].push(parseFloat(document.getElementById(`${prefix}-${i}-${j}`)?.value) || 0);
+    }
+  }
+  return M;
+}
+
+// ================================================================
+// BUILD GRIDS
+// ================================================================
+function buildGrid(containerId, prefix, rows, cols, readOnly = false) {
+  const wrap = document.getElementById(containerId);
+  const grid = document.createElement('div');
+  grid.className = 'matrix-grid';
+  grid.style.gridTemplateColumns = `repeat(${cols}, 1fr)`;
+
+  for (let i = 0; i < rows; i++) {
+    for (let j = 0; j < cols; j++) {
+      const cell = document.createElement('input');
+      cell.type  = 'number';
+      cell.step  = 'any';
+      cell.id    = `${prefix}-${i}-${j}`;
+      cell.className = 'm-cell' + (readOnly ? ' result-cell' : '');
+      cell.value = readOnly ? '0' : defaultVal(prefix, i, j, rows, cols);
+      if (readOnly) { cell.readOnly = true; cell.tabIndex = -1; }
+      else cell.addEventListener('keydown', e => { if (e.key === 'Enter') { e.preventDefault(); calculate(); } });
+      grid.appendChild(cell);
+    }
+  }
+
+  wrap.innerHTML = '';
+  wrap.appendChild(grid);
+}
+
+// Nice default values for demo
+function defaultVal(prefix, i, j, rows, cols) {
+  const demoA = [[1,2,3],[4,5,6],[7,8,9]];
+  const demoB = [[9,8,7],[6,5,4],[3,2,1]];
+  if (prefix === 'a' && rows === 3 && cols === 3 && demoA[i]?.[j] !== undefined) return demoA[i][j];
+  if (prefix === 'b' && rows === 3 && cols === 3 && demoB[i]?.[j] !== undefined) return demoB[i][j];
+  return i === j ? 1 : 0; // identity-ish
+}
+
+function rebuildAll() {
+  const aR = getSize('a-rows'), aC = getSize('a-cols');
+  const bR = getSize('b-rows'), bC = getSize('b-cols');
+
+  // Lock B rows to A cols for convenience hint
+  buildGrid('grid-a', 'a', aR, aC);
+  buildGrid('grid-b', 'b', bR, bC);
+  checkCompat();
+  hideResult();
+}
+
+function checkCompat() {
+  const aC = getSize('a-cols');
+  const bR = getSize('b-rows');
+  const badge  = document.getElementById('compat-badge');
+  const errBox = document.getElementById('error-box');
+  const btnCalc = document.getElementById('btn-calc');
+  const ok = (aC === bR);
+
+  badge.className  = 'compat-badge ' + (ok ? 'ok' : 'err');
+  badge.textContent = ok ? `✓ Compatible` : `✕ Cols A ≠ Filas B`;
+  errBox.classList.toggle('visible', !ok);
+  btnCalc.disabled = !ok;
+}
+
+// ================================================================
+// MULTIPLY
+// ================================================================
+function multiplyMatrices(A, B) {
+  const m = A.length, n = B.length, p = B[0].length;
+  const C = Array.from({length: m}, () => new Array(p).fill(0));
+  const steps = []; // array of step strings per cell
+
+  for (let i = 0; i < m; i++) {
+    for (let j = 0; j < p; j++) {
+      let sum = 0;
+      const parts = [];
+      for (let k = 0; k < n; k++) {
+        sum += A[i][k] * B[k][j];
+        parts.push(`${fmt(A[i][k])}×${fmt(B[k][j])}`);
+      }
+      C[i][j] = sum;
+      steps.push({ i, j, parts, result: sum });
+    }
+  }
+  return { C, steps };
+}
+
+function calculate() {
+  const aR = getSize('a-rows'), aC = getSize('a-cols');
+  const bR = getSize('b-rows'), bC = getSize('b-cols');
+  if (aC !== bR) { checkCompat(); return; }
+
+  const A = getMatrix('a', aR, aC);
+  const B = getMatrix('b', bR, bC);
+  const { C, steps } = multiplyMatrices(A, B);
+
+  const cR = aR, cC = bC;
+
+  // Build result grid (read-only)
+  buildGrid('grid-result', 'c', cR, cC, true);
+
+  // Fill result with animation
+  setTimeout(() => {
+    for (let i = 0; i < cR; i++) {
+      for (let j = 0; j < cC; j++) {
+        const cell = document.getElementById(`c-${i}-${j}`);
+        if (cell) {
+          cell.value = fmt(C[i][j]);
+          cell.classList.add('highlight');
+          setTimeout(() => cell.classList.remove('highlight'), 600);
+        }
+      }
+    }
+  }, 30);
+
+  // Dims label
+  document.getElementById('result-dims').textContent = `${cR} × ${cC}`;
+
+  // Steps
+  const stepsBox = document.getElementById('steps-box');
+  stepsBox.innerHTML = steps.map(s =>
+    `<div class="step-line">C[${s.i+1}][${s.j+1}] = ${s.parts.join(' + ')} = <strong>${fmt(s.result)}</strong></div>`
+  ).join('') + (steps.length > 12 ? '' : '');
+  stepsBox.classList.remove('open');
+  document.getElementById('btn-steps').textContent = '▼ Ver desarrollo paso a paso';
+
+  // Show result
+  document.getElementById('result-section').classList.add('visible');
+  document.getElementById('result-section').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+}
+
+function toggleSteps() {
+  const box = document.getElementById('steps-box');
+  const btn = document.getElementById('btn-steps');
+  const open = box.classList.toggle('open');
+  btn.textContent = open ? '▲ Ocultar desarrollo' : '▼ Ver desarrollo paso a paso';
+}
+
+function hideResult() {
+  document.getElementById('result-section').classList.remove('visible');
+}
+
+// ================================================================
+// INIT
+// ================================================================
+rebuildAll();
+</script>
+</body>
+</html>
