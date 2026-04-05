@@ -1,0 +1,556 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9027862604686644" crossorigin="anonymous"></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Estadística Básica — PomodoroXP</title>
+  <meta name="description" content="Calcula media, mediana, moda, varianza y desviación típica en tiempo real. Tabla de frecuencias y gráfico de distribución para estudiantes.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;900&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+:root {
+  --bg:        #04060d;
+  --bg2:       #070c18;
+  --bg3:       #0c1425;
+  --card:      rgba(8,14,28,0.85);
+  --border:    rgba(0,180,255,0.10);
+  --border-h:  rgba(0,212,255,0.30);
+  --focus:     #00d4ff;
+  --focus-d:   rgba(0,212,255,0.13);
+  --short:     #00ff98;
+  --short-d:   rgba(0,255,152,0.12);
+  --long:      #b06aff;
+  --long-d:    rgba(176,106,255,0.12);
+  --xp:        #ff7043;
+  --gold:      #ffd600;
+  --text:      #dce8f8;
+  --text-dim:  #5c78a8;
+  --text-faint:#2a3a5a;
+  --radius:    14px;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body { background: var(--bg); color: var(--text); font-family: 'Outfit', sans-serif; min-height: 100vh; overflow-x: hidden; }
+
+/* BG */
+.bg-grid {
+  position: fixed; inset: 0;
+  background-image: linear-gradient(rgba(0,212,255,0.025) 1px, transparent 1px), linear-gradient(90deg, rgba(0,212,255,0.025) 1px, transparent 1px);
+  background-size: 44px 44px; pointer-events: none; z-index: 0;
+}
+.bg-orb { position: fixed; pointer-events: none; z-index: 0; border-radius: 50%; filter: blur(90px); }
+.bg-orb-1 { width: 500px; height: 500px; top: -150px; left: 50%; transform: translateX(-50%); background: radial-gradient(circle, rgba(0,255,152,0.06) 0%, transparent 70%); }
+.bg-orb-2 { width: 380px; height: 380px; bottom: 10%; right: -80px; background: radial-gradient(circle, rgba(0,212,255,0.05) 0%, transparent 70%); }
+
+/* TOPBAR */
+.topbar { position: sticky; top: 0; z-index: 200; background: rgba(4,6,13,0.94); backdrop-filter: blur(16px); border-bottom: 1px solid var(--border); padding: 0 24px; height: 60px; display: flex; align-items: center; justify-content: space-between; }
+.topbar-left { display: flex; align-items: center; gap: 16px; }
+.topbar-logo { font-family: 'Orbitron', monospace; font-size: 15px; font-weight: 900; letter-spacing: 0.1em; background: linear-gradient(135deg, var(--focus) 0%, #fff 70%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; text-decoration: none; }
+.topbar-sep { color: var(--text-faint); font-size: 18px; }
+.topbar-page { font-size: 11px; color: var(--text-dim); text-transform: uppercase; letter-spacing: 0.2em; font-weight: 600; }
+.topbar-back { display: flex; align-items: center; gap: 7px; background: var(--focus-d); border: 1px solid var(--focus); color: var(--focus); padding: 7px 14px; border-radius: 9px; font-family: 'Outfit', sans-serif; font-size: 12px; font-weight: 600; text-decoration: none; transition: all 0.22s; letter-spacing: 0.06em; }
+.topbar-back:hover { background: rgba(0,212,255,0.22); box-shadow: 0 0 14px var(--focus-d); }
+
+/* PAGE */
+.page { position: relative; z-index: 1; max-width: 820px; margin: 0 auto; padding: 40px 24px 80px; }
+
+/* HERO */
+.hero { margin-bottom: 28px; }
+.hero-tag { font-size: 10px; color: var(--short); text-transform: uppercase; letter-spacing: 0.28em; font-weight: 700; margin-bottom: 10px; }
+.hero-title { font-family: 'Orbitron', monospace; font-size: clamp(20px,4vw,30px); font-weight: 900; color: var(--text); margin-bottom: 10px; line-height: 1.3; }
+.hero-sub { font-size: 14px; color: var(--text-dim); line-height: 1.7; }
+
+/* CARD */
+.card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 24px; backdrop-filter: blur(10px); margin-bottom: 18px; }
+.card-title { font-size: 9px; color: var(--short); text-transform: uppercase; letter-spacing: 0.22em; font-weight: 700; margin-bottom: 14px; }
+
+/* DATA INPUT */
+.data-textarea {
+  width: 100%;
+  background: var(--bg2); border: 1px solid var(--border);
+  border-radius: 10px; color: var(--text);
+  font-family: 'Orbitron', monospace; font-size: 14px;
+  padding: 14px 16px; resize: vertical; min-height: 100px;
+  transition: all 0.22s; line-height: 1.6;
+}
+.data-textarea:focus { outline: none; border-color: var(--short); box-shadow: 0 0 14px var(--short-d); }
+.data-textarea::placeholder { color: var(--text-faint); font-family: 'Outfit', sans-serif; font-size: 13px; }
+
+.input-meta {
+  display: flex; justify-content: space-between; align-items: center;
+  margin-top: 8px; flex-wrap: wrap; gap: 8px;
+}
+.input-count { font-size: 11px; color: var(--text-dim); font-family: 'Orbitron', monospace; }
+.input-hint  { font-size: 11px; color: var(--text-faint); }
+
+.btn-clear {
+  background: transparent; border: 1px solid var(--border);
+  border-radius: 8px; color: var(--text-dim);
+  font-family: 'Outfit', sans-serif; font-size: 12px;
+  padding: 5px 12px; cursor: pointer; transition: all 0.2s;
+}
+.btn-clear:hover { border-color: rgba(255,50,50,0.3); color: #ff6b6b; }
+
+/* STATS GRID */
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px; margin-bottom: 0;
+}
+.stat-cell {
+  background: var(--bg2); border: 1px solid var(--border);
+  border-radius: 11px; padding: 14px 12px; text-align: center;
+  transition: border-color 0.22s;
+}
+.stat-cell:hover { border-color: var(--border-h); }
+.stat-val {
+  font-family: 'Orbitron', monospace;
+  font-size: 20px; font-weight: 700; color: var(--short);
+  margin-bottom: 5px; line-height: 1.2;
+  word-break: break-all;
+}
+.stat-val.secondary { color: var(--focus); }
+.stat-val.tertiary  { color: var(--gold);  }
+.stat-val.muted     { color: var(--long);  }
+.stat-label {
+  font-size: 9px; color: var(--text-dim);
+  text-transform: uppercase; letter-spacing: 0.16em; font-weight: 600;
+}
+.stat-cell.empty .stat-val { color: var(--text-faint); font-size: 14px; }
+
+/* MODA WRAP */
+.moda-list {
+  display: flex; gap: 5px; flex-wrap: wrap; justify-content: center;
+}
+.moda-badge {
+  font-family: 'Orbitron', monospace; font-size: 13px; font-weight: 700;
+  color: var(--gold); background: rgba(255,214,0,0.08);
+  border: 1px solid rgba(255,214,0,0.2); border-radius: 6px;
+  padding: 2px 8px;
+}
+
+/* HISTOGRAM */
+.chart-wrap { margin-bottom: 0; }
+.chart-bars {
+  display: flex; align-items: flex-end; gap: 3px;
+  height: 120px; padding: 0 4px;
+  border-bottom: 1px solid var(--border);
+  border-left: 1px solid var(--border);
+  overflow-x: auto; overflow-y: hidden;
+}
+.chart-bar-group { display: flex; flex-direction: column; align-items: center; flex-shrink: 0; }
+.chart-bar {
+  width: 100%; min-width: 18px;
+  background: linear-gradient(180deg, var(--short) 0%, rgba(0,255,152,0.4) 100%);
+  border-radius: 3px 3px 0 0;
+  transition: height 0.5s cubic-bezier(0.34,1.56,0.64,1);
+  cursor: default; position: relative;
+}
+.chart-bar:hover { background: linear-gradient(180deg, #fff 0%, var(--short) 100%); }
+.chart-bar-tooltip {
+  display: none; position: absolute; bottom: 105%; left: 50%; transform: translateX(-50%);
+  background: var(--bg3); border: 1px solid var(--border); border-radius: 6px;
+  padding: 4px 8px; font-size: 11px; color: var(--text); white-space: nowrap; z-index: 10;
+  font-family: 'Orbitron', monospace;
+}
+.chart-bar:hover .chart-bar-tooltip { display: block; }
+.chart-bar-label {
+  font-size: 9px; color: var(--text-dim); margin-top: 4px;
+  font-family: 'Orbitron', monospace; text-align: center;
+  max-width: 38px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+}
+.chart-empty {
+  width: 100%; display: flex; align-items: center; justify-content: center;
+  height: 120px; color: var(--text-faint); font-size: 13px;
+}
+
+/* FREQ TABLE */
+.freq-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+.freq-table th {
+  background: var(--bg2); color: var(--focus);
+  font-size: 9px; text-transform: uppercase; letter-spacing: 0.16em; font-weight: 700;
+  padding: 9px 12px; text-align: left; border: 1px solid var(--border);
+}
+.freq-table td {
+  padding: 8px 12px; border: 1px solid var(--border);
+  color: var(--text-dim); font-family: 'Orbitron', monospace; font-size: 12px;
+}
+.freq-table tr:nth-child(even) td { background: rgba(0,212,255,0.02); }
+.freq-table td.freq-bar-cell { padding: 6px 12px; min-width: 100px; }
+.freq-bar-inner {
+  height: 10px; background: linear-gradient(90deg, var(--short), rgba(0,255,152,0.4));
+  border-radius: 5px; transition: width 0.5s ease;
+}
+.freq-table td.is-mode { color: var(--gold); font-weight: 700; }
+
+/* SEO CARD */
+.seo-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 22px 26px; backdrop-filter: blur(10px); margin-bottom: 20px; }
+.seo-tag { font-size: 9px; color: var(--focus); text-transform: uppercase; letter-spacing: 0.22em; font-weight: 700; margin-bottom: 10px; }
+.seo-p { font-size: 14px; color: var(--text-dim); line-height: 1.75; margin-bottom: 11px; }
+.seo-p:last-child { margin-bottom: 0; }
+.seo-p strong { color: var(--text); }
+
+/* AD */
+.ad-stat { width: 100%; min-height: 90px; background: rgba(0,212,255,0.02); border: 1px dashed rgba(0,212,255,0.1); border-radius: var(--radius); margin: 22px 0; overflow: hidden; }
+
+/* EMPTY STATE */
+.empty-hint { text-align: center; padding: 28px; color: var(--text-faint); font-size: 13px; }
+
+/* SCROLLBAR */
+::-webkit-scrollbar { width: 4px; height: 4px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+
+/* RESPONSIVE */
+@media (max-width: 620px) {
+  .page { padding: 26px 14px 60px; }
+  .topbar-page { display: none; }
+  .stats-grid { grid-template-columns: repeat(2,1fr); }
+}
+@media (max-width: 380px) {
+  .stats-grid { grid-template-columns: repeat(2,1fr); }
+}
+</style>
+</head>
+
+<body>
+<div class="bg-grid"></div>
+<div class="bg-orb bg-orb-1"></div>
+<div class="bg-orb bg-orb-2"></div>
+
+<nav class="topbar">
+  <div class="topbar-left">
+    <a href="index.html" class="topbar-logo">🍅 POMODOROXP</a>
+    <span class="topbar-sep">/</span>
+    <span class="topbar-page">Estadística Básica</span>
+  </div>
+  <a href="toolkit.html" class="topbar-back">← Toolkit</a>
+</nav>
+
+<div class="page">
+
+  <div class="hero">
+    <div class="hero-tag">📉 Calculadora Versátil</div>
+    <h1 class="hero-title">Estadística Básica</h1>
+    <p class="hero-sub">Pega o escribe tus datos y obtén al instante media, mediana, moda, varianza, desviación típica y la distribución de frecuencias con gráfico visual.</p>
+  </div>
+
+  <!-- AD -->
+  <div class="ad-stat">
+    <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-9027862604686644" data-ad-slot="auto" data-ad-format="auto" data-full-width-responsive="true"></ins>
+    <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+  </div>
+
+  <!-- INPUT -->
+  <div class="card">
+    <div class="card-title">📥 Introduce tus datos</div>
+    <textarea class="data-textarea" id="data-input"
+      placeholder="Pega aquí tus datos separados por comas, espacios o saltos de línea&#10;Ejemplo: 4, 7, 13, 2, 7, 9, 3, 7, 11, 5"></textarea>
+    <div class="input-meta">
+      <span class="input-count" id="data-count">0 datos</span>
+      <span class="input-hint">Separa con comas, espacios o saltos de línea</span>
+      <button class="btn-clear" onclick="clearData()">✕ Limpiar</button>
+    </div>
+  </div>
+
+  <!-- STATS GRID -->
+  <div class="card">
+    <div class="card-title">📊 Estadísticos descriptivos</div>
+    <div class="stats-grid" id="stats-grid">
+      <div class="stat-cell empty"><div class="stat-val">—</div><div class="stat-label">Media</div></div>
+      <div class="stat-cell empty"><div class="stat-val">—</div><div class="stat-label">Mediana</div></div>
+      <div class="stat-cell empty"><div class="stat-val">—</div><div class="stat-label">Moda</div></div>
+      <div class="stat-cell empty"><div class="stat-val">—</div><div class="stat-label">Desv. Típica</div></div>
+      <div class="stat-cell empty"><div class="stat-val">—</div><div class="stat-label">Varianza</div></div>
+      <div class="stat-cell empty"><div class="stat-val">—</div><div class="stat-label">Mínimo</div></div>
+      <div class="stat-cell empty"><div class="stat-val">—</div><div class="stat-label">Máximo</div></div>
+      <div class="stat-cell empty"><div class="stat-val">—</div><div class="stat-label">Rango</div></div>
+    </div>
+  </div>
+
+  <!-- HISTOGRAM -->
+  <div class="card">
+    <div class="card-title">📈 Distribución de frecuencias</div>
+    <div class="chart-wrap">
+      <div class="chart-bars" id="chart-bars">
+        <div class="chart-empty">Introduce datos para ver el gráfico</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- FREQ TABLE -->
+  <div class="card" id="freq-card">
+    <div class="card-title">📋 Tabla de frecuencias</div>
+    <div id="freq-table-wrap">
+      <div class="empty-hint">Introduce datos para ver la tabla</div>
+    </div>
+  </div>
+
+  <!-- AD -->
+  <div class="ad-stat">
+    <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-9027862604686644" data-ad-slot="auto" data-ad-format="auto" data-full-width-responsive="true"></ins>
+    <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+  </div>
+
+  <!-- SEO TEXT -->
+  <div class="seo-card">
+    <div class="seo-tag">📐 ¿Qué es la desviación típica y para qué sirve?</div>
+    <p class="seo-p">La <strong>desviación típica</strong> (o desviación estándar, σ) es una de las medidas de dispersión más importantes en estadística. Cuantifica cuánto se alejan, en promedio, los valores de un conjunto de datos respecto a su media. Un valor de σ bajo indica que los datos están muy agrupados alrededor de la media; un valor alto indica que están muy dispersos.</p>
+    <p class="seo-p">La fórmula es <strong>σ = √(Σ(xᵢ − x̄)² / N)</strong>, donde xᵢ es cada valor, x̄ es la media y N es el número total de datos. Esta herramienta calcula la <strong>desviación típica poblacional</strong> (divide entre N) y no la muestral (que dividiría entre N−1). Usa la variante N−1 cuando tus datos son una muestra de una población mayor, algo habitual en investigaciones académicas.</p>
+    <p class="seo-p">En el ámbito académico y científico, la desviación típica aparece constantemente: en experimentos de laboratorio para medir la <strong>precisión de las mediciones</strong>, en psicología para interpretar tests estandarizados (muchos tests tienen media 100 y σ = 15), en economía para medir el <strong>riesgo de una inversión</strong>, y en cualquier análisis donde necesites describir no solo el centro de tus datos sino también su variabilidad. Combinada con la media, forma la base de la distribución normal (campana de Gauss), que es el modelo probabilístico más utilizado en ciencia.</p>
+  </div>
+
+  <div style="text-align:center;padding:24px 0 0;border-top:1px solid var(--border)">
+    <a href="toolkit.html" style="color:var(--text-faint);font-size:11px;text-decoration:none;margin:0 10px">← Volver al Toolkit</a>
+    <a href="index.html"   style="color:var(--text-faint);font-size:11px;text-decoration:none;margin:0 10px">⏱ Timer</a>
+    <a href="privacy.html" style="color:var(--text-faint);font-size:11px;text-decoration:none;margin:0 10px">Privacidad</a>
+  </div>
+
+</div>
+
+<script>
+'use strict';
+
+// ================================================================
+// PARSE DATA
+// ================================================================
+function parseData(raw) {
+  return raw
+    .split(/[\s,;]+/)
+    .map(s => parseFloat(s.trim()))
+    .filter(n => !isNaN(n));
+}
+
+// ================================================================
+// STATISTICS
+// ================================================================
+function calcStats(data) {
+  const n = data.length;
+  if (!n) return null;
+
+  const sorted = [...data].sort((a,b) => a-b);
+
+  // Mean
+  const mean = data.reduce((s,v)=>s+v,0) / n;
+
+  // Median
+  let median;
+  if (n % 2 === 1) median = sorted[Math.floor(n/2)];
+  else median = (sorted[n/2-1] + sorted[n/2]) / 2;
+
+  // Mode(s)
+  const freq = new Map();
+  for (const v of data) freq.set(v, (freq.get(v)||0)+1);
+  const maxFreq = Math.max(...freq.values());
+  const modes = maxFreq > 1
+    ? [...freq.entries()].filter(([,f])=>f===maxFreq).map(([v])=>v).sort((a,b)=>a-b)
+    : [];
+
+  // Variance & StdDev (population)
+  const variance = data.reduce((s,v)=>s+(v-mean)**2,0) / n;
+  const stdDev   = Math.sqrt(variance);
+
+  const min   = sorted[0];
+  const max   = sorted[n-1];
+  const range = max - min;
+
+  // Frequency table
+  const freqTable = [...freq.entries()]
+    .sort((a,b)=>a[0]-b[0])
+    .map(([val,f]) => ({ val, abs: f, rel: f/n, cumRel: 0 }));
+  let cum = 0;
+  freqTable.forEach(row => { cum += row.rel; row.cumRel = cum; });
+
+  return { n, mean, median, modes, maxFreq, variance, stdDev, min, max, range, sorted, freqTable };
+}
+
+// ================================================================
+// FORMAT
+// ================================================================
+function fmt(n, d=4) {
+  if (!isFinite(n)) return '∞';
+  const f = parseFloat(n.toFixed(d));
+  return f % 1 === 0 ? String(f) : String(f);
+}
+
+// ================================================================
+// RENDER STATS GRID
+// ================================================================
+function renderGrid(s) {
+  const grid = document.getElementById('stats-grid');
+
+  const cells = [
+    { val: fmt(s.mean,    4), label: 'Media',       cls: '' },
+    { val: fmt(s.median,  4), label: 'Mediana',     cls: 'secondary' },
+    { val: null,              label: 'Moda',         cls: 'tertiary', moda: s.modes },
+    { val: fmt(s.stdDev,  4), label: 'Desv. Típica', cls: '' },
+    { val: fmt(s.variance,4), label: 'Varianza',    cls: 'muted' },
+    { val: fmt(s.min,     4), label: 'Mínimo',      cls: 'secondary' },
+    { val: fmt(s.max,     4), label: 'Máximo',      cls: 'secondary' },
+    { val: fmt(s.range,   4), label: 'Rango',       cls: 'muted' },
+  ];
+
+  grid.innerHTML = cells.map(c => {
+    let valHTML;
+    if (c.moda !== undefined) {
+      if (!c.moda.length) {
+        valHTML = `<div class="stat-val tertiary" style="font-size:13px">sin moda</div>`;
+      } else if (c.moda.length === 1) {
+        valHTML = `<div class="stat-val tertiary">${fmt(c.moda[0],4)}</div>`;
+      } else {
+        valHTML = `<div class="moda-list">${c.moda.slice(0,4).map(m=>`<span class="moda-badge">${fmt(m,3)}</span>`).join('')}${c.moda.length>4?`<span class="moda-badge">+${c.moda.length-4}</span>`:''}</div>`;
+      }
+    } else {
+      valHTML = `<div class="stat-val ${c.cls}">${c.val}</div>`;
+    }
+    return `<div class="stat-cell">${valHTML}<div class="stat-label">${c.label}</div></div>`;
+  }).join('');
+}
+
+// ================================================================
+// RENDER CHART
+// ================================================================
+function renderChart(s) {
+  const wrap = document.getElementById('chart-bars');
+  if (!s || !s.freqTable.length) {
+    wrap.innerHTML = '<div class="chart-empty">Introduce datos para ver el gráfico</div>';
+    return;
+  }
+
+  const maxF = Math.max(...s.freqTable.map(r=>r.abs));
+  const BAR_H = 100; // px available for bars
+
+  // If too many unique values, bin them
+  let rows = s.freqTable;
+  if (rows.length > 25) rows = bin(s.sorted, 20);
+
+  wrap.innerHTML = rows.map(row => {
+    const h = Math.max(2, Math.round((row.abs / maxF) * BAR_H));
+    const label = row.label || fmt(row.val, 3);
+    const isMode = s.modes.includes(row.val);
+    const barStyle = isMode
+      ? 'background:linear-gradient(180deg,var(--gold) 0%,rgba(255,214,0,0.4) 100%)'
+      : '';
+    return `<div class="chart-bar-group" style="min-width:${Math.max(20,Math.floor(360/rows.length))}px;max-width:56px;flex:1">
+      <div class="chart-bar" style="height:${h}px;${barStyle}">
+        <div class="chart-bar-tooltip">x=${label}<br>f=${row.abs}</div>
+      </div>
+      <div class="chart-bar-label">${label}</div>
+    </div>`;
+  }).join('');
+}
+
+// Bin continuous data into N buckets
+function bin(sorted, n) {
+  const min = sorted[0], max = sorted[sorted.length-1];
+  const w   = (max - min) / n || 1;
+  const buckets = Array.from({length:n}, (_,i) => ({
+    lo: min + i*w, hi: min + (i+1)*w, abs: 0, val: 0
+  }));
+  buckets.forEach(b => { b.val = (b.lo+b.hi)/2; b.label = `${fmt(b.lo,1)}-${fmt(b.hi,1)}`; });
+  sorted.forEach(v => {
+    let idx = Math.floor((v - min) / w);
+    if (idx >= n) idx = n-1;
+    buckets[idx].abs++;
+  });
+  return buckets.filter(b=>b.abs>0);
+}
+
+// ================================================================
+// RENDER FREQ TABLE
+// ================================================================
+function renderFreqTable(s) {
+  const wrap = document.getElementById('freq-table-wrap');
+  if (!s || !s.freqTable.length) {
+    wrap.innerHTML = '<div class="empty-hint">Introduce datos para ver la tabla</div>';
+    return;
+  }
+
+  // Limit to 50 rows to avoid giant tables
+  const rows = s.freqTable.slice(0, 50);
+  const maxAbs = Math.max(...rows.map(r=>r.abs));
+  const isTruncated = s.freqTable.length > 50;
+
+  let html = `<div style="overflow-x:auto">
+    <table class="freq-table">
+      <thead><tr>
+        <th>Valor (x)</th>
+        <th>Frec. Abs. (f)</th>
+        <th>Frec. Rel. (f/N)</th>
+        <th>Frec. Acum.</th>
+        <th style="min-width:100px">Distribución</th>
+      </tr></thead>
+      <tbody>`;
+
+  rows.forEach(row => {
+    const isMode = s.modes.includes(row.val);
+    const barW   = Math.round((row.abs / maxAbs) * 100);
+    html += `<tr>
+      <td class="${isMode?'is-mode':''}">${fmt(row.val,4)}${isMode?' ★':''}</td>
+      <td>${row.abs}</td>
+      <td>${(row.rel*100).toFixed(2)}%</td>
+      <td>${(row.cumRel*100).toFixed(2)}%</td>
+      <td class="freq-bar-cell"><div class="freq-bar-inner" style="width:${barW}%"></div></td>
+    </tr>`;
+  });
+
+  html += `</tbody></table></div>`;
+  if (isTruncated) html += `<div style="font-size:11px;color:var(--text-dim);margin-top:8px;text-align:center">Mostrando 50 de ${s.freqTable.length} valores únicos</div>`;
+  wrap.innerHTML = html;
+}
+
+// ================================================================
+// MAIN UPDATE LOOP
+// ================================================================
+function update() {
+  const raw   = document.getElementById('data-input').value;
+  const data  = parseData(raw);
+  const count = document.getElementById('data-count');
+
+  count.textContent = data.length
+    ? `${data.length} dato${data.length!==1?'s':''}`
+    : '0 datos';
+
+  if (!data.length) {
+    renderGrid(null);
+    renderChart(null);
+    renderFreqTable(null);
+    resetGrid();
+    return;
+  }
+
+  const s = calcStats(data);
+  renderGrid(s);
+  renderChart(s);
+  renderFreqTable(s);
+}
+
+function resetGrid() {
+  const grid = document.getElementById('stats-grid');
+  grid.innerHTML = ['Media','Mediana','Moda','Desv. Típica','Varianza','Mínimo','Máximo','Rango']
+    .map(l=>`<div class="stat-cell empty"><div class="stat-val">—</div><div class="stat-label">${l}</div></div>`)
+    .join('');
+}
+
+function clearData() {
+  document.getElementById('data-input').value = '';
+  update();
+}
+
+// Debounce for performance
+let timer;
+document.getElementById('data-input').addEventListener('input', () => {
+  clearTimeout(timer);
+  timer = setTimeout(update, 120);
+});
+
+// Load with sample data
+document.getElementById('data-input').value = '4, 7, 13, 2, 7, 9, 3, 7, 11, 5, 8, 6, 10, 4, 7';
+update();
+</script>
+</body>
+</html>
