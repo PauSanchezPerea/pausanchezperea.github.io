@@ -1,2567 +1,1362 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9027862604686644"
-    crossorigin="anonymous"></script>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>PomodoroXP — Motor de Estudio</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;900&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-
-<!-- ============================================================
-     FOCUSFLOW — Motor de Estudio v1.1
-     Cambios: zonas AdSense integradas + gráfica semanal
-     ============================================================ -->
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9027862604686644" crossorigin="anonymous"></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Student Toolkit — PomodoroXP</title>
+  <meta name="description" content="Herramientas gratuitas para estudiantes: conversor de unidades, calculadora científica, recursos académicos y más. Todo en un solo lugar.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;900&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
 <style>
-/* ---- VARIABLES ---- */
+/* ================================================================
+   VARIABLES — idénticas a index.html
+   ================================================================ */
 :root {
-  --bg:       #04060d;
-  --bg2:      #070c18;
-  --bg3:      #0c1425;
-  --card:     rgba(8, 14, 28, 0.85);
-  --border:   rgba(0, 180, 255, 0.10);
-  --border-h: rgba(0, 212, 255, 0.30);
-
-  --focus:    #00d4ff;
-  --focus-d:  rgba(0, 212, 255, 0.14);
-  --short:    #00ff98;
-  --short-d:  rgba(0, 255, 152, 0.14);
-  --long:     #b06aff;
-  --long-d:   rgba(176, 106, 255, 0.14);
-
-  --xp:       #ff7043;
-  --xp-d:     rgba(255, 112, 67, 0.15);
-  --gold:     #ffd600;
-  --success:  #00ff98;
-
-  --text:     #dce8f8;
-  --text-dim: #5c78a8;
-  --text-faint: #2a3a5a;
-
-  --radius: 14px;
+  --bg:        #04060d;
+  --bg2:       #070c18;
+  --bg3:       #0c1425;
+  --card:      rgba(8,14,28,0.85);
+  --border:    rgba(0,180,255,0.10);
+  --border-h:  rgba(0,212,255,0.30);
+  --focus:     #00d4ff;
+  --focus-d:   rgba(0,212,255,0.13);
+  --short:     #00ff98;
+  --short-d:   rgba(0,255,152,0.12);
+  --long:      #b06aff;
+  --long-d:    rgba(176,106,255,0.12);
+  --xp:        #ff7043;
+  --gold:      #ffd600;
+  --text:      #dce8f8;
+  --text-dim:  #5c78a8;
+  --text-faint:#2a3a5a;
+  --radius:    14px;
 }
 
-/* ---- RESET ---- */
+/* ================================================================
+   RESET & BASE
+   ================================================================ */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-html { height: 100%; scroll-behavior: smooth; }
+html { scroll-behavior: smooth; }
 body {
   background: var(--bg);
   color: var(--text);
   font-family: 'Outfit', sans-serif;
   min-height: 100vh;
   overflow-x: hidden;
-  position: relative;
 }
 
-/* ---- BACKGROUND ---- */
+/* ================================================================
+   BACKGROUND
+   ================================================================ */
 .bg-grid {
   position: fixed; inset: 0;
   background-image:
-    linear-gradient(rgba(0, 212, 255, 0.028) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(0, 212, 255, 0.028) 1px, transparent 1px);
+    linear-gradient(rgba(0,212,255,0.025) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0,212,255,0.025) 1px, transparent 1px);
   background-size: 44px 44px;
   pointer-events: none; z-index: 0;
 }
 .bg-orb {
   position: fixed; pointer-events: none; z-index: 0;
-  border-radius: 50%;
-  filter: blur(80px);
-  animation: orb-drift 12s ease-in-out infinite;
+  border-radius: 50%; filter: blur(90px);
 }
 .bg-orb-1 {
-  width: 600px; height: 600px;
-  top: -200px; left: 50%;
+  width: 500px; height: 500px; top: -150px; left: 50%;
   transform: translateX(-50%);
-  background: radial-gradient(circle, rgba(0,212,255,0.07) 0%, transparent 70%);
+  background: radial-gradient(circle, rgba(0,212,255,0.06) 0%, transparent 70%);
 }
 .bg-orb-2 {
-  width: 400px; height: 400px;
-  bottom: 10%; right: -100px;
-  background: radial-gradient(circle, rgba(176,106,255,0.06) 0%, transparent 70%);
-  animation-delay: -4s;
-}
-.bg-orb-3 {
-  width: 350px; height: 350px;
-  bottom: 20%; left: -80px;
-  background: radial-gradient(circle, rgba(0,255,152,0.05) 0%, transparent 70%);
-  animation-delay: -8s;
-}
-@keyframes orb-drift {
-  0%,100% { transform: translateX(-50%) translateY(0) scale(1); }
-  50%      { transform: translateX(-50%) translateY(-30px) scale(1.05); }
-}
-.bg-orb-2 { animation: orb-drift2 10s ease-in-out infinite -4s; }
-.bg-orb-3 { animation: orb-drift2 14s ease-in-out infinite -8s; }
-@keyframes orb-drift2 {
-  0%,100% { transform: scale(1) rotate(0deg); }
-  50%      { transform: scale(1.1) rotate(5deg); }
+  width: 380px; height: 380px; bottom: 10%; right: -80px;
+  background: radial-gradient(circle, rgba(176,106,255,0.05) 0%, transparent 70%);
 }
 
-/* ---- LAYOUT ---- */
-#app {
-  position: relative; z-index: 1;
-  max-width: 780px;
-  margin: 0 auto;
-  padding: 0 24px 60px;
-}
-
-/* ---- HEADER ---- */
-.header {
-  display: flex; align-items: center; justify-content: space-between;
-  padding: 22px 0 20px;
+/* ================================================================
+   TOPBAR
+   ================================================================ */
+.topbar {
+  position: sticky; top: 0; z-index: 200;
+  background: rgba(4,6,13,0.94);
+  backdrop-filter: blur(16px);
   border-bottom: 1px solid var(--border);
-  margin-bottom: 30px;
+  padding: 0 24px;
+  height: 60px;
+  display: flex; align-items: center; justify-content: space-between;
 }
-.logo { display: flex; align-items: center; gap: 12px; }
-.logo-icon {
-  width: 36px; height: 36px;
-  border: 2px solid var(--focus);
-  border-radius: 10px;
-  display: flex; align-items: center; justify-content: center;
-  font-size: 18px;
-  box-shadow: 0 0 16px var(--focus-d), inset 0 0 12px var(--focus-d);
-  animation: icon-pulse 3s ease-in-out infinite;
-}
-@keyframes icon-pulse {
-  0%,100% { box-shadow: 0 0 10px var(--focus-d), inset 0 0 8px var(--focus-d); }
-  50%      { box-shadow: 0 0 24px rgba(0,212,255,0.35), inset 0 0 16px rgba(0,212,255,0.2); }
-}
-.logo-wordmark { display: flex; flex-direction: column; gap: 1px; }
-.logo-name {
+.topbar-left { display: flex; align-items: center; gap: 16px; }
+.topbar-logo {
   font-family: 'Orbitron', monospace;
-  font-size: 17px; font-weight: 900;
-  letter-spacing: 0.12em;
-  background: linear-gradient(135deg, var(--focus) 0%, #ffffff 70%);
+  font-size: 15px; font-weight: 900;
+  letter-spacing: 0.1em;
+  background: linear-gradient(135deg, var(--focus) 0%, #fff 70%);
   -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-  background-clip: text;
+  background-clip: text; text-decoration: none;
 }
-.logo-sub {
-  font-size: 9px; color: var(--text-dim);
-  letter-spacing: 0.3em; text-transform: uppercase; font-weight: 500;
+.topbar-sep { color: var(--text-faint); font-size: 18px; }
+.topbar-page {
+  font-size: 11px; color: var(--text-dim);
+  text-transform: uppercase; letter-spacing: 0.2em; font-weight: 600;
 }
-.nav { display: flex; gap: 8px; }
-.nav-btn {
-  background: var(--card);
-  border: 1px solid var(--border);
-  color: var(--text-dim);
-  padding: 8px 14px;
-  border-radius: 9px;
-  cursor: pointer;
-  font-family: 'Outfit', sans-serif;
-  font-size: 12px; font-weight: 500;
-  transition: all 0.22s;
-  letter-spacing: 0.06em;
-  display: flex; align-items: center; gap: 6px;
-  backdrop-filter: blur(10px);
-}
-.nav-btn:hover {
-  border-color: var(--border-h);
-  color: var(--text);
+.topbar-back {
+  display: flex; align-items: center; gap: 7px;
   background: var(--focus-d);
+  border: 1px solid var(--focus);
+  color: var(--focus);
+  padding: 7px 14px; border-radius: 9px;
+  font-family: 'Outfit', sans-serif;
+  font-size: 12px; font-weight: 600;
+  text-decoration: none; transition: all 0.22s;
+  letter-spacing: 0.06em;
+}
+.topbar-back:hover {
+  background: rgba(0,212,255,0.22);
   box-shadow: 0 0 14px var(--focus-d);
 }
 
-/* ---- MODE TABS ---- */
-.mode-tabs {
-  display: flex; gap: 4px;
-  background: var(--card);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  padding: 4px;
-  margin-bottom: 36px;
-  backdrop-filter: blur(12px);
-}
-.mode-tab {
-  flex: 1; padding: 10px 12px;
-  border: 1px solid transparent;
-  border-radius: 10px;
-  background: transparent;
-  color: var(--text-dim);
-  font-family: 'Outfit', sans-serif;
-  font-size: 12px; font-weight: 600;
-  cursor: pointer;
-  transition: all 0.3s;
-  letter-spacing: 0.04em;
-  white-space: nowrap;
-}
-.mode-tab:hover { color: var(--text); }
-.mode-tab.active[data-mode="focus"]  { background: var(--focus-d); border-color: var(--focus);  color: var(--focus);  box-shadow: 0 0 14px var(--focus-d);  }
-.mode-tab.active[data-mode="short"]  { background: var(--short-d); border-color: var(--short);  color: var(--short);  box-shadow: 0 0 14px var(--short-d);  }
-.mode-tab.active[data-mode="long"]   { background: var(--long-d);  border-color: var(--long);   color: var(--long);   box-shadow: 0 0 14px var(--long-d);   }
-
-/* ---- TIMER ---- */
-.timer-section { display: flex; flex-direction: column; align-items: center; margin-bottom: 32px; }
-.timer-ring-wrap {
-  position: relative;
-  width: 290px; height: 290px;
-  margin-bottom: 20px;
-}
-.timer-svg {
-  width: 100%; height: 100%;
-  transform: rotate(-90deg);
-}
-.timer-svg .ring-deco {
-  fill: none;
-  stroke: rgba(0,212,255,0.04);
-  stroke-width: 1;
-}
-.timer-svg .ring-track {
-  fill: none;
-  stroke: rgba(0,212,255,0.08);
-  stroke-width: 5;
-  transition: stroke 0.5s;
-}
-.timer-svg .ring-prog {
-  fill: none;
-  stroke: var(--focus);
-  stroke-width: 5;
-  stroke-linecap: round;
-  stroke-dasharray: 753.98;
-  stroke-dashoffset: 0;
-  transition: stroke-dashoffset 0.6s linear, stroke 0.5s;
-  filter: drop-shadow(0 0 6px var(--focus));
-}
-body[data-mode="short"] .ring-track { stroke: rgba(0,255,152,0.08); }
-body[data-mode="short"] .ring-prog  { stroke: var(--short); filter: drop-shadow(0 0 6px var(--short)); }
-body[data-mode="long"]  .ring-track { stroke: rgba(176,106,255,0.08); }
-body[data-mode="long"]  .ring-prog  { stroke: var(--long);  filter: drop-shadow(0 0 6px var(--long));  }
-
-.timer-inner {
-  position: absolute; inset: 0;
-  display: flex; flex-direction: column;
-  align-items: center; justify-content: center;
-  gap: 4px;
-}
-.timer-digits {
-  font-family: 'Orbitron', monospace;
-  font-size: 56px; font-weight: 700;
-  letter-spacing: 0.04em;
-  color: var(--text);
-  line-height: 1;
-  text-shadow: 0 0 30px var(--focus);
-  transition: text-shadow 0.5s;
-}
-body[data-mode="short"] .timer-digits { text-shadow: 0 0 30px var(--short); }
-body[data-mode="long"]  .timer-digits { text-shadow: 0 0 30px var(--long); }
-
-.timer-label-mode {
-  font-size: 10px; color: var(--text-dim);
-  text-transform: uppercase; letter-spacing: 0.28em;
-  font-weight: 600;
+/* ================================================================
+   PAGE LAYOUT
+   ================================================================ */
+.page {
+  position: relative; z-index: 1;
+  max-width: 1100px; margin: 0 auto;
+  padding: 40px 24px 80px;
 }
 
-.timer-ring-wrap.running .ring-prog { animation: ring-pulse 2.4s ease-in-out infinite; }
-@keyframes ring-pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.7; } }
-.timer-ring-wrap.flash { animation: ring-flash 0.35s steps(2, end) 3; }
-@keyframes ring-flash { 0% { opacity: 1; } 50% { opacity: 0.1; } 100% { opacity: 1; } }
-
-/* ---- CYCLE DOTS ---- */
-.cycle-dots { display: flex; gap: 12px; align-items: center; margin-bottom: 8px; }
-.c-dot {
-  width: 10px; height: 10px;
-  border-radius: 50%;
-  border: 2px solid var(--focus);
-  background: transparent;
-  transition: all 0.4s cubic-bezier(0.34,1.56,0.64,1);
-}
-.c-dot.done { background: var(--focus); box-shadow: 0 0 8px var(--focus); }
-body[data-mode="short"] .c-dot { border-color: var(--short); }
-body[data-mode="short"] .c-dot.done { background: var(--short); box-shadow: 0 0 8px var(--short); }
-
-/* ---- CONTROLS ---- */
-.controls {
-  display: flex; align-items: center; justify-content: center; gap: 18px;
-  margin-bottom: 36px;
-}
-.btn-circle {
-  width: 50px; height: 50px;
-  border-radius: 50%;
-  border: 1px solid var(--border);
-  background: var(--card);
-  color: var(--text-dim);
-  font-size: 18px;
-  cursor: pointer;
-  transition: all 0.22s;
-  display: flex; align-items: center; justify-content: center;
-  backdrop-filter: blur(10px);
-  font-family: 'Outfit', sans-serif;
-}
-.btn-circle:hover {
-  border-color: var(--border-h);
-  color: var(--text);
-  box-shadow: 0 0 16px var(--focus-d);
-  background: var(--focus-d);
-}
-.btn-play {
-  width: 76px; height: 76px;
-  font-size: 26px;
-  border: 2px solid var(--focus);
-  background: var(--focus-d);
-  color: var(--focus);
-  box-shadow: 0 0 24px var(--focus-d), inset 0 0 20px var(--focus-d);
-}
-.btn-play:hover {
-  transform: scale(1.06);
-  box-shadow: 0 0 40px rgba(0,212,255,0.35), inset 0 0 24px rgba(0,212,255,0.2);
-  background: rgba(0,212,255,0.22);
-}
-.btn-play:active { transform: scale(0.94); }
-body[data-mode="short"] .btn-play { border-color: var(--short); background: var(--short-d); color: var(--short); box-shadow: 0 0 24px var(--short-d), inset 0 0 20px var(--short-d); }
-body[data-mode="long"]  .btn-play { border-color: var(--long);  background: var(--long-d);  color: var(--long);  box-shadow: 0 0 24px var(--long-d),  inset 0 0 20px var(--long-d);  }
-
-/* ---- AD ZONE — banner debajo de controles ---- */
-.ad-banner {
-  width: 100%;
-  min-height: 90px;
-  background: rgba(0,212,255,0.03);
-  border: 1px dashed rgba(0,212,255,0.12);
-  border-radius: var(--radius);
-  margin-bottom: 24px;
-  display: flex; align-items: center; justify-content: center;
-  overflow: hidden;
-  position: relative;
-}
-.ad-banner ins { display: block; width: 100%; }
-
-/* ---- XP BAR ---- */
-.xp-panel {
-  width: 100%;
-  background: var(--card);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  padding: 16px 20px;
-  margin-bottom: 24px;
-  backdrop-filter: blur(12px);
-}
-.xp-top {
-  display: flex; justify-content: space-between; align-items: center;
-  margin-bottom: 10px;
-}
-.xp-left { display: flex; align-items: center; gap: 10px; }
-.lvl-badge {
-  background: linear-gradient(135deg, var(--xp), #e65100);
-  color: #fff;
-  font-family: 'Orbitron', monospace;
-  font-size: 10px; font-weight: 700;
-  padding: 4px 10px;
-  border-radius: 20px;
-  letter-spacing: 0.12em;
-  white-space: nowrap;
-}
-.lvl-name { font-size: 13px; color: var(--text-dim); font-weight: 500; }
-.xp-count {
-  font-family: 'Orbitron', monospace;
-  font-size: 11px; color: var(--text-dim);
-}
-.xp-track {
-  height: 6px; background: rgba(255,112,67,0.1);
-  border-radius: 3px; overflow: hidden;
-}
-.xp-fill {
-  height: 100%;
-  background: linear-gradient(90deg, var(--xp), #ffca28);
-  border-radius: 3px;
-  transition: width 0.9s cubic-bezier(0.34,1.56,0.64,1);
-  box-shadow: 0 0 8px rgba(255,112,67,0.5);
-}
-
-/* ---- STATS BAR ---- */
-.stats-row {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 12px;
-  margin-bottom: 24px;
-}
-.scard {
-  background: var(--card);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  padding: 14px 10px;
+/* ================================================================
+   HERO
+   ================================================================ */
+.hero {
   text-align: center;
-  backdrop-filter: blur(10px);
-  transition: border-color 0.22s;
-  cursor: default;
+  margin-bottom: 40px;
+  padding-bottom: 36px;
+  border-bottom: 1px solid var(--border);
 }
-.scard:hover { border-color: var(--border-h); }
-.scard-val {
+.hero-tag {
+  font-size: 10px; color: var(--focus);
+  text-transform: uppercase; letter-spacing: 0.28em;
+  font-weight: 700; margin-bottom: 14px;
+}
+.hero-title {
   font-family: 'Orbitron', monospace;
-  font-size: 22px; font-weight: 700; color: var(--text);
-  margin-bottom: 4px;
+  font-size: clamp(26px, 4vw, 42px);
+  font-weight: 900; color: var(--text);
+  margin-bottom: 14px; line-height: 1.2;
 }
-.scard-label {
-  font-size: 9px; color: var(--text-dim);
-  text-transform: uppercase; letter-spacing: 0.18em;
+.hero-title span {
+  background: linear-gradient(135deg, var(--focus), var(--short));
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
-.scard.streak .scard-val { color: var(--xp); }
+.hero-sub {
+  font-size: 15px; color: var(--text-dim);
+  max-width: 540px; margin: 0 auto; line-height: 1.7;
+}
 
-/* ---- WEEKLY CHART ---- */
-.week-panel {
+/* ================================================================
+   SEARCH BAR
+   ================================================================ */
+.search-wrap {
+  position: relative; max-width: 560px;
+  margin: 0 auto 48px;
+}
+.search-icon {
+  position: absolute; left: 16px; top: 50%;
+  transform: translateY(-50%);
+  font-size: 16px; pointer-events: none;
+  color: var(--text-dim);
+}
+#search-input {
   width: 100%;
   background: var(--card);
   border: 1px solid var(--border);
-  border-radius: var(--radius);
-  padding: 16px 20px;
-  margin-bottom: 24px;
+  border-radius: 12px;
+  color: var(--text);
+  font-family: 'Outfit', sans-serif;
+  font-size: 15px; font-weight: 500;
+  padding: 14px 16px 14px 46px;
+  transition: all 0.24s;
   backdrop-filter: blur(12px);
 }
-.week-header {
-  display: flex; justify-content: space-between; align-items: center;
-  margin-bottom: 16px;
+#search-input::placeholder { color: var(--text-dim); }
+#search-input:focus {
+  outline: none;
+  border-color: var(--focus);
+  box-shadow: 0 0 20px var(--focus-d);
 }
-.week-title {
-  font-size: 9px; color: var(--focus);
-  text-transform: uppercase; letter-spacing: 0.24em; font-weight: 700;
-}
-.week-total {
-  font-family: 'Orbitron', monospace;
+.search-count {
+  position: absolute; right: 14px; top: 50%;
+  transform: translateY(-50%);
   font-size: 11px; color: var(--text-dim);
+  font-family: 'Orbitron', monospace;
 }
-.week-bars {
-  display: flex; align-items: flex-end; gap: 6px;
-  height: 70px;
-}
-.week-bar-wrap {
-  flex: 1; display: flex; flex-direction: column;
-  align-items: center; gap: 5px;
-  height: 100%;
-}
-.week-bar-track {
-  flex: 1; width: 100%;
-  background: rgba(0,212,255,0.06);
-  border-radius: 4px 4px 0 0;
-  position: relative; overflow: hidden;
-  min-height: 4px;
-}
-.week-bar-fill {
-  position: absolute; bottom: 0; left: 0; right: 0;
-  background: linear-gradient(180deg, var(--focus) 0%, rgba(0,212,255,0.5) 100%);
-  border-radius: 4px 4px 0 0;
-  transition: height 0.8s cubic-bezier(0.34,1.56,0.64,1);
-  box-shadow: 0 0 6px rgba(0,212,255,0.3);
-}
-.week-bar-fill.today {
-  background: linear-gradient(180deg, #fff 0%, var(--focus) 100%);
-  box-shadow: 0 0 10px rgba(0,212,255,0.6);
-}
-.week-bar-label {
-  font-size: 9px; color: var(--text-dim);
-  letter-spacing: 0.06em; font-weight: 500;
-}
-.week-bar-label.today { color: var(--focus); font-weight: 700; }
 
-/* ---- MODALS ---- */
-.overlay {
+/* ================================================================
+   SECTION HEADERS
+   ================================================================ */
+.sec-header {
+  display: flex; align-items: center; gap: 14px;
+  margin-bottom: 20px; margin-top: 8px;
+}
+.sec-icon {
+  width: 38px; height: 38px;
+  border: 2px solid var(--focus);
+  border-radius: 10px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 18px;
+  background: var(--focus-d);
+  flex-shrink: 0;
+}
+.sec-header[data-color="green"] .sec-icon  { border-color: var(--short); background: var(--short-d); }
+.sec-header[data-color="purple"] .sec-icon { border-color: var(--long);  background: var(--long-d);  }
+.sec-header[data-color="gold"] .sec-icon   { border-color: var(--gold);  background: rgba(255,214,0,0.1); }
+.sec-info {}
+.sec-title {
+  font-family: 'Orbitron', monospace;
+  font-size: 13px; font-weight: 700;
+  color: var(--text); letter-spacing: 0.08em;
+  margin-bottom: 2px;
+}
+.sec-sub { font-size: 11px; color: var(--text-dim); }
+.section-block { margin-bottom: 50px; }
+
+/* ================================================================
+   GRID
+   ================================================================ */
+.cards-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 14px;
+}
+.cards-grid-wide {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 14px;
+}
+
+/* ================================================================
+   HELP BUTTON & MODAL
+   ================================================================ */
+.help-btn {
+  width: 28px; height: 28px;
+  border-radius: 50%;
+  border: 1px solid var(--border);
+  background: var(--card);
+  color: var(--text-dim);
+  font-size: 13px; font-weight: 700;
+  cursor: pointer; transition: all 0.2s;
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'Outfit', sans-serif;
+  margin-left: 8px; flex-shrink: 0;
+}
+.help-btn:hover {
+  border-color: var(--focus);
+  color: var(--focus);
+  box-shadow: 0 0 10px var(--focus-d);
+  background: var(--focus-d);
+}
+.help-overlay {
   display: none; position: fixed; inset: 0;
   background: rgba(2,4,10,0.82);
   backdrop-filter: blur(10px);
-  z-index: 200;
+  z-index: 500;
   align-items: center; justify-content: center;
   padding: 20px;
 }
-.overlay.open { display: flex; }
-.mbox {
+.help-overlay.open { display: flex; }
+.help-box {
   background: var(--bg3);
   border: 1px solid var(--border);
   border-radius: 18px;
-  width: 100%; max-width: 500px;
-  max-height: 85vh; overflow-y: auto;
-  box-shadow: 0 0 60px rgba(0,212,255,0.08);
-  animation: mbox-in 0.32s cubic-bezier(0.34,1.56,0.64,1);
+  width: 100%; max-width: 480px;
+  max-height: 80vh; overflow-y: auto;
+  box-shadow: 0 0 50px rgba(0,212,255,0.08);
+  animation: help-in 0.3s cubic-bezier(0.34,1.56,0.64,1);
 }
-@keyframes mbox-in {
-  from { opacity:0; transform: scale(0.88) translateY(24px); }
+@keyframes help-in {
+  from { opacity:0; transform: scale(0.9) translateY(20px); }
   to   { opacity:1; transform: scale(1) translateY(0); }
 }
-.mhead {
+.help-head {
   display: flex; justify-content: space-between; align-items: center;
-  padding: 20px 24px;
+  padding: 18px 22px;
   border-bottom: 1px solid var(--border);
   position: sticky; top: 0;
   background: var(--bg3); z-index: 1;
   border-radius: 18px 18px 0 0;
 }
-.mtitle {
+.help-title {
   font-family: 'Orbitron', monospace;
-  font-size: 12px; font-weight: 700;
-  letter-spacing: 0.18em;
-  color: var(--focus);
+  font-size: 11px; font-weight: 700;
+  letter-spacing: 0.16em; color: var(--focus);
 }
-.mclose {
-  width: 30px; height: 30px;
-  border-radius: 8px;
-  border: 1px solid var(--border);
-  background: transparent; color: var(--text-dim);
-  font-size: 14px; cursor: pointer;
+.help-close {
+  width: 28px; height: 28px; border-radius: 7px;
+  border: 1px solid var(--border); background: transparent;
+  color: var(--text-dim); font-size: 12px; cursor: pointer;
   display: flex; align-items: center; justify-content: center;
   transition: all 0.2s;
 }
-.mclose:hover { border-color: var(--focus); color: var(--text); }
-.mbody { padding: 24px; }
+.help-close:hover { border-color: var(--focus); color: var(--text); }
+.help-body { padding: 20px 22px; }
+.help-section { margin-bottom: 18px; }
+.help-sec-title {
+  font-size: 12px; font-weight: 700; color: var(--text);
+  margin-bottom: 7px;
+}
+.help-p {
+  font-size: 13px; color: var(--text-dim);
+  line-height: 1.7; margin-bottom: 6px;
+}
 
-/* ---- AD ZONE dentro del modal de stats ---- */
-.ad-modal {
-  width: 100%;
-  min-height: 100px;
-  background: rgba(0,212,255,0.02);
-  border: 1px dashed rgba(0,212,255,0.1);
-  border-radius: 10px;
-  margin-bottom: 16px;
-  display: flex; align-items: center; justify-content: center;
-  overflow: hidden;
-}
-.ad-modal ins { display: block; width: 100%; }
-
-/* ---- SETTINGS ---- */
-.sgroup { margin-bottom: 22px; }
-.sgroup-title {
-  font-size: 9px; color: var(--focus);
-  text-transform: uppercase; letter-spacing: 0.24em;
-  font-weight: 700; margin-bottom: 10px;
-}
-.srow {
-  display: flex; justify-content: space-between; align-items: center;
-  padding: 11px 0;
-  border-bottom: 1px solid var(--border);
-}
-.srow:last-child { border-bottom: none; }
-.slabel { font-size: 13px; color: var(--text); font-weight: 500; }
-.ssub { font-size: 10px; color: var(--text-dim); margin-top: 2px; }
-.snumber {
-  background: var(--bg2);
-  border: 1px solid var(--border);
-  border-radius: 8px;
-  color: var(--text);
-  font-family: 'Orbitron', monospace;
-  font-size: 13px;
-  padding: 6px 10px;
-  width: 78px; text-align: center;
-  transition: border-color 0.2s;
-}
-.snumber:focus { outline: none; border-color: var(--focus); box-shadow: 0 0 10px var(--focus-d); }
-
-.tog {
-  width: 44px; height: 24px;
-  border-radius: 12px;
-  background: var(--text-faint);
-  border: none; cursor: pointer;
-  position: relative; transition: background 0.28s;
-}
-.tog.on { background: var(--focus); }
-.tog::after {
-  content: '';
-  position: absolute; top: 2px; left: 2px;
-  width: 20px; height: 20px;
-  background: #fff; border-radius: 50%;
-  transition: left 0.28s;
-  box-shadow: 0 1px 4px rgba(0,0,0,0.3);
-}
-.tog.on::after { left: 22px; }
-
-.btn-save {
-  width: 100%; padding: 12px;
+/* ================================================================
+   COLLAPSIBLE SECTION
+   ================================================================ */
+.collapsible-header { transition: opacity 0.2s; }
+.collapsible-header:hover { opacity: 0.85; }
+.collapse-toggle {
+  display: flex; align-items: center; gap: 7px;
   background: var(--focus-d);
-  border: 1px solid var(--focus);
-  border-radius: 10px;
-  color: var(--focus);
-  font-family: 'Outfit', sans-serif;
-  font-size: 14px; font-weight: 600;
-  cursor: pointer; transition: all 0.22s;
-  letter-spacing: 0.06em; margin-top: 4px;
+  border: 1px solid rgba(0,212,255,0.2);
+  border-radius: 9px; padding: 6px 12px;
+  flex-shrink: 0;
+  transition: all 0.22s;
 }
-.btn-save:hover { background: rgba(0,212,255,0.22); box-shadow: 0 0 18px var(--focus-d); }
+.collapsible-header:hover .collapse-toggle {
+  border-color: var(--focus);
+  box-shadow: 0 0 10px var(--focus-d);
+}
+.collapse-icon {
+  font-size: 10px; color: var(--focus);
+  transition: transform 0.32s cubic-bezier(0.34,1.56,0.64,1);
+  display: inline-block;
+}
+.collapse-icon.collapsed { transform: rotate(180deg); }
+.collapse-label { font-size: 10px; color: var(--focus); font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; }
+.collapsible-body {
+  overflow: hidden;
+  max-height: 2000px;
+  transition: max-height 0.5s cubic-bezier(0.4,0,0.2,1), opacity 0.35s ease, margin 0.35s ease;
+  opacity: 1;
+  margin-top: 0;
+}
+.collapsible-body.collapsed {
+  max-height: 0;
+  opacity: 0;
+  margin-top: -8px;
+}
 
-/* ---- ACHIEVEMENTS ---- */
-.ach-stats { display: flex; gap: 12px; margin-bottom: 20px; }
-.ach-stat {
-  flex: 1; background: var(--bg2); border: 1px solid var(--border);
-  border-radius: 10px; padding: 12px; text-align: center;
-}
-.ach-stat-val { font-family: 'Orbitron', monospace; font-size: 20px; font-weight: 700; color: var(--gold); }
-.ach-stat-label { font-size: 9px; color: var(--text-dim); text-transform: uppercase; letter-spacing: 0.15em; margin-top: 3px; }
-
-.ach-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; }
-.acard {
-  background: var(--bg2);
-  border: 1px solid var(--border);
-  border-radius: 11px; padding: 14px;
-  transition: all 0.22s; position: relative; overflow: hidden;
-}
-.acard.unlocked { border-color: rgba(255,214,0,0.28); background: rgba(255,214,0,0.04); }
-.acard.locked { opacity: 0.42; filter: grayscale(0.7); }
-.acard-check {
-  position: absolute; top: 8px; right: 8px;
-  width: 20px; height: 20px;
-  background: var(--gold); border-radius: 50%;
-  display: flex; align-items: center; justify-content: center;
-  font-size: 10px; font-weight: 700; color: #000;
-}
-.acard-icon { font-size: 26px; margin-bottom: 7px; }
-.acard-name { font-size: 13px; font-weight: 700; color: var(--text); margin-bottom: 3px; }
-.acard-desc { font-size: 10px; color: var(--text-dim); margin-bottom: 6px; line-height: 1.4; }
-.acard-xp { font-size: 10px; color: var(--xp); font-family: 'Orbitron', monospace; font-weight: 700; }
-
-/* ---- STATS MODAL ---- */
-.stats-grid-modal { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 20px; }
-.stat-cell { background: var(--bg2); border: 1px solid var(--border); border-radius: 10px; padding: 16px; text-align: center; }
-.stat-cell-val { font-family: 'Orbitron', monospace; font-size: 26px; font-weight: 700; color: var(--focus); margin-bottom: 5px; }
-.stat-cell-label { font-size: 9px; color: var(--text-dim); text-transform: uppercase; letter-spacing: 0.18em; }
-.stat-detail-row { display: flex; justify-content: space-between; padding: 9px 0; border-bottom: 1px solid var(--border); font-size: 13px; }
-.stat-detail-row:last-child { border-bottom: none; }
-.stat-detail-row span:first-child { color: var(--text-dim); }
-.stat-detail-row span:last-child { font-family: 'Orbitron', monospace; color: var(--text); font-size: 12px; }
-
-/* ---- TOAST ---- */
-.toast-wrap {
-  position: fixed; bottom: 28px; right: 28px;
-  z-index: 999;
-  display: flex; flex-direction: column; gap: 8px;
-  pointer-events: none;
-}
-.toast {
-  background: var(--bg3);
-  border: 1px solid var(--border);
-  border-radius: 12px;
-  padding: 12px 16px;
-  min-width: 270px; max-width: 320px;
-  box-shadow: 0 8px 32px rgba(0,0,0,0.6);
-  animation: t-in 0.38s cubic-bezier(0.34,1.56,0.64,1);
-  backdrop-filter: blur(14px);
-}
-.toast.t-xp   { border-color: rgba(255,112,67,0.35); }
-.toast.t-ach  { border-color: rgba(255,214,0,0.35); }
-.toast.t-done { border-color: rgba(0,255,152,0.35); }
-.toast-ttl { font-size: 9px; text-transform: uppercase; letter-spacing: 0.18em; color: var(--text-dim); margin-bottom: 4px; font-weight: 600; }
-.toast.t-xp  .toast-ttl { color: var(--xp); }
-.toast.t-ach .toast-ttl { color: var(--gold); }
-.toast.t-done .toast-ttl { color: var(--success); }
-.toast-msg { font-size: 14px; font-weight: 600; color: var(--text); }
-@keyframes t-in  { from { opacity:0; transform: translateX(30px); } to { opacity:1; transform: none; } }
-@keyframes t-out { from { opacity:1; transform: none; } to { opacity:0; transform: translateX(30px); } }
-
-/* ---- PARTICLES ---- */
-.px { position: fixed; pointer-events: none; z-index: 998; border-radius: 50%; animation: px-fly 1s ease-out forwards; }
-@keyframes px-fly { 0% { opacity:1; transform: translate(0,0) scale(1); } 100% { opacity:0; transform: translate(var(--dx),var(--dy)) scale(0.4); } }
-
-/* ---- MISSION SLOT ---- */
-.mission-slot {
-  width: 100%;
-  background: rgba(0,212,255,0.03);
-  border: 1px solid rgba(0,212,255,0.15);
-  border-radius: 12px;
-  padding: 10px 16px;
-  margin-top: 10px;
-  min-height: 46px;
-  display: flex; align-items: center; gap: 10px;
-  transition: all 0.3s;
-  position: relative; overflow: hidden;
-}
-.mission-slot::before {
-  content: '';
-  position: absolute; inset: 0;
-  background: linear-gradient(90deg, transparent, rgba(0,212,255,0.04), transparent);
-  transform: translateX(-100%);
-  transition: none;
-}
-.mission-slot.active {
-  border-color: rgba(0,212,255,0.4);
-  box-shadow: 0 0 18px rgba(0,212,255,0.1), inset 0 0 18px rgba(0,212,255,0.04);
-  animation: slot-pulse 2.5s ease-in-out infinite;
-}
-@keyframes slot-pulse {
-  0%,100% { box-shadow: 0 0 12px rgba(0,212,255,0.1), inset 0 0 12px rgba(0,212,255,0.03); }
-  50%      { box-shadow: 0 0 28px rgba(0,212,255,0.22), inset 0 0 22px rgba(0,212,255,0.08); }
-}
-.slot-icon { font-size: 18px; flex-shrink: 0; }
-.slot-content { flex: 1; min-width: 0; }
-.slot-name {
-  font-size: 13px; font-weight: 700; color: var(--text);
-  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
-}
-.slot-empty { font-size: 12px; color: var(--text-faint); font-style: italic; }
-.slot-meta { font-size: 10px; color: var(--text-dim); margin-top: 2px; }
-.slot-disconnect {
-  width: 24px; height: 24px; border-radius: 6px;
-  border: 1px solid var(--border); background: transparent;
-  color: var(--text-faint); font-size: 12px; cursor: pointer;
-  display: flex; align-items: center; justify-content: center;
-  transition: all 0.2s; flex-shrink: 0;
-}
-.slot-disconnect:hover { border-color: rgba(255,50,50,0.3); color: #ff6b6b; }
-
-/* ---- MISSIONS PANEL ---- */
-.missions-panel {
-  width: 100%;
+/* ================================================================
+   LINK CARDS (recursos externos)
+   ================================================================ */
+.link-card {
   background: var(--card);
   border: 1px solid var(--border);
   border-radius: var(--radius);
-  padding: 16px 18px;
-  margin-bottom: 24px;
-  backdrop-filter: blur(12px);
+  padding: 18px 16px;
+  text-decoration: none;
+  display: flex; flex-direction: column; gap: 8px;
+  transition: all 0.24s;
+  backdrop-filter: blur(10px);
+  position: relative; overflow: hidden;
+  cursor: pointer;
 }
-.missions-header {
-  display: flex; justify-content: space-between; align-items: center;
-  margin-bottom: 14px;
+.link-card::before {
+  content: ''; position: absolute;
+  inset: 0; opacity: 0; transition: opacity 0.3s;
+  background: linear-gradient(135deg, var(--focus-d), transparent);
 }
-.missions-title {
-  font-size: 9px; color: var(--focus);
-  text-transform: uppercase; letter-spacing: 0.24em; font-weight: 700;
-}
-.missions-count {
-  font-size: 10px; color: var(--text-dim);
-  font-family: 'Orbitron', monospace;
+.link-card:hover { border-color: var(--border-h); transform: translateY(-2px); box-shadow: 0 8px 28px rgba(0,212,255,0.1); }
+.link-card:hover::before { opacity: 1; }
+.link-card-icon { font-size: 28px; }
+.link-card-name { font-size: 14px; font-weight: 700; color: var(--text); }
+.link-card-desc { font-size: 11px; color: var(--text-dim); line-height: 1.5; }
+.link-card-tag {
+  display: inline-block; font-size: 9px; font-weight: 700;
+  letter-spacing: 0.14em; text-transform: uppercase;
+  padding: 2px 8px; border-radius: 20px;
+  background: var(--focus-d); color: var(--focus);
+  border: 1px solid rgba(0,212,255,0.2);
+  width: fit-content; margin-top: 2px;
 }
 
-/* Mission create form */
-.mission-create {
-  display: flex; gap: 8px; margin-bottom: 14px; flex-wrap: wrap;
+/* ================================================================
+   TOOL CARDS (herramientas interactivas)
+   ================================================================ */
+.tool-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 20px;
+  backdrop-filter: blur(10px);
+  transition: border-color 0.22s;
 }
-.mission-input {
-  flex: 1; min-width: 150px;
+.tool-card:hover { border-color: var(--border-h); }
+.tool-card-header {
+  display: flex; align-items: center; gap: 10px; margin-bottom: 16px;
+}
+.tool-card-icon { font-size: 22px; }
+.tool-card-title { font-size: 14px; font-weight: 700; color: var(--text); }
+.tool-card-sub   { font-size: 10px; color: var(--text-dim); margin-top: 1px; }
+
+/* ================================================================
+   COMING SOON CARDS
+   ================================================================ */
+.soon-card {
+  background: var(--card);
+  border: 1px dashed var(--border);
+  border-radius: var(--radius);
+  padding: 24px 20px;
+  text-align: center;
+  backdrop-filter: blur(10px);
+  opacity: 0.65;
+  transition: all 0.24s;
+  cursor: default;
+}
+.soon-card:hover { opacity: 0.85; border-color: var(--border-h); }
+.soon-icon { font-size: 32px; margin-bottom: 10px; }
+.soon-title { font-size: 14px; font-weight: 700; color: var(--text); margin-bottom: 6px; }
+.soon-desc  { font-size: 11px; color: var(--text-dim); line-height: 1.5; margin-bottom: 12px; }
+.soon-badge {
+  display: inline-block; font-size: 9px; font-weight: 700;
+  letter-spacing: 0.16em; text-transform: uppercase;
+  padding: 3px 10px; border-radius: 20px;
+  background: rgba(176,106,255,0.12); color: var(--long);
+  border: 1px solid rgba(176,106,255,0.22);
+}
+
+/* ================================================================
+   CONVERSOR DE UNIDADES
+   ================================================================ */
+.conv-tabs {
+  display: flex; gap: 4px; flex-wrap: wrap;
+  background: var(--bg2); border-radius: 10px; padding: 4px;
+  margin-bottom: 18px; border: 1px solid var(--border);
+}
+.conv-tab {
+  flex: 1; min-width: 80px; padding: 7px 10px;
+  border: 1px solid transparent; border-radius: 8px;
+  background: transparent; color: var(--text-dim);
+  font-family: 'Outfit', sans-serif; font-size: 11px;
+  font-weight: 600; cursor: pointer; transition: all 0.22s;
+  text-align: center; letter-spacing: 0.04em;
+}
+.conv-tab:hover { color: var(--text); }
+.conv-tab.active {
+  background: var(--focus-d); border-color: var(--focus);
+  color: var(--focus);
+}
+.conv-body { display: none; }
+.conv-body.active { display: block; }
+.conv-row {
+  display: grid; grid-template-columns: 1fr auto 1fr;
+  gap: 10px; align-items: center; margin-bottom: 12px;
+}
+.conv-col { display: flex; flex-direction: column; gap: 6px; }
+.conv-label { font-size: 10px; color: var(--text-dim); text-transform: uppercase; letter-spacing: 0.14em; }
+.conv-input {
+  background: var(--bg2); border: 1px solid var(--border);
+  border-radius: 9px; color: var(--text);
+  font-family: 'Orbitron', monospace; font-size: 16px; font-weight: 700;
+  padding: 10px 12px; transition: border-color 0.2s; width: 100%;
+}
+.conv-input:focus { outline: none; border-color: var(--focus); box-shadow: 0 0 10px var(--focus-d); }
+.conv-select {
   background: var(--bg2); border: 1px solid var(--border);
   border-radius: 9px; color: var(--text);
   font-family: 'Outfit', sans-serif; font-size: 13px;
-  padding: 9px 12px; transition: border-color 0.2s;
-}
-.mission-input:focus { outline: none; border-color: var(--focus); box-shadow: 0 0 8px var(--focus-d); }
-.mission-input::placeholder { color: var(--text-faint); }
-.mission-est {
-  background: var(--bg2); border: 1px solid var(--border);
-  border-radius: 9px; color: var(--text);
-  font-family: 'Orbitron', monospace; font-size: 12px;
-  padding: 9px 10px; cursor: pointer; width: 90px;
+  padding: 8px 10px; cursor: pointer; width: 100%;
   transition: border-color 0.2s;
 }
-.mission-est:focus { outline: none; border-color: var(--focus); }
-.btn-create-mission {
-  padding: 9px 16px;
-  background: var(--focus-d); border: 1px solid var(--focus);
-  border-radius: 9px; color: var(--focus);
-  font-family: 'Outfit', sans-serif; font-size: 12px; font-weight: 700;
-  cursor: pointer; transition: all 0.22s; white-space: nowrap;
+.conv-select:focus { outline: none; border-color: var(--focus); }
+.conv-arrow {
+  font-size: 22px; color: var(--focus);
+  font-family: 'Orbitron', monospace; font-weight: 700;
+  user-select: none;
 }
-.btn-create-mission:hover { background: rgba(0,212,255,0.22); box-shadow: 0 0 12px var(--focus-d); }
-
-/* Mission cards list */
-.missions-list { display: flex; flex-direction: column; gap: 10px; }
-.mission-card {
-  background: var(--bg2);
-  border: 1px solid var(--border);
-  border-radius: 12px;
-  padding: 12px 14px;
-  transition: border-color 0.22s;
-  position: relative;
-}
-.mission-card.connected {
-  border-color: rgba(0,212,255,0.35);
-  background: rgba(0,212,255,0.04);
-}
-.mission-card.completed {
-  opacity: 0.45; filter: grayscale(0.6);
-}
-.mission-card-top {
-  display: flex; align-items: center; gap: 10px; margin-bottom: 10px;
-}
-.mission-card-name {
-  flex: 1; font-size: 14px; font-weight: 700; color: var(--text);
-  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
-}
-.mission-card-name.connected { color: var(--focus); }
-.mission-badge {
-  font-size: 9px; font-weight: 700; letter-spacing: 0.12em;
-  padding: 2px 8px; border-radius: 20px; flex-shrink: 0;
-  text-transform: uppercase;
-}
-.mission-badge.active-badge {
-  background: var(--focus-d); color: var(--focus);
-  border: 1px solid rgba(0,212,255,0.25);
-}
-
-/* Energy tank */
-.energy-tank {
-  display: flex; gap: 4px; margin-bottom: 10px; flex-wrap: wrap;
-}
-.energy-seg {
-  height: 10px; flex: 1; min-width: 12px; max-width: 44px;
-  border-radius: 3px;
-  background: rgba(0,212,255,0.08);
-  border: 1px solid rgba(0,212,255,0.18);
-  transition: background 0.6s ease, border-color 0.4s, box-shadow 0.6s;
-  position: relative; overflow: hidden;
-}
-.energy-seg.filled {
-  background: linear-gradient(90deg, var(--focus), rgba(0,212,255,0.6));
-  border-color: var(--focus);
-  box-shadow: 0 0 6px rgba(0,212,255,0.5);
-}
-.energy-seg.overcharge {
-  background: linear-gradient(90deg, var(--xp), rgba(255,112,67,0.6));
-  border-color: var(--xp);
-  box-shadow: 0 0 6px rgba(255,112,67,0.5);
-}
-.energy-seg::after {
-  content: '';
-  position: absolute; top: 0; left: -100%; width: 60%;
-  height: 100%; background: rgba(255,255,255,0.25);
-  transform: skewX(-20deg);
-  transition: left 0.4s ease;
-}
-.energy-seg.filled::after { left: 120%; }
-
-.energy-label {
-  font-size: 10px; color: var(--text-dim); margin-bottom: 6px;
-  font-family: 'Orbitron', monospace;
-}
-.energy-label span { color: var(--focus); }
-.energy-label.overcharge span { color: var(--xp); }
-
-/* Mission card buttons */
-.mission-card-btns { display: flex; gap: 6px; flex-wrap: wrap; }
-.btn-mission {
-  padding: 6px 12px; border-radius: 7px;
-  font-family: 'Outfit', sans-serif; font-size: 11px; font-weight: 600;
-  cursor: pointer; transition: all 0.2s; border: 1px solid var(--border);
-  background: transparent; color: var(--text-dim);
-}
-.btn-mission:hover { color: var(--text); border-color: var(--border-h); }
-.btn-mission.connect { border-color: rgba(0,212,255,0.3); color: var(--focus); background: var(--focus-d); }
-.btn-mission.connect:hover { background: rgba(0,212,255,0.2); }
-.btn-mission.complete { border-color: rgba(0,255,152,0.3); color: var(--short); }
-.btn-mission.complete:hover { background: var(--short-d); }
-.btn-mission.del { border-color: rgba(255,50,50,0.2); color: #ff6b6b; }
-.btn-mission.del:hover { background: rgba(255,50,50,0.1); }
-
-/* Missions empty */
-.missions-empty {
-  text-align: center; padding: 22px;
-  color: var(--text-faint); font-size: 13px; line-height: 1.6;
-}
-
-/* Historial toggle */
-.history-toggle {
-  font-size: 11px; color: var(--text-dim); cursor: pointer;
-  text-align: center; padding: 8px 0 0;
-  border-top: 1px solid var(--border); margin-top: 12px;
-  transition: color 0.2s;
-}
-.history-toggle:hover { color: var(--focus); }
-.history-list { margin-top: 10px; display: none; }
-.history-list.open { display: block; }
-.history-item {
-  display: flex; align-items: center; gap: 8px;
-  padding: 7px 0; border-bottom: 1px solid var(--border);
-  font-size: 12px; color: var(--text-dim);
-}
-.history-item:last-child { border-bottom: none; }
-.history-item .hi-name { flex: 1; }
-.history-item .hi-pomos { font-family: 'Orbitron', monospace; font-size: 11px; color: var(--focus); }
-
-/* ---- TOOLKIT BUTTON ---- */
-.toolkit-btn {
-  display: block; width: 100%;
-  position: relative; overflow: hidden;
-  background: var(--bg3);
-  border: 1px solid rgba(0,212,255,0.25);
-  border-radius: var(--radius);
-  padding: 22px 24px;
-  text-decoration: none;
-  margin-bottom: 20px;
-  transition: all 0.32s cubic-bezier(0.34,1.56,0.64,1);
-  backdrop-filter: blur(12px);
-}
-.toolkit-btn::before {
-  content: '';
-  position: absolute; inset: 0;
-  background: linear-gradient(135deg,
-    rgba(0,212,255,0.08) 0%,
-    rgba(0,255,152,0.06) 50%,
-    rgba(176,106,255,0.08) 100%);
-  opacity: 0; transition: opacity 0.32s;
-}
-.toolkit-btn:hover {
-  border-color: var(--focus);
-  transform: translateY(-3px);
-  box-shadow: 0 12px 40px rgba(0,212,255,0.18), 0 0 0 1px rgba(0,212,255,0.15);
-}
-.toolkit-btn:hover::before { opacity: 1; }
-.toolkit-btn:active { transform: translateY(-1px); }
-.toolkit-btn-glow {
-  position: absolute; inset: -2px;
-  background: linear-gradient(90deg,
-    var(--focus), var(--short), var(--long), var(--focus));
-  background-size: 300% 100%;
-  border-radius: calc(var(--radius) + 2px);
-  opacity: 0; z-index: -1;
-  transition: opacity 0.32s;
-  animation: tk-glow-move 3s linear infinite;
-  filter: blur(8px);
-}
-.toolkit-btn:hover .toolkit-btn-glow { opacity: 0.5; }
-@keyframes tk-glow-move {
-  0%   { background-position: 0% 50%; }
-  100% { background-position: 300% 50%; }
-}
-.toolkit-btn-content {
-  position: relative; z-index: 1;
-  display: flex; align-items: center; justify-content: space-between; gap: 16px;
-}
-.toolkit-btn-left { display: flex; align-items: center; gap: 16px; }
-.toolkit-btn-icon {
-  font-size: 30px;
-  width: 54px; height: 54px;
-  background: linear-gradient(135deg, var(--focus-d), rgba(0,255,152,0.1));
-  border: 1px solid rgba(0,212,255,0.25);
-  border-radius: 14px;
-  display: flex; align-items: center; justify-content: center;
-  flex-shrink: 0;
-  transition: transform 0.32s cubic-bezier(0.34,1.56,0.64,1);
-}
-.toolkit-btn:hover .toolkit-btn-icon { transform: scale(1.12) rotate(-5deg); }
-.toolkit-btn-title {
-  font-family: 'Orbitron', monospace;
-  font-size: 16px; font-weight: 900;
-  letter-spacing: 0.08em;
-  background: linear-gradient(135deg, var(--focus) 0%, var(--short) 60%, #fff 100%);
-  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-  background-clip: text;
-  margin-bottom: 4px;
-}
-.toolkit-btn-sub {
-  font-size: 11px; color: var(--text-dim);
-  letter-spacing: 0.04em; font-weight: 500;
-}
-.toolkit-btn-arrow {
-  font-size: 24px; color: var(--focus);
-  font-weight: 700; flex-shrink: 0;
-  transition: transform 0.28s cubic-bezier(0.34,1.56,0.64,1);
-  font-family: 'Orbitron', monospace;
-}
-.toolkit-btn:hover .toolkit-btn-arrow { transform: translateX(6px); }
-
-/* ---- COOKIE BANNER ---- */
-#cookie-banner {
-  position: fixed; bottom: 0; left: 0; right: 0;
-  z-index: 9999;
-  background: rgba(7,12,24,0.97);
-  border-top: 1px solid rgba(0,212,255,0.2);
-  backdrop-filter: blur(18px);
-  padding: 18px 24px;
-  display: flex; align-items: center; justify-content: space-between;
-  gap: 16px; flex-wrap: wrap;
-  box-shadow: 0 -8px 32px rgba(0,0,0,0.5);
-  transform: translateY(0);
-  transition: transform 0.4s cubic-bezier(0.4,0,0.2,1);
-}
-#cookie-banner.hidden {
-  transform: translateY(110%);
-  pointer-events: none;
-}
-.cookie-text {
-  flex: 1; min-width: 240px;
-  font-size: 13px; color: var(--text-dim); line-height: 1.6;
-}
-.cookie-text strong { color: var(--text); }
-.cookie-text a { color: var(--focus); text-decoration: none; }
-.cookie-text a:hover { text-decoration: underline; }
-.cookie-btns { display: flex; gap: 8px; flex-shrink: 0; flex-wrap: wrap; }
-.btn-cookie-accept {
-  padding: 9px 20px; border-radius: 9px;
-  background: var(--focus-d); border: 1px solid var(--focus);
-  color: var(--focus); font-family: 'Outfit', sans-serif;
-  font-size: 13px; font-weight: 700; cursor: pointer;
-  transition: all 0.22s; letter-spacing: 0.04em; white-space: nowrap;
-}
-.btn-cookie-accept:hover { background: rgba(0,212,255,0.22); box-shadow: 0 0 14px var(--focus-d); }
-.btn-cookie-reject {
-  padding: 9px 16px; border-radius: 9px;
-  background: transparent; border: 1px solid var(--border);
-  color: var(--text-dim); font-family: 'Outfit', sans-serif;
-  font-size: 13px; font-weight: 500; cursor: pointer;
-  transition: all 0.22s; white-space: nowrap;
-}
-.btn-cookie-reject:hover { border-color: var(--border-h); color: var(--text); }
-
-/* ---- FOOTER ---- */
-.app-footer {
-  text-align: center; padding: 20px 0 0;
-  border-top: 1px solid var(--border);
-  margin-top: 10px;
-}
-.app-footer a {
-  color: var(--text-faint); font-size: 11px;
-  text-decoration: none; margin: 0 10px;
-  transition: color 0.2s;
-}
-.app-footer a:hover { color: var(--text-dim); }
-
-/* ---- ABOUT SECTION ---- */
-#about-section {
-  position: relative; z-index: 1;
-  background: var(--bg2);
-  border-top: 1px solid var(--border);
-  margin-top: 40px;
-  padding: 50px 0 0;
-}
-.about-wrap {
-  max-width: 780px;
-  margin: 0 auto;
-  padding: 0 24px;
-}
-.about-card {
-  background: var(--card);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  padding: 28px 28px 24px;
-  margin-bottom: 24px;
-  backdrop-filter: blur(10px);
-}
-.about-tag {
-  font-size: 10px; color: var(--focus);
-  text-transform: uppercase; letter-spacing: 0.22em;
-  font-weight: 700; margin-bottom: 10px;
-}
-.about-h2 {
-  font-family: 'Orbitron', monospace;
-  font-size: 16px; font-weight: 700;
-  color: var(--text);
-  margin-bottom: 14px; line-height: 1.4;
-}
-.about-p {
-  font-size: 14px; color: var(--text-dim);
-  line-height: 1.75; margin-bottom: 12px;
-}
-.about-p:last-child { margin-bottom: 0; }
-.about-p strong { color: var(--text); font-weight: 600; }
-
-/* Features grid */
-.about-features {
-  display: grid; grid-template-columns: 1fr 1fr;
-  gap: 12px; margin-top: 16px;
-}
-.about-feat {
-  display: flex; gap: 10px; align-items: flex-start;
+.conv-result {
   background: var(--bg2); border: 1px solid var(--border);
-  border-radius: 10px; padding: 12px;
-  font-size: 13px; color: var(--text-dim); line-height: 1.5;
-}
-.about-feat strong { color: var(--text); }
-.about-feat-icon { font-size: 18px; flex-shrink: 0; margin-top: 1px; }
-
-/* Roadmap */
-.roadmap { display: flex; flex-direction: column; gap: 12px; margin-top: 16px; }
-.road-item {
-  background: var(--bg2); border: 1px solid var(--border);
-  border-radius: 10px; padding: 14px 16px;
-  display: flex; flex-direction: column; gap: 5px;
-}
-.road-badge {
-  display: inline-block; font-size: 9px; font-weight: 700;
-  letter-spacing: 0.16em; text-transform: uppercase;
-  padding: 3px 8px; border-radius: 20px;
-  background: rgba(0,212,255,0.12); color: var(--focus);
-  border: 1px solid rgba(0,212,255,0.2);
-  width: fit-content; margin-bottom: 4px;
-}
-.road-badge-mid { background: rgba(176,106,255,0.12); color: var(--long); border-color: rgba(176,106,255,0.2); }
-.road-badge-fut { background: rgba(255,112,67,0.12); color: var(--xp); border-color: rgba(255,112,67,0.2); }
-.road-title { font-size: 14px; font-weight: 700; color: var(--text); }
-.road-desc { font-size: 12px; color: var(--text-dim); line-height: 1.6; }
-
-/* About footer */
-.about-footer {
-  text-align: center; padding: 30px 0 40px;
-  border-top: 1px solid var(--border); margin-top: 10px;
-}
-.about-footer-logo {
-  font-family: 'Orbitron', monospace;
-  font-size: 14px; font-weight: 700; color: var(--focus);
-  margin-bottom: 6px;
-}
-.about-footer-sub { font-size: 11px; color: var(--text-faint); margin-bottom: 14px; }
-.about-footer-links a {
-  color: var(--text-faint); font-size: 11px;
-  text-decoration: none; margin: 0 10px; transition: color 0.2s;
-}
-.about-footer-links a:hover { color: var(--text-dim); }
-
-@media (max-width: 560px) {
-  .about-features { grid-template-columns: 1fr; }
-  .about-card { padding: 20px 16px; }
-  .about-h2 { font-size: 14px; }
+  border-radius: 10px; padding: 12px 16px;
+  font-family: 'Orbitron', monospace; font-size: 14px;
+  color: var(--short); text-align: center; margin-top: 4px;
+  min-height: 42px; display: flex; align-items: center; justify-content: center;
+  transition: all 0.3s;
 }
 
-/* ---- SCROLLBAR ---- */
+/* ================================================================
+   AD BANNER
+   ================================================================ */
+.ad-tk {
+  width: 100%; min-height: 90px;
+  background: rgba(0,212,255,0.02);
+  border: 1px dashed rgba(0,212,255,0.1);
+  border-radius: var(--radius); margin: 36px 0; overflow: hidden;
+}
+
+/* ================================================================
+   NO RESULTS
+   ================================================================ */
+.no-results {
+  display: none; text-align: center;
+  padding: 40px; color: var(--text-dim);
+  font-size: 14px;
+}
+.no-results.visible { display: block; }
+
+/* ================================================================
+   SCROLLBAR & RESPONSIVE
+   ================================================================ */
 ::-webkit-scrollbar { width: 4px; }
 ::-webkit-scrollbar-track { background: transparent; }
 ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
 
-/* ---- RESPONSIVE ---- */
-@media (max-width: 560px) {
-  .stats-row { grid-template-columns: repeat(2,1fr); }
-  .timer-digits { font-size: 44px; }
-  .timer-ring-wrap { width: 250px; height: 250px; }
-  .nav-btn .nav-label { display: none; }
-  .ach-grid { grid-template-columns: 1fr; }
-  .stats-grid-modal { grid-template-columns: 1fr 1fr; }
+@media (max-width: 640px) {
+  .page { padding: 28px 16px 60px; }
+  .cards-grid, .cards-grid-wide { grid-template-columns: 1fr 1fr; }
+  .conv-row { grid-template-columns: 1fr; }
+  .conv-arrow { transform: rotate(90deg); text-align: center; }
+  .topbar-page { display: none; }
 }
-@media (max-width: 380px) {
-  .mode-tab { font-size: 10px; padding: 8px 6px; }
-  #app { padding: 0 14px 40px; }
+@media (max-width: 400px) {
+  .cards-grid, .cards-grid-wide { grid-template-columns: 1fr; }
 }
 </style>
 </head>
 
-<body data-mode="focus">
-
+<body>
 <div class="bg-grid"></div>
 <div class="bg-orb bg-orb-1"></div>
 <div class="bg-orb bg-orb-2"></div>
-<div class="bg-orb bg-orb-3"></div>
 
-<div id="app">
+<!-- ================================================================
+     TOPBAR
+     ================================================================ -->
+<nav class="topbar">
+  <div class="topbar-left">
+    <a href="index.html" class="topbar-logo">🍅 POMODOROXP</a>
+    <span class="topbar-sep">/</span>
+    <span class="topbar-page">Student Toolkit</span>
+  </div>
+  <a href="index.html" class="topbar-back">⏱ Volver al Timer</a>
+  <button class="help-btn" id="btn-help" title="Ayuda">?</button>
+</nav>
 
-  <!-- Header -->
-  <header class="header">
-    <div class="logo">
-      <div class="logo-icon">⚡</div>
-      <div class="logo-wordmark">
-        <div class="logo-name">POMODOROXP</div>
-        <div class="logo-sub">Motor de Estudio · v1.2</div>
+<!-- ====== MODAL: AYUDA ====== -->
+<div class="help-overlay" id="help-overlay">
+  <div class="help-box">
+    <div class="help-head">
+      <div class="help-title">❓ AYUDA — Student Toolkit</div>
+      <button class="help-close" id="help-close">✕</button>
+    </div>
+    <div class="help-body">
+      <div class="help-section">
+        <div class="help-sec-title">🔍 Buscador</div>
+        <p class="help-p">Usa la barra de búsqueda para filtrar herramientas y recursos en tiempo real. Escribe el nombre o categoría y las tarjetas se filtran automáticamente.</p>
+      </div>
+      <div class="help-section">
+        <div class="help-sec-title">🌐 Enlaces de Interés</div>
+        <p class="help-p">Colección de recursos académicos externos. Haz clic en cualquier tarjeta para abrir el recurso en una pestaña nueva. La sección es desplegable — usa el botón "Ocultar/Mostrar" para contraerla.</p>
+      </div>
+      <div class="help-section">
+        <div class="help-sec-title">⚖️ Conversor de Unidades</div>
+        <p class="help-p">Selecciona la categoría con las pestañas superiores. Introduce un valor en cualquiera de los dos campos y la conversión se calcula automáticamente en tiempo real. Puedes convertir en ambas direcciones.</p>
+        <p class="help-p">Categorías disponibles: Longitud, Masa, Volumen, Temperatura, Ángulo, Velocidad, Área, Tiempo y Energía.</p>
+      </div>
+      <div class="help-section">
+        <div class="help-sec-title">🔬 Calculadora Versátil</div>
+        <p class="help-p">Las herramientas marcadas como "Próximamente" están en desarrollo y se irán activando en futuras versiones del toolkit.</p>
+      </div>
+      <div class="help-section">
+        <div class="help-sec-title">⏱ Volver al Timer</div>
+        <p class="help-p">Usa el botón superior derecho para volver a la app principal de PomodoroXP sin perder tu progreso.</p>
+      </div>
+      <div style="text-align:center;margin-top:20px;padding-top:16px;border-top:1px solid var(--border)">
+        <div style="font-size:11px;color:var(--text-faint)">PomodoroXP Student Toolkit · v1.1</div>
       </div>
     </div>
-    <nav class="nav">
-      <button class="nav-btn" id="btn-stats">📊 <span class="nav-label">Stats</span></button>
-      <button class="nav-btn" id="btn-achs">🏆 <span class="nav-label">Logros</span></button>
-      <button class="nav-btn" id="btn-ranking">🥇 <span class="nav-label">Ranking</span></button>
-      <button class="nav-btn" id="btn-auth">👤 <span class="nav-label">Entrar</span></button>
-      <button class="nav-btn" id="btn-cfg">⚙️ <span class="nav-label">Config</span></button>
-    </nav>
-  </header>
+  </div>
+</div>
 
-  <!-- Mode Tabs -->
-  <div class="mode-tabs">
-    <button class="mode-tab active" data-mode="focus">🎯 Focus</button>
-    <button class="mode-tab" data-mode="short">☕ Descanso Corto</button>
-    <button class="mode-tab" data-mode="long">🌙 Descanso Largo</button>
+<!-- ================================================================
+     PAGE
+     ================================================================ -->
+<div class="page">
+
+  <!-- HERO -->
+  <div class="hero">
+    <div class="hero-tag">🧰 Herramientas para estudiantes</div>
+    <h1 class="hero-title">Student <span>Toolkit</span></h1>
+    <p class="hero-sub">Tu caja de herramientas académica. Recursos, calculadoras y utilidades gratuitas en un solo lugar, integradas con tu experiencia de estudio.</p>
   </div>
 
-  <!-- Timer Ring -->
-  <div class="timer-section">
-    <div class="timer-ring-wrap" id="ring-wrap">
-      <svg class="timer-svg" viewBox="0 0 300 300" xmlns="http://www.w3.org/2000/svg">
-        <circle class="ring-deco" cx="150" cy="150" r="140"/>
-        <circle class="ring-deco" cx="150" cy="150" r="105"/>
-        <circle class="ring-track" cx="150" cy="150" r="120"/>
-        <circle class="ring-prog" id="ring-prog" cx="150" cy="150" r="120"/>
-      </svg>
-      <div class="timer-inner">
-        <div class="timer-digits" id="timer-digits">25:00</div>
-        <div class="timer-label-mode" id="timer-mode-lbl">FOCUS</div>
+  <!-- SEARCH -->
+  <div class="search-wrap">
+    <span class="search-icon">🔍</span>
+    <input type="text" id="search-input" placeholder="Buscar herramienta o recurso..." autocomplete="off">
+    <span class="search-count" id="search-count"></span>
+  </div>
+
+  <div id="no-results" class="no-results">
+    <div style="font-size:36px;margin-bottom:12px">🔭</div>
+    <div>No se encontraron resultados para "<span id="no-results-term"></span>"</div>
+  </div>
+
+  <!-- ============================================================
+       SECCIÓN 1 — ENLACES DE INTERÉS (desplegable)
+       ============================================================ -->
+  <div class="section-block" data-section="enlaces recursos internet">
+    <div class="sec-header collapsible-header" id="enlaces-header" onclick="toggleSection('enlaces')" style="cursor:pointer;user-select:none">
+      <div class="sec-icon">🌐</div>
+      <div class="sec-info" style="flex:1">
+        <div class="sec-title">Enlaces de Interés</div>
+        <div class="sec-sub">Recursos académicos y herramientas online esenciales</div>
+      </div>
+      <div class="collapse-toggle" id="enlaces-toggle">
+        <span class="collapse-icon collapsed">▲</span>
+        <span class="collapse-label" id="enlaces-label">Mostrar</span>
       </div>
     </div>
-    <div class="cycle-dots" id="cycle-dots"></div>
+    <div class="collapsible-body collapsed" id="enlaces-body">
+    <div class="cards-grid">
 
-    <!-- MISSION SLOT — debajo del reloj -->
-    <div class="mission-slot" id="mission-slot">
-      <span class="slot-icon">⚡</span>
-      <div class="slot-content">
-        <div class="slot-empty" id="slot-empty-text">Ninguna misión conectada. Selecciona una abajo.</div>
-        <div id="slot-mission-info" style="display:none">
-          <div class="slot-name" id="slot-mission-name"></div>
-          <div class="slot-meta" id="slot-mission-meta"></div>
-        </div>
-      </div>
-      <button class="slot-disconnect" id="slot-disconnect" style="display:none" onclick="disconnectMission()" title="Desconectar misión">✕</button>
-    </div>
+      <a class="link-card" href="https://wuolah.com" target="_blank" rel="noopener" data-tags="wuolah apuntes universidad examenes">
+        <div class="link-card-icon">📚</div>
+        <div class="link-card-name">Wuolah</div>
+        <div class="link-card-desc">Apuntes y exámenes universitarios compartidos por otros estudiantes.</div>
+        <span class="link-card-tag">Apuntes</span>
+      </a>
+
+      <a class="link-card" href="https://es.wikipedia.org" target="_blank" rel="noopener" data-tags="wikipedia enciclopedia conocimiento">
+        <div class="link-card-icon">📖</div>
+        <div class="link-card-name">Wikipedia</div>
+        <div class="link-card-desc">Enciclopedia libre colaborativa. Punto de partida para cualquier investigación.</div>
+        <span class="link-card-tag">Referencia</span>
+      </a>
+
+      <a class="link-card" href="https://gemini.google.com" target="_blank" rel="noopener" data-tags="gemini google ia inteligencia artificial">
+        <div class="link-card-icon">✨</div>
+        <div class="link-card-name">Gemini</div>
+        <div class="link-card-desc">IA de Google para resolver dudas, redactar y analizar contenido académico.</div>
+        <span class="link-card-tag">IA</span>
+      </a>
+
+      <a class="link-card" href="https://www.wolframalpha.com" target="_blank" rel="noopener" data-tags="wolframalpha matematicas calculos ciencia">
+        <div class="link-card-icon">🧮</div>
+        <div class="link-card-name">WolframAlpha</div>
+        <div class="link-card-desc">Motor computacional para matemáticas, física, química y mucho más.</div>
+        <span class="link-card-tag">Cálculo</span>
+      </a>
+
+      <a class="link-card" href="https://scholar.google.com" target="_blank" rel="noopener" data-tags="google scholar papers articulos investigacion ciencia">
+        <div class="link-card-icon">🎓</div>
+        <div class="link-card-name">Google Scholar</div>
+        <div class="link-card-desc">Buscador especializado en artículos científicos, tesis y publicaciones académicas.</div>
+        <span class="link-card-tag">Investigación</span>
+      </a>
+
+      <a class="link-card" href="https://www.khanacademy.org/math" target="_blank" rel="noopener" data-tags="khan academy matematicas ejercicios cursos gratis">
+        <div class="link-card-icon">📐</div>
+        <div class="link-card-name">Khan Academy</div>
+        <div class="link-card-desc">Cursos gratuitos de matemáticas, ciencias e historia con ejercicios interactivos.</div>
+        <span class="link-card-tag">Cursos</span>
+      </a>
+
+      <a class="link-card" href="https://www.desmos.com/calculator" target="_blank" rel="noopener" data-tags="desmos graficas funciones calculadora visual">
+        <div class="link-card-icon">📈</div>
+        <div class="link-card-name">Desmos</div>
+        <div class="link-card-desc">Calculadora gráfica online. Representa funciones y ecuaciones visualmente.</div>
+        <span class="link-card-tag">Gráficas</span>
+      </a>
+
+      <a class="link-card" href="https://www.deepl.com/translator" target="_blank" rel="noopener" data-tags="deepl traductor traduccion idiomas">
+        <div class="link-card-icon">🌍</div>
+        <div class="link-card-name">DeepL</div>
+        <div class="link-card-desc">El traductor automático más preciso del mercado para textos académicos.</div>
+        <span class="link-card-tag">Traducción</span>
+      </a>
+
+      <a class="link-card" href="https://www.notion.so" target="_blank" rel="noopener" data-tags="notion notas organizacion apuntes">
+        <div class="link-card-icon">📝</div>
+        <div class="link-card-name">Notion</div>
+        <div class="link-card-desc">Todo en uno: apuntes, base de datos, calendario y gestión de proyectos.</div>
+        <span class="link-card-tag">Organización</span>
+      </a>
+
+      <a class="link-card" href="https://anki.apps.ankiweb.net" target="_blank" rel="noopener" data-tags="anki flashcards memoria repaso">
+        <div class="link-card-icon">🃏</div>
+        <div class="link-card-name">Anki Web</div>
+        <div class="link-card-desc">Sistema de tarjetas de memoria con repetición espaciada para memorizar cualquier cosa.</div>
+        <span class="link-card-tag">Memoria</span>
+      </a>
+
+      <a class="link-card" href="https://www.overleaf.com" target="_blank" rel="noopener" data-tags="overleaf latex documentos ciencia ingenieria">
+        <div class="link-card-icon">📄</div>
+        <div class="link-card-name">Overleaf</div>
+        <div class="link-card-desc">Editor de LaTeX online colaborativo. Imprescindible para informes científicos.</div>
+        <span class="link-card-tag">LaTeX</span>
+      </a>
+
+      <a class="link-card" href="https://www.youtube.com/@3blue1brown" target="_blank" rel="noopener" data-tags="youtube 3blue1brown matematicas visual">
+        <div class="link-card-icon">🎬</div>
+        <div class="link-card-name">3Blue1Brown</div>
+        <div class="link-card-desc">El mejor canal de YouTube para entender matemáticas visualmente.</div>
+        <span class="link-card-tag">Vídeos</span>
+      </a>
+
+    </div><!-- /.cards-grid -->
+    </div><!-- /.collapsible-body -->
   </div>
 
-  <!-- Controls -->
-  <div class="controls">
-    <button class="btn-circle" id="btn-reset" title="Reset (R)">↺</button>
-    <button class="btn-circle btn-play" id="btn-play" title="Play/Pause (Espacio)">▶</button>
-    <button class="btn-circle" id="btn-skip" title="Saltar">⏭</button>
-  </div>
-
-  <!-- PANEL DE MISIONES -->
-  <div class="missions-panel">
-    <div class="missions-header">
-      <div class="missions-title">⚡ Panel de Misiones</div>
-      <div class="missions-count" id="missions-count">0 activas</div>
-    </div>
-
-    <!-- Crear misión -->
-    <div class="mission-create">
-      <input class="mission-input" id="mission-name-input" type="text"
-        placeholder="Nombre de la misión..." maxlength="60"
-        onkeydown="if(event.key==='Enter')createMission()">
-      <select class="mission-est" id="mission-est-input">
-        <option value="0">Est. 🍅</option>
-        <option value="1">1 🍅</option>
-        <option value="2">2 🍅</option>
-        <option value="3">3 🍅</option>
-        <option value="4">4 🍅</option>
-        <option value="5">5 🍅</option>
-        <option value="6">6 🍅</option>
-        <option value="7">7 🍅</option>
-        <option value="8">8 🍅</option>
-      </select>
-      <button class="btn-create-mission" onclick="createMission()">＋ Crear</button>
-    </div>
-
-    <!-- Lista de misiones activas -->
-    <div class="missions-list" id="missions-list"></div>
-
-    <!-- Historial -->
-    <div class="history-toggle" id="history-toggle" onclick="toggleHistory()" style="display:none">
-      📋 Ver historial completadas (<span id="history-count">0</span>)
-    </div>
-    <div class="history-list" id="history-list"></div>
-  </div>
-
-  <!-- BOTÓN TOOLKIT — alta visibilidad entre controles y XP -->
-  <a href="toolkit.html" class="toolkit-btn">
-    <div class="toolkit-btn-glow"></div>
-    <div class="toolkit-btn-content">
-      <div class="toolkit-btn-left">
-        <div class="toolkit-btn-icon">🧰</div>
-        <div class="toolkit-btn-text">
-          <div class="toolkit-btn-title">Student Toolkit</div>
-          <div class="toolkit-btn-sub">Conversor de unidades · Recursos académicos · Calculadoras</div>
-        </div>
-      </div>
-      <div class="toolkit-btn-arrow">→</div>
-    </div>
-  </a>
-
-  <!-- XP Bar -->
-  <div class="xp-panel">
-    <div class="xp-top">
-      <div class="xp-left">
-        <div class="lvl-badge" id="lvl-badge">LVL 1</div>
-        <div class="lvl-name" id="lvl-name">Estudiante</div>
-      </div>
-      <div class="xp-count" id="xp-count">0 / 100 XP</div>
-    </div>
-    <div class="xp-track"><div class="xp-fill" id="xp-fill" style="width:0%"></div></div>
-  </div>
-
-  <!-- Stats row -->
-  <div class="stats-row">
-    <div class="scard">
-      <div class="scard-val" id="s-today-p">0</div>
-      <div class="scard-label">Hoy 🍅</div>
-    </div>
-    <div class="scard">
-      <div class="scard-val" id="s-today-h">0m</div>
-      <div class="scard-label">Focus hoy</div>
-    </div>
-    <div class="scard streak">
-      <div class="scard-val" id="s-streak">0🔥</div>
-      <div class="scard-label">Racha</div>
-    </div>
-    <div class="scard">
-      <div class="scard-val" id="s-total">0</div>
-      <div class="scard-label">Total 🍅</div>
-    </div>
-  </div>
-
-  <!-- Gráfica semanal -->
-  <div class="week-panel">
-    <div class="week-header">
-      <div class="week-title">📈 Esta semana</div>
-      <div class="week-total" id="week-total">0 pomodoros</div>
-    </div>
-    <div class="week-bars" id="week-bars"></div>
-  </div>
-
-  <!-- ══════════════════════════════════════════
-       ANUNCIO 1 — Banner principal
-       ══════════════════════════════════════════ -->
-  <div class="ad-banner">
-    <ins class="adsbygoogle"
-         style="display:block"
-         data-ad-client="ca-pub-9027862604686644"
-         data-ad-slot="auto"
-         data-ad-format="auto"
-         data-full-width-responsive="true"></ins>
+  <!-- AD -->
+  <div class="ad-tk">
+    <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-9027862604686644" data-ad-slot="auto" data-ad-format="auto" data-full-width-responsive="true"></ins>
     <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
   </div>
 
-  <!-- Footer legal -->
-  <div class="app-footer">
-    <a href="privacy.html">Política de privacidad</a>
-    <a href="cookies.html">Cookies</a>
+  <!-- ============================================================
+       SECCIÓN 2 — CONVERSOR DE UNIDADES
+       ============================================================ -->
+  <div class="section-block" data-section="conversor unidades longitud peso masa volumen angulos temperatura">
+    <div class="sec-header" data-color="green">
+      <div class="sec-icon">⚖️</div>
+      <div class="sec-info">
+        <div class="sec-title">Conversor de Unidades</div>
+        <div class="sec-sub">Sistema Internacional — Conversiones en tiempo real</div>
+      </div>
+    </div>
+
+    <div class="tool-card">
+      <!-- Tabs -->
+      <div class="conv-tabs">
+        <button class="conv-tab active" data-cat="longitud">📏 Longitud</button>
+        <button class="conv-tab" data-cat="masa">⚖️ Masa</button>
+        <button class="conv-tab" data-cat="volumen">🧪 Volumen</button>
+        <button class="conv-tab" data-cat="temperatura">🌡️ Temp.</button>
+        <button class="conv-tab" data-cat="angulo">📐 Ángulo</button>
+        <button class="conv-tab" data-cat="velocidad">💨 Velocidad</button>
+        <button class="conv-tab" data-cat="area">🟦 Área</button>
+        <button class="conv-tab" data-cat="tiempo">⏱ Tiempo</button>
+        <button class="conv-tab" data-cat="energia">⚡ Energía</button>
+        <button class="conv-tab soon-tab" data-cat="presion" disabled>🔵 Presión <small style="font-size:8px">(próx.)</small></button>
+      </div>
+
+      <!-- Longitud -->
+      <div class="conv-body active" id="conv-longitud">
+        <div class="conv-row">
+          <div class="conv-col">
+            <span class="conv-label">Valor</span>
+            <input class="conv-input" type="number" id="l-val" placeholder="0" oninput="convertUnit('longitud')">
+            <select class="conv-select" id="l-from" onchange="convertUnit('longitud')">
+              <option value="1e-9">Nanómetro (nm)</option>
+              <option value="1e-6">Micrómetro (μm)</option>
+              <option value="1e-3">Milímetro (mm)</option>
+              <option value="1e-2">Centímetro (cm)</option>
+              <option value="1e-1">Decímetro (dm)</option>
+              <option value="1" selected>Metro (m)</option>
+              <option value="1e3">Kilómetro (km)</option>
+              <option value="0.0254">Pulgada (in)</option>
+              <option value="0.3048">Pie (ft)</option>
+              <option value="0.9144">Yarda (yd)</option>
+              <option value="1609.344">Milla (mi)</option>
+              <option value="1852">Milla náutica (nmi)</option>
+            </select>
+          </div>
+          <div class="conv-arrow">⇄</div>
+          <div class="conv-col">
+            <span class="conv-label">Resultado</span>
+            <input class="conv-input" type="number" id="l-val2" placeholder="0" oninput="convertUnitInverse('longitud')">
+            <select class="conv-select" id="l-to" onchange="convertUnit('longitud')">
+              <option value="1e-9">Nanómetro (nm)</option>
+              <option value="1e-6">Micrómetro (μm)</option>
+              <option value="1e-3">Milímetro (mm)</option>
+              <option value="1e-2">Centímetro (cm)</option>
+              <option value="1e-1">Decímetro (dm)</option>
+              <option value="1">Metro (m)</option>
+              <option value="1e3" selected>Kilómetro (km)</option>
+              <option value="0.0254">Pulgada (in)</option>
+              <option value="0.3048">Pie (ft)</option>
+              <option value="0.9144">Yarda (yd)</option>
+              <option value="1609.344">Milla (mi)</option>
+              <option value="1852">Milla náutica (nmi)</option>
+            </select>
+          </div>
+        </div>
+        <div class="conv-result" id="res-longitud">Introduce un valor para convertir</div>
+      </div>
+
+      <!-- Masa -->
+      <div class="conv-body" id="conv-masa">
+        <div class="conv-row">
+          <div class="conv-col">
+            <span class="conv-label">Valor</span>
+            <input class="conv-input" type="number" id="m-val" placeholder="0" oninput="convertUnit('masa')">
+            <select class="conv-select" id="m-from" onchange="convertUnit('masa')">
+              <option value="1e-6">Microgramo (μg)</option>
+              <option value="1e-3">Miligramo (mg)</option>
+              <option value="1">Gramo (g)</option>
+              <option value="1e3" selected>Kilogramo (kg)</option>
+              <option value="1e6">Tonelada métrica (t)</option>
+              <option value="0.0647989">Grano (gr)</option>
+              <option value="28.3495">Onza (oz)</option>
+              <option value="453.592">Libra (lb)</option>
+              <option value="6350.29">Stone (st)</option>
+            </select>
+          </div>
+          <div class="conv-arrow">⇄</div>
+          <div class="conv-col">
+            <span class="conv-label">Resultado</span>
+            <input class="conv-input" type="number" id="m-val2" placeholder="0" oninput="convertUnitInverse('masa')">
+            <select class="conv-select" id="m-to" onchange="convertUnit('masa')">
+              <option value="1e-6">Microgramo (μg)</option>
+              <option value="1e-3">Miligramo (mg)</option>
+              <option value="1">Gramo (g)</option>
+              <option value="1e3">Kilogramo (kg)</option>
+              <option value="1e6">Tonelada métrica (t)</option>
+              <option value="0.0647989">Grano (gr)</option>
+              <option value="28.3495" selected>Onza (oz)</option>
+              <option value="453.592">Libra (lb)</option>
+              <option value="6350.29">Stone (st)</option>
+            </select>
+          </div>
+        </div>
+        <div class="conv-result" id="res-masa">Introduce un valor para convertir</div>
+      </div>
+
+      <!-- Volumen -->
+      <div class="conv-body" id="conv-volumen">
+        <div class="conv-row">
+          <div class="conv-col">
+            <span class="conv-label">Valor</span>
+            <input class="conv-input" type="number" id="v-val" placeholder="0" oninput="convertUnit('volumen')">
+            <select class="conv-select" id="v-from" onchange="convertUnit('volumen')">
+              <option value="1e-6">Microlitro (μL)</option>
+              <option value="1e-3">Mililitro (mL)</option>
+              <option value="1e-2">Centilitro (cL)</option>
+              <option value="1e-1">Decilitro (dL)</option>
+              <option value="1" selected>Litro (L)</option>
+              <option value="1e3">Kilolitro (kL)</option>
+              <option value="1e-3">cm³ (cc)</option>
+              <option value="1">dm³</option>
+              <option value="1e3">m³</option>
+              <option value="0.236588">Taza americana (cup)</option>
+              <option value="0.473176">Pinta americana (pt)</option>
+              <option value="3.78541">Galón americano (gal)</option>
+              <option value="0.0295735">Onza fluida (fl oz)</option>
+            </select>
+          </div>
+          <div class="conv-arrow">⇄</div>
+          <div class="conv-col">
+            <span class="conv-label">Resultado</span>
+            <input class="conv-input" type="number" id="v-val2" placeholder="0" oninput="convertUnitInverse('volumen')">
+            <select class="conv-select" id="v-to" onchange="convertUnit('volumen')">
+              <option value="1e-6">Microlitro (μL)</option>
+              <option value="1e-3">Mililitro (mL)</option>
+              <option value="1e-2">Centilitro (cL)</option>
+              <option value="1e-1">Decilitro (dL)</option>
+              <option value="1">Litro (L)</option>
+              <option value="1e3">Kilolitro (kL)</option>
+              <option value="1e-3">cm³ (cc)</option>
+              <option value="1">dm³</option>
+              <option value="1e3">m³</option>
+              <option value="0.236588" selected>Taza americana (cup)</option>
+              <option value="0.473176">Pinta americana (pt)</option>
+              <option value="3.78541">Galón americano (gal)</option>
+              <option value="0.0295735">Onza fluida (fl oz)</option>
+            </select>
+          </div>
+        </div>
+        <div class="conv-result" id="res-volumen">Introduce un valor para convertir</div>
+      </div>
+
+      <!-- Temperatura -->
+      <div class="conv-body" id="conv-temperatura">
+        <div class="conv-row">
+          <div class="conv-col">
+            <span class="conv-label">Valor</span>
+            <input class="conv-input" type="number" id="t-val" placeholder="0" oninput="convertTemp()">
+            <select class="conv-select" id="t-from" onchange="convertTemp()">
+              <option value="C" selected>Celsius (°C)</option>
+              <option value="F">Fahrenheit (°F)</option>
+              <option value="K">Kelvin (K)</option>
+              <option value="R">Rankine (°R)</option>
+            </select>
+          </div>
+          <div class="conv-arrow">⇄</div>
+          <div class="conv-col">
+            <span class="conv-label">Resultado</span>
+            <input class="conv-input" type="number" id="t-val2" placeholder="0" readonly>
+            <select class="conv-select" id="t-to" onchange="convertTemp()">
+              <option value="C">Celsius (°C)</option>
+              <option value="F" selected>Fahrenheit (°F)</option>
+              <option value="K">Kelvin (K)</option>
+              <option value="R">Rankine (°R)</option>
+            </select>
+          </div>
+        </div>
+        <div class="conv-result" id="res-temperatura">Introduce un valor para convertir</div>
+      </div>
+
+      <!-- Ángulo -->
+      <div class="conv-body" id="conv-angulo">
+        <div class="conv-row">
+          <div class="conv-col">
+            <span class="conv-label">Valor</span>
+            <input class="conv-input" type="number" id="a-val" placeholder="0" oninput="convertUnit('angulo')">
+            <select class="conv-select" id="a-from" onchange="convertUnit('angulo')">
+              <option value="1" selected>Grado (°)</option>
+              <option value="0.017453293">Radián (rad)</option>
+              <option value="0.01111111">Gon / Gradián (gon)</option>
+              <option value="0.000277778">Minuto de arco (')</option>
+              <option value="0.000004629">Segundo de arco (")</option>
+              <option value="360">Vuelta completa (rev)</option>
+            </select>
+          </div>
+          <div class="conv-arrow">⇄</div>
+          <div class="conv-col">
+            <span class="conv-label">Resultado</span>
+            <input class="conv-input" type="number" id="a-val2" placeholder="0" oninput="convertUnitInverse('angulo')">
+            <select class="conv-select" id="a-to" onchange="convertUnit('angulo')">
+              <option value="1">Grado (°)</option>
+              <option value="0.017453293" selected>Radián (rad)</option>
+              <option value="0.01111111">Gon / Gradián (gon)</option>
+              <option value="0.000277778">Minuto de arco (')</option>
+              <option value="0.000004629">Segundo de arco (")</option>
+              <option value="360">Vuelta completa (rev)</option>
+            </select>
+          </div>
+        </div>
+        <div class="conv-result" id="res-angulo">Introduce un valor para convertir</div>
+      </div>
+
+      <!-- Velocidad -->
+      <div class="conv-body" id="conv-velocidad">
+        <div class="conv-row">
+          <div class="conv-col">
+            <span class="conv-label">Valor</span>
+            <input class="conv-input" type="number" id="vel-val" placeholder="0" oninput="convertUnit('velocidad')">
+            <select class="conv-select" id="vel-from" onchange="convertUnit('velocidad')">
+              <option value="0.001">mm/s</option>
+              <option value="0.01">cm/s</option>
+              <option value="1" selected>m/s</option>
+              <option value="1000">km/s</option>
+              <option value="0.277778">km/h</option>
+              <option value="0.44704">mph</option>
+              <option value="0.514444">Nudo (kn)</option>
+              <option value="340.29">Mach (a nivel del mar)</option>
+              <option value="299792458">Velocidad de la luz (c)</option>
+            </select>
+          </div>
+          <div class="conv-arrow">⇄</div>
+          <div class="conv-col">
+            <span class="conv-label">Resultado</span>
+            <input class="conv-input" type="number" id="vel-val2" placeholder="0" oninput="convertUnitInverse('velocidad')">
+            <select class="conv-select" id="vel-to" onchange="convertUnit('velocidad')">
+              <option value="0.001">mm/s</option>
+              <option value="0.01">cm/s</option>
+              <option value="1">m/s</option>
+              <option value="1000">km/s</option>
+              <option value="0.277778" selected>km/h</option>
+              <option value="0.44704">mph</option>
+              <option value="0.514444">Nudo (kn)</option>
+              <option value="340.29">Mach (a nivel del mar)</option>
+              <option value="299792458">Velocidad de la luz (c)</option>
+            </select>
+          </div>
+        </div>
+        <div class="conv-result" id="res-velocidad">Introduce un valor para convertir</div>
+      </div>
+
+      <!-- Área -->
+      <div class="conv-body" id="conv-area">
+        <div class="conv-row">
+          <div class="conv-col">
+            <span class="conv-label">Valor</span>
+            <input class="conv-input" type="number" id="ar-val" placeholder="0" oninput="convertUnit('area')">
+            <select class="conv-select" id="ar-from" onchange="convertUnit('area')">
+              <option value="1e-6">mm²</option>
+              <option value="1e-4">cm²</option>
+              <option value="1" selected>m²</option>
+              <option value="1e4">Hectárea (ha)</option>
+              <option value="1e6">km²</option>
+              <option value="6.4516e-4">Pulgada² (in²)</option>
+              <option value="0.09290304">Pie² (ft²)</option>
+              <option value="0.83612736">Yarda² (yd²)</option>
+              <option value="4046.856">Acre</option>
+              <option value="2589988.1">Milla² (mi²)</option>
+            </select>
+          </div>
+          <div class="conv-arrow">⇄</div>
+          <div class="conv-col">
+            <span class="conv-label">Resultado</span>
+            <input class="conv-input" type="number" id="ar-val2" placeholder="0" oninput="convertUnitInverse('area')">
+            <select class="conv-select" id="ar-to" onchange="convertUnit('area')">
+              <option value="1e-6">mm²</option>
+              <option value="1e-4">cm²</option>
+              <option value="1">m²</option>
+              <option value="1e4" selected>Hectárea (ha)</option>
+              <option value="1e6">km²</option>
+              <option value="6.4516e-4">Pulgada² (in²)</option>
+              <option value="0.09290304">Pie² (ft²)</option>
+              <option value="0.83612736">Yarda² (yd²)</option>
+              <option value="4046.856">Acre</option>
+              <option value="2589988.1">Milla² (mi²)</option>
+            </select>
+          </div>
+        </div>
+        <div class="conv-result" id="res-area">Introduce un valor para convertir</div>
+      </div>
+
+      <!-- Tiempo -->
+      <div class="conv-body" id="conv-tiempo">
+        <div class="conv-row">
+          <div class="conv-col">
+            <span class="conv-label">Valor</span>
+            <input class="conv-input" type="number" id="ti-val" placeholder="0" oninput="convertUnit('tiempo')">
+            <select class="conv-select" id="ti-from" onchange="convertUnit('tiempo')">
+              <option value="1e-9">Nanosegundo (ns)</option>
+              <option value="1e-6">Microsegundo (μs)</option>
+              <option value="1e-3">Milisegundo (ms)</option>
+              <option value="1" selected>Segundo (s)</option>
+              <option value="60">Minuto (min)</option>
+              <option value="3600">Hora (h)</option>
+              <option value="86400">Día (d)</option>
+              <option value="604800">Semana</option>
+              <option value="2629800">Mes (promedio)</option>
+              <option value="31557600">Año (365.25 días)</option>
+            </select>
+          </div>
+          <div class="conv-arrow">⇄</div>
+          <div class="conv-col">
+            <span class="conv-label">Resultado</span>
+            <input class="conv-input" type="number" id="ti-val2" placeholder="0" oninput="convertUnitInverse('tiempo')">
+            <select class="conv-select" id="ti-to" onchange="convertUnit('tiempo')">
+              <option value="1e-9">Nanosegundo (ns)</option>
+              <option value="1e-6">Microsegundo (μs)</option>
+              <option value="1e-3">Milisegundo (ms)</option>
+              <option value="1">Segundo (s)</option>
+              <option value="60" selected>Minuto (min)</option>
+              <option value="3600">Hora (h)</option>
+              <option value="86400">Día (d)</option>
+              <option value="604800">Semana</option>
+              <option value="2629800">Mes (promedio)</option>
+              <option value="31557600">Año (365.25 días)</option>
+            </select>
+          </div>
+        </div>
+        <div class="conv-result" id="res-tiempo">Introduce un valor para convertir</div>
+      </div>
+
+      <!-- Energía -->
+      <div class="conv-body" id="conv-energia">
+        <div class="conv-row">
+          <div class="conv-col">
+            <span class="conv-label">Valor</span>
+            <input class="conv-input" type="number" id="en-val" placeholder="0" oninput="convertUnit('energia')">
+            <select class="conv-select" id="en-from" onchange="convertUnit('energia')">
+              <option value="1" selected>Julio (J)</option>
+              <option value="1e3">Kilojulio (kJ)</option>
+              <option value="1e6">Megajulio (MJ)</option>
+              <option value="4.184">Caloría (cal)</option>
+              <option value="4184">Kilocaloría (kcal)</option>
+              <option value="3600000">Kilovatio·hora (kWh)</option>
+              <option value="1.60218e-19">Electronvoltio (eV)</option>
+              <option value="1055.06">BTU</option>
+            </select>
+          </div>
+          <div class="conv-arrow">⇄</div>
+          <div class="conv-col">
+            <span class="conv-label">Resultado</span>
+            <input class="conv-input" type="number" id="en-val2" placeholder="0" oninput="convertUnitInverse('energia')">
+            <select class="conv-select" id="en-to" onchange="convertUnit('energia')">
+              <option value="1">Julio (J)</option>
+              <option value="1e3">Kilojulio (kJ)</option>
+              <option value="1e6">Megajulio (MJ)</option>
+              <option value="4.184" selected>Caloría (cal)</option>
+              <option value="4184">Kilocaloría (kcal)</option>
+              <option value="3600000">Kilovatio·hora (kWh)</option>
+              <option value="1.60218e-19">Electronvoltio (eV)</option>
+              <option value="1055.06">BTU</option>
+            </select>
+          </div>
+        </div>
+        <div class="conv-result" id="res-energia">Introduce un valor para convertir</div>
+      </div>
+
+    </div><!-- /.tool-card -->
   </div>
 
-</div><!-- /#app -->
-
-<!-- ══════════════════════════════════════════════════════
-     SECCIÓN DE CONTENIDO — Sobre PomodoroXP
-     (Texto para SEO + espacios para anuncios AdSense)
-     ══════════════════════════════════════════════════════ -->
-<div id="about-section">
-
-  <!-- Anuncio 3 — Banner entre app y contenido -->
-  <div class="ad-banner" style="max-width:780px;margin:0 auto 40px;padding:0 24px">
-    <ins class="adsbygoogle"
-         style="display:block"
-         data-ad-client="ca-pub-9027862604686644"
-         data-ad-slot="auto"
-         data-ad-format="auto"
-         data-full-width-responsive="true"></ins>
+  <!-- AD -->
+  <div class="ad-tk">
+    <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-9027862604686644" data-ad-slot="auto" data-ad-format="auto" data-full-width-responsive="true"></ins>
     <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
   </div>
 
-  <div class="about-wrap">
-
-    <!-- Bloque 1: Qué es -->
-    <div class="about-card">
-      <div class="about-tag">🍅 ¿Qué es PomodoroXP?</div>
-      <h2 class="about-h2">El temporizador Pomodoro que te recompensa por estudiar</h2>
-      <p class="about-p">
-        PomodoroXP es una aplicación web gratuita de productividad basada en la
-        <strong>técnica Pomodoro</strong>, un método de gestión del tiempo desarrollado por
-        Francesco Cirillo a finales de los años 80. La idea es simple: trabajas en bloques
-        de concentración de 25 minutos, separados por descansos cortos de 5 minutos.
-        Cada cuatro bloques completas un ciclo y te mereces un descanso largo.
-      </p>
-      <p class="about-p">
-        Lo que diferencia a PomodoroXP de cualquier otro temporizador es su
-        <strong>sistema de gamificación</strong>: cada pomodoro completado te otorga XP,
-        subes de nivel, desbloqueas logros y acumulas rachas de días de estudio consecutivos.
-        Estudiar se convierte en un juego donde tú eres el protagonista.
-      </p>
-    </div>
-
-    <!-- Anuncio 4 — dentro del contenido -->
-    <div class="ad-banner" style="margin:0 0 32px">
-      <ins class="adsbygoogle"
-           style="display:block"
-           data-ad-client="ca-pub-9027862604686644"
-           data-ad-slot="auto"
-           data-ad-format="auto"
-           data-full-width-responsive="true"></ins>
-      <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
-    </div>
-
-    <!-- Bloque 2: Cómo funciona -->
-    <div class="about-card">
-      <div class="about-tag">⚙️ Cómo funciona</div>
-      <h2 class="about-h2">Simple de usar, difícil de dejar</h2>
-      <p class="about-p">
-        Abre PomodoroXP, pulsa el botón de inicio y empieza a concentrarte. El temporizador
-        cuenta los 25 minutos mientras el anillo visual te muestra el progreso en tiempo real.
-        Al terminar, suena una señal, ganas XP y la app te lleva automáticamente al descanso.
-      </p>
-      <p class="about-p">
-        Puedes <strong>personalizar completamente los tiempos</strong>: sesiones de focus de
-        1 a 120 minutos, descansos cortos, descansos largos y el número de pomodoros por ciclo.
-        También puedes activar el modo automático para que la app encadene sesiones sola sin
-        que tengas que tocar nada.
-      </p>
-      <div class="about-features">
-        <div class="about-feat"><span class="about-feat-icon">🎯</span><div><strong>Timer visual</strong> con anillo SVG animado y cuenta regresiva en tiempo real</div></div>
-        <div class="about-feat"><span class="about-feat-icon">⚡</span><div><strong>Sistema XP y niveles</strong> con 10 rangos desde Estudiante hasta Leyenda</div></div>
-        <div class="about-feat"><span class="about-feat-icon">🏆</span><div><strong>19 logros desbloqueables</strong> con recompensas de XP adicional</div></div>
-        <div class="about-feat"><span class="about-feat-icon">🔥</span><div><strong>Racha de días</strong> para mantener la constancia de estudio</div></div>
-        <div class="about-feat"><span class="about-feat-icon">📈</span><div><strong>Gráfica semanal</strong> con tus pomodoros de los últimos 7 días</div></div>
-        <div class="about-feat"><span class="about-feat-icon">🌙</span><div><strong>Modo oscuro</strong> diseño tecnológico pensado para sesiones nocturnas</div></div>
+  <!-- ============================================================
+       SECCIÓN 3 — CALCULADORA VERSÁTIL
+       ============================================================ -->
+  <div class="section-block" data-section="calculadora notas media ponderada cientifica matrices proximamente universidad aprobar">
+    <div class="sec-header" data-color="purple">
+      <div class="sec-icon">🔬</div>
+      <div class="sec-info">
+        <div class="sec-title">Calculadora Versátil</div>
+        <div class="sec-sub">Herramientas de cálculo avanzado</div>
       </div>
     </div>
+    <div class="cards-grid-wide">
 
-    <!-- Bloque 3: Versión actual -->
-    <div class="about-card">
-      <div class="about-tag">📦 Versión actual — v1.2</div>
-      <h2 class="about-h2">Estado del proyecto</h2>
-      <p class="about-p">
-        PomodoroXP se encuentra actualmente en su versión <strong>1.2</strong>. Esta actualización introduce el <strong>Gestor de Misiones Inteligente</strong>, un sistema integrado directamente con el temporizador que permite crear misiones de estudio con pomodoros estimados, conectarlas al slot activo bajo el reloj y ver cómo el tanque de energía se va llenando en tiempo real con cada pomodoro completado de forma natural.
-      </p>
-      <p class="about-p">
-        También se corrigió un bug importante: el botón de saltar fase ya no otorga XP ni cuenta pomodoros, asegurando que las recompensas solo se ganan cuando el temporizador llega a cero de forma legítima. En esta versión ya está integrado el sistema de <strong>login opcional con Firebase</strong>, que permite a los usuarios que lo deseen guardar sus datos en la nube y acceder a su progreso desde cualquier dispositivo.
-      </p>
-    </div>
+      <!-- TARJETA ACTIVA — Calculadora de Notas -->
+      <a class="link-card" href="calculadora.html" data-tags="notas media ponderada calificaciones universidad aprobar suspenso asignatura" style="border-color:rgba(255,214,0,0.25);background:rgba(255,214,0,0.04)">
+        <div class="link-card-icon">🎓</div>
+        <div class="link-card-name" style="color:var(--gold)">Calculadora de Notas</div>
+        <div class="link-card-desc">¿Cuánto necesito para aprobar? Gestiona tus asignaturas y calcula exactamente qué nota necesitas en cada examen.</div>
+        <span class="link-card-tag" style="background:rgba(255,214,0,0.12);color:var(--gold);border-color:rgba(255,214,0,0.25)">Disponible ✓</span>
+      </a>
 
-    <!-- Anuncio 5 — entre bloques de contenido -->
-    <div class="ad-banner" style="margin:0 0 32px">
-      <ins class="adsbygoogle"
-           style="display:block"
-           data-ad-client="ca-pub-9027862604686644"
-           data-ad-slot="auto"
-           data-ad-format="auto"
-           data-full-width-responsive="true"></ins>
-      <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
-    </div>
+      <a class="link-card" href="cientifica.html" data-tags="calculadora cientifica trigonometria logaritmos seno coseno tangente potencias" style="border-color:rgba(255,214,0,0.25);background:rgba(255,214,0,0.04)">
+        <div class="link-card-icon">🧮</div>
+        <div class="link-card-name" style="color:var(--gold)">Calculadora Científica</div>
+        <div class="link-card-desc">Trigonometría, logaritmos, potencias, raíces y constantes. Modos DEG y RAD. Historial de expresiones.</div>
+        <span class="link-card-tag" style="background:rgba(255,214,0,0.12);color:var(--gold);border-color:rgba(255,214,0,0.25)">Disponible ✓</span>
+      </a>
 
-    <!-- Bloque 4: Roadmap -->
-    <div class="about-card">
-      <div class="about-tag">🚀 Próximamente</div>
-      <h2 class="about-h2">Ideas y funciones futuras</h2>
-      <p class="about-p">
-        PomodoroXP está en desarrollo activo. Estas son las funciones planeadas para
-        las próximas versiones:
-      </p>
-      <div class="roadmap">
-        <div class="road-item road-soon">
-          <div class="road-badge">Próximo</div>
-          <div class="road-title">🥇 Ranking global</div>
-          <div class="road-desc">Compite con estudiantes de todo el mundo. Top 10 semanal y mensual ordenado por pomodoros completados y horas de estudio.</div>
-        </div>
-        <div class="road-item road-soon">
-          <div class="road-badge">Próximo</div>
-          <div class="road-title">📊 Estadísticas avanzadas</div>
-          <div class="road-desc">Gráficas mensuales y anuales, récords personales, comparativas semana a semana y resumen detallado de tu productividad.</div>
-        </div>
-        <div class="road-item road-mid">
-          <div class="road-badge road-badge-mid">Planificado</div>
-          <div class="road-title">✅ Gestor de tareas</div>
-          <div class="road-desc">Crea listas de tareas y vincula cada pomodoro a una tarea concreta. Mide exactamente cuánto tiempo dedicas a cada proyecto.</div>
-        </div>
-        <div class="road-item road-mid">
-          <div class="road-badge road-badge-mid">Planificado</div>
-          <div class="road-title">👥 Sistema de amigos</div>
-          <div class="road-desc">Añade amigos, compara estadísticas, reta a otros usuarios y estudiad juntos en sesiones sincronizadas.</div>
-        </div>
-        <div class="road-item road-future">
-          <div class="road-badge road-badge-fut">Futuro</div>
-          <div class="road-title">📱 App móvil</div>
-          <div class="road-desc">Versión nativa para iOS y Android con notificaciones, widgets y sincronización completa con la versión web.</div>
-        </div>
-      </div>
-    </div>
+      <a class="link-card" href="matrices.html" data-tags="matrices multiplicacion algebra lineal dimensiones" style="border-color:rgba(255,214,0,0.25);background:rgba(255,214,0,0.04)">
+        <div class="link-card-icon">🔢</div>
+        <div class="link-card-name" style="color:var(--gold)">Multiplicación de Matrices</div>
+        <div class="link-card-desc">Multiplica matrices de hasta 7×7. Verifica compatibilidad y obtén el resultado con desarrollo paso a paso.</div>
+        <span class="link-card-tag" style="background:rgba(255,214,0,0.12);color:var(--gold);border-color:rgba(255,214,0,0.25)">Disponible ✓</span>
+      </a>
 
-    <!-- Bloque 5: Técnica Pomodoro -->
-    <div class="about-card">
-      <div class="about-tag">📚 La técnica Pomodoro</div>
-      <h2 class="about-h2">Por qué funciona estudiar con pomodoros</h2>
-      <p class="about-p">
-        La técnica Pomodoro se basa en un principio psicológico fundamental: el cerebro humano
-        no está diseñado para mantener la concentración de forma indefinida. Los descansos
-        regulares no son una pérdida de tiempo, sino una <strong>estrategia para maximizar
-        el rendimiento cognitivo</strong>.
-      </p>
-      <p class="about-p">
-        Estudios en neurociencia del aprendizaje indican que alternar periodos de trabajo
-        intenso con descansos breves mejora la consolidación de la memoria, reduce la fatiga
-        mental y mantiene los niveles de dopamina —el neurotransmisor de la motivación—
-        más estables a lo largo de la sesión de estudio.
-      </p>
-      <p class="about-p">
-        PomodoroXP añade una capa extra a esta técnica: el sistema de recompensas. Cada vez
-        que completas un pomodoro, tu cerebro recibe una señal de logro que refuerza el
-        hábito de estudio. Con el tiempo, la constancia se vuelve automática.
-      </p>
-    </div>
+      <a class="link-card" href="ecuaciones.html" data-tags="ecuaciones sistema resolver algebra lineal cramer newton" style="border-color:rgba(255,214,0,0.25);background:rgba(255,214,0,0.04)">
+        <div class="link-card-icon">📊</div>
+        <div class="link-card-name" style="color:var(--gold)">Resolvedor de Ecuaciones</div>
+        <div class="link-card-desc">Sistemas lineales 2×2 y 3×3 (Cramer), polinómicas hasta grado 4 y ecuaciones arbitrarias por Newton-Raphson.</div>
+        <span class="link-card-tag" style="background:rgba(255,214,0,0.12);color:var(--gold);border-color:rgba(255,214,0,0.25)">Disponible ✓</span>
+      </a>
 
-    <!-- Anuncio 6 — final del contenido -->
-    <div class="ad-banner" style="margin:0 0 40px">
-      <ins class="adsbygoogle"
-           style="display:block"
-           data-ad-client="ca-pub-9027862604686644"
-           data-ad-slot="auto"
-           data-ad-format="auto"
-           data-full-width-responsive="true"></ins>
-      <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
-    </div>
+      <a class="link-card" href="estadistica.html" data-tags="estadistica media mediana moda varianza desviacion tipica datos" style="border-color:rgba(255,214,0,0.25);background:rgba(255,214,0,0.04)">
+        <div class="link-card-icon">📉</div>
+        <div class="link-card-name" style="color:var(--gold)">Estadística Básica</div>
+        <div class="link-card-desc">Media, mediana, moda, varianza y desviación típica en tiempo real. Tabla de frecuencias y gráfico de distribución.</div>
+        <span class="link-card-tag" style="background:rgba(255,214,0,0.12);color:var(--gold);border-color:rgba(255,214,0,0.25)">Disponible ✓</span>
+      </a>
 
-    <!-- Footer final -->
-    <div class="about-footer">
-      <div class="about-footer-logo">🍅 PomodoroXP</div>
-      <div class="about-footer-sub">Hecho con ☕ y muchos pomodoros · v1.1</div>
-      <div class="about-footer-links">
-        <a href="privacy.html">Privacidad</a>
-        <a href="cookies.html">Cookies</a>
-      </div>
-    </div>
-
-  </div><!-- /.about-wrap -->
-</div><!-- /#about-section -->
-
-<!-- ====== MODAL: SETTINGS ====== -->
-<div class="overlay" id="ov-cfg">
-  <div class="mbox">
-    <div class="mhead">
-      <div class="mtitle">⚙ CONFIGURACIÓN</div>
-      <button class="mclose" data-ov="ov-cfg">✕</button>
-    </div>
-    <div class="mbody">
-      <div class="sgroup">
-        <div class="sgroup-title">⏱ Tiempos (minutos)</div>
-        <div class="srow">
-          <div><div class="slabel">Focus</div><div class="ssub">Sesión de concentración</div></div>
-          <input class="snumber" id="cfg-focus" type="number" min="1" max="120" value="25">
-        </div>
-        <div class="srow">
-          <div><div class="slabel">Descanso Corto</div><div class="ssub">Pausa entre pomodoros</div></div>
-          <input class="snumber" id="cfg-short" type="number" min="1" max="30" value="5">
-        </div>
-        <div class="srow">
-          <div><div class="slabel">Descanso Largo</div><div class="ssub">Pausa al completar ciclo</div></div>
-          <input class="snumber" id="cfg-long" type="number" min="5" max="60" value="15">
-        </div>
-        <div class="srow">
-          <div><div class="slabel">Pomodoros por ciclo</div><div class="ssub">Hasta el descanso largo</div></div>
-          <input class="snumber" id="cfg-interval" type="number" min="2" max="8" value="4">
-        </div>
-      </div>
-      <div class="sgroup">
-        <div class="sgroup-title">🔊 Audio</div>
-        <div class="srow">
-          <div><div class="slabel">Sonidos activados</div></div>
-          <button class="tog on" id="tog-sound"></button>
-        </div>
-      </div>
-      <div class="sgroup">
-        <div class="sgroup-title">⚡ Automático</div>
-        <div class="srow">
-          <div><div class="slabel">Auto-iniciar descansos</div></div>
-          <button class="tog" id="tog-abreak"></button>
-        </div>
-        <div class="srow">
-          <div><div class="slabel">Auto-iniciar focus</div></div>
-          <button class="tog" id="tog-afocus"></button>
-        </div>
-      </div>
-      <button class="btn-save" id="btn-save-cfg">✓ Guardar Configuración</button>
-    </div>
-  </div>
-</div>
-
-<!-- ====== MODAL: ACHIEVEMENTS ====== -->
-<div class="overlay" id="ov-achs">
-  <div class="mbox" style="max-width:560px">
-    <div class="mhead">
-      <div class="mtitle">🏆 LOGROS</div>
-      <button class="mclose" data-ov="ov-achs">✕</button>
-    </div>
-    <div class="mbody">
-      <div class="ach-stats">
-        <div class="ach-stat"><div class="ach-stat-val" id="ach-unlocked">0</div><div class="ach-stat-label">Desbloqueados</div></div>
-        <div class="ach-stat"><div class="ach-stat-val" id="ach-total-xp" style="color:var(--xp)">0</div><div class="ach-stat-label">XP de logros</div></div>
-      </div>
-      <div class="ach-grid" id="ach-grid"></div>
-    </div>
-  </div>
-</div>
-
-<!-- ====== MODAL: STATS ====== -->
-<div class="overlay" id="ov-stats">
-  <div class="mbox">
-    <div class="mhead">
-      <div class="mtitle">📊 ESTADÍSTICAS</div>
-      <button class="mclose" data-ov="ov-stats">✕</button>
-    </div>
-    <div class="mbody" id="stats-mbody"></div>
-  </div>
-</div>
-
-<div class="toast-wrap" id="toast-wrap"></div>
-
-<!-- ====== MODAL: AUTH ====== -->
-<div class="overlay" id="ov-auth">
-  <div class="mbox">
-    <div class="mhead">
-      <div class="mtitle" id="auth-title">👤 INICIAR SESIÓN</div>
-      <button class="mclose" data-ov="ov-auth">✕</button>
-    </div>
-    <div class="mbody" id="auth-body">
-
-      <!-- Vista: usuario conectado -->
-      <div id="auth-logged" style="display:none;text-align:center">
-        <div style="font-size:48px;margin-bottom:12px">👤</div>
-        <div id="auth-user-name" style="font-size:18px;font-weight:700;margin-bottom:4px"></div>
-        <div id="auth-user-email" style="font-size:12px;color:var(--text-dim);margin-bottom:20px"></div>
-        <div style="background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:14px;margin-bottom:20px">
-          <div style="font-size:9px;color:var(--focus);text-transform:uppercase;letter-spacing:0.2em;margin-bottom:10px">TUS DATOS EN LA NUBE</div>
-          <div class="stat-detail-row"><span>Pomodoros</span><span id="cloud-pomos">—</span></div>
-          <div class="stat-detail-row"><span>XP total</span><span id="cloud-xp">—</span></div>
-          <div class="stat-detail-row"><span>Racha</span><span id="cloud-streak">—</span></div>
-        </div>
-        <button onclick="window.FB.syncToCloud(window.S)" class="btn-save" style="margin-bottom:10px">☁️ Sincronizar ahora</button>
-        <button onclick="window.FB.logout();closeOv('ov-auth')" style="width:100%;padding:10px;background:rgba(255,50,50,0.1);border:1px solid rgba(255,50,50,0.25);color:#ff6b6b;border-radius:10px;cursor:pointer;font-family:'Outfit',sans-serif;font-size:13px;font-weight:500">
-          Cerrar sesión
-        </button>
-      </div>
-
-      <!-- Vista: formulario login/register -->
-      <div id="auth-form">
-        <div style="display:flex;gap:4px;background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:4px;margin-bottom:20px">
-          <button id="tab-login" onclick="switchAuthTab('login')" style="flex:1;padding:8px;border:1px solid var(--focus);border-radius:8px;background:var(--focus-d);color:var(--focus);font-family:'Outfit',sans-serif;font-size:12px;font-weight:600;cursor:pointer">Entrar</button>
-          <button id="tab-register" onclick="switchAuthTab('register')" style="flex:1;padding:8px;border:1px solid transparent;border-radius:8px;background:transparent;color:var(--text-dim);font-family:'Outfit',sans-serif;font-size:12px;font-weight:600;cursor:pointer">Registrarse</button>
-        </div>
-
-        <div id="field-username" style="display:none;margin-bottom:12px">
-          <div style="font-size:11px;color:var(--text-dim);margin-bottom:5px">Nombre de usuario</div>
-          <input id="auth-username" type="text" placeholder="Tu nombre en el ranking" style="width:100%;background:var(--bg2);border:1px solid var(--border);border-radius:8px;color:var(--text);font-family:'Outfit',sans-serif;font-size:13px;padding:10px 12px;outline:none">
-        </div>
-        <div style="margin-bottom:12px">
-          <div style="font-size:11px;color:var(--text-dim);margin-bottom:5px">Email</div>
-          <input id="auth-email" type="email" placeholder="tu@email.com" style="width:100%;background:var(--bg2);border:1px solid var(--border);border-radius:8px;color:var(--text);font-family:'Outfit',sans-serif;font-size:13px;padding:10px 12px;outline:none">
-        </div>
-        <div style="margin-bottom:20px">
-          <div style="font-size:11px;color:var(--text-dim);margin-bottom:5px">Contraseña</div>
-          <input id="auth-password" type="password" placeholder="Mínimo 6 caracteres" style="width:100%;background:var(--bg2);border:1px solid var(--border);border-radius:8px;color:var(--text);font-family:'Outfit',sans-serif;font-size:13px;padding:10px 12px;outline:none">
-        </div>
-
-        <div id="auth-error" style="display:none;background:rgba(255,50,50,0.1);border:1px solid rgba(255,50,50,0.25);color:#ff6b6b;padding:10px 12px;border-radius:8px;font-size:12px;margin-bottom:14px"></div>
-
-        <button id="btn-auth-submit" onclick="submitAuth()" class="btn-save" style="margin-bottom:12px">Entrar</button>
-
-        <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px">
-          <div style="flex:1;height:1px;background:var(--border)"></div>
-          <div style="font-size:10px;color:var(--text-dim)">O</div>
-          <div style="flex:1;height:1px;background:var(--border)"></div>
-        </div>
-
-        <button onclick="window.FB.loginGoogle().then(r=>{if(r.ok)closeOv('ov-auth')})" style="width:100%;padding:10px;background:rgba(255,255,255,0.05);border:1px solid var(--border);border-radius:10px;color:var(--text);font-family:'Outfit',sans-serif;font-size:13px;font-weight:500;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px">
-          <span>🔵</span> Continuar con Google
-        </button>
-      </div>
+      <a class="link-card" href="generador-apa.html" data-tags="bibliografia apa cita referencia libro articulo web" style="border-color:rgba(255,214,0,0.25);background:rgba(255,214,0,0.04)">
+        <div class="link-card-icon">📚</div>
+        <div class="link-card-name" style="color:var(--gold)">Generador APA</div>
+        <div class="link-card-desc">Genera citas bibliográficas en formato APA 7ª edición para libros, artículos y páginas web. Copia con un clic.</div>
+        <span class="link-card-tag" style="background:rgba(255,214,0,0.12);color:var(--gold);border-color:rgba(255,214,0,0.25)">Disponible ✓</span>
+      </a>
 
     </div>
   </div>
-</div>
 
-<!-- ====== MODAL: RANKING ====== -->
-<div class="overlay" id="ov-ranking">
-  <div class="mbox" style="max-width:560px">
-    <div class="mhead">
-      <div class="mtitle">🥇 RANKING GLOBAL</div>
-      <button class="mclose" data-ov="ov-ranking">✕</button>
-    </div>
-    <div class="mbody" id="ranking-body">
-      <div style="text-align:center;padding:20px;color:var(--text-dim)">Cargando ranking...</div>
-    </div>
+  <!-- AD -->
+  <div class="ad-tk">
+    <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-9027862604686644" data-ad-slot="auto" data-ad-format="auto" data-full-width-responsive="true"></ins>
+    <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
   </div>
-</div>
 
+  <!-- Footer -->
+  <div style="text-align:center;padding:30px 0 0;border-top:1px solid var(--border)">
+    <div style="font-family:'Orbitron',monospace;font-size:13px;color:var(--focus);margin-bottom:6px">🍅 PomodoroXP</div>
+    <div style="font-size:11px;color:var(--text-faint);margin-bottom:14px">Student Toolkit · v1.1</div>
+    <a href="index.html" style="color:var(--text-faint);font-size:11px;text-decoration:none;margin:0 10px">← Volver al Timer</a>
+    <a href="privacy.html" style="color:var(--text-faint);font-size:11px;text-decoration:none;margin:0 10px">Privacidad</a>
+    <a href="cookies.html" style="color:var(--text-faint);font-size:11px;text-decoration:none;margin:0 10px">Cookies</a>
+  </div>
+
+</div><!-- /.page -->
+
+<!-- ================================================================
+     JAVASCRIPT
+     ================================================================ -->
 <script>
 'use strict';
 
-// =====================================================================
-// ACHIEVEMENTS
-// =====================================================================
-const ACHS = [
-  { id:'first_pomo',     name:'Primera Semilla',   desc:'Completa tu primer pomodoro',         icon:'🌱', xp:50   },
-  { id:'pomo_5_day',     name:'En Llamas',          desc:'5 pomodoros en un día',               icon:'🔥', xp:75   },
-  { id:'pomo_10_day',    name:'Modo Bestia',        desc:'10 pomodoros en un día',              icon:'⚡', xp:150  },
-  { id:'pomo_50_total',  name:'Dedicado',           desc:'50 pomodoros en total',               icon:'🎯', xp:200  },
-  { id:'pomo_100_total', name:'Centurión',          desc:'100 pomodoros en total',              icon:'💎', xp:500  },
-  { id:'pomo_500_total', name:'Indestructible',     desc:'500 pomodoros en total',              icon:'🦾', xp:2000 },
-  { id:'hours_1',        name:'Primera Hora',       desc:'Acumula 1 hora de focus',             icon:'⏱️', xp:100  },
-  { id:'hours_10',       name:'Décima Hora',        desc:'Acumula 10 horas de focus',           icon:'📚', xp:300  },
-  { id:'hours_50',       name:'Maestro del Tiempo', desc:'50 horas de focus en total',          icon:'🏆', xp:1000 },
-  { id:'hours_100',      name:'Élite',              desc:'100 horas de focus en total',         icon:'👑', xp:3000 },
-  { id:'streak_3',       name:'Racha ×3',           desc:'3 días de estudio seguidos',          icon:'🔗', xp:100  },
-  { id:'streak_7',       name:'Semana Imparable',   desc:'7 días seguidos',                     icon:'🌟', xp:300  },
-  { id:'streak_30',      name:'Leyenda Mensual',    desc:'30 días seguidos',                    icon:'🔮', xp:1000 },
-  { id:'cycle_complete', name:'Ciclo Completo',     desc:'Completa un ciclo de 4 pomodoros',    icon:'🔄', xp:150  },
-  { id:'night_owl',      name:'Búho Nocturno',      desc:'Estudia después de las 11pm',         icon:'🌙', xp:75   },
-  { id:'early_bird',     name:'Madrugador',         desc:'Estudia antes de las 7am',            icon:'🌅', xp:75   },
-  { id:'level_5',        name:'Nivel 5',            desc:'Alcanza el nivel 5',                  icon:'🚀', xp:0    },
-  { id:'level_10',       name:'Nivel 10',           desc:'Alcanza el nivel 10',                 icon:'⭐', xp:0    },
-  { id:'level_25',       name:'Transmutado',        desc:'Alcanza el nivel 25',                 icon:'✨', xp:0    },
-];
+// ================================================================
+// MODAL AYUDA
+// ================================================================
+document.getElementById('btn-help').addEventListener('click', () => {
+  document.getElementById('help-overlay').classList.add('open');
+});
+document.getElementById('help-close').addEventListener('click', () => {
+  document.getElementById('help-overlay').classList.remove('open');
+});
+document.getElementById('help-overlay').addEventListener('click', e => {
+  if (e.target === document.getElementById('help-overlay'))
+    document.getElementById('help-overlay').classList.remove('open');
+});
+document.addEventListener('keydown', e => {
+  if (e.code === 'Escape') {
+    document.getElementById('help-overlay').classList.remove('open');
+  }
+});
 
-// =====================================================================
-// LEVEL SYSTEM
-// =====================================================================
-function xpForLevel(lv) { return Math.floor(100 * Math.pow(1.42, lv - 1)); }
-function totalXPForLevel(lv) {
-  let t = 0;
-  for (let i = 1; i < lv; i++) t += xpForLevel(i);
-  return t;
-}
-function levelFromXP(xp) {
-  let lv = 1;
-  while (totalXPForLevel(lv + 1) <= xp) lv++;
-  return lv;
-}
-function xpProgress(xp) {
-  const lv = levelFromXP(xp);
-  const lo = totalXPForLevel(lv);
-  const hi = totalXPForLevel(lv + 1);
-  return { lv, inLv: xp - lo, need: hi - lo, pct: Math.max(0, Math.min(1, (xp - lo) / (hi - lo))) };
-}
-function lvName(lv) {
-  if (lv <  3) return 'Estudiante';
-  if (lv <  5) return 'Aprendiz';
-  if (lv <  8) return 'Concentrado';
-  if (lv < 12) return 'Enfocado';
-  if (lv < 17) return 'Aplicado';
-  if (lv < 23) return 'Dedicado';
-  if (lv < 30) return 'Experto';
-  if (lv < 40) return 'Maestro';
-  if (lv < 55) return 'Sabio';
-  return 'Leyenda';
+// ================================================================
+// DESPLEGABLE — Sección de enlaces
+// ================================================================
+function toggleSection(id) {
+  const body    = document.getElementById(id + '-body');
+  const icon    = document.querySelector('#' + id + '-toggle .collapse-icon');
+  const label   = document.getElementById(id + '-label');
+  const isOpen  = !body.classList.contains('collapsed');
+
+  if (isOpen) {
+    body.classList.add('collapsed');
+    icon.classList.add('collapsed');
+    label.textContent = 'Mostrar';
+  } else {
+    body.classList.remove('collapsed');
+    icon.classList.remove('collapsed');
+    label.textContent = 'Ocultar';
+  }
 }
 
-// =====================================================================
-// STATE
-// =====================================================================
-const DEF = {
-  mode:'focus', status:'idle',
-  timeLeft: 25*60, totalTime: 25*60,
-  cyclePos: 0,
-  totalPomos: 0, todayPomos: 0,
-  totalFocusSec: 0, todayFocusSec: 0,
-  lastStudyDate: null, streak: 0,
-  xp: 0,
-  unlocked: [],
-  weekData: {},   // { "YYYY-MM-DD": N pomodoros }
-  cfg: { focus:25, short:5, long:15, interval:4, sound:true, abreak:false, afocus:false }
+// ================================================================
+// CONVERSOR — Tabs
+// ================================================================
+document.querySelectorAll('.conv-tab').forEach(tab => {
+  if (tab.disabled) return;
+  tab.addEventListener('click', () => {
+    document.querySelectorAll('.conv-tab').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('.conv-body').forEach(b => b.classList.remove('active'));
+    tab.classList.add('active');
+    const cat = tab.dataset.cat;
+    const body = document.getElementById('conv-' + cat);
+    if (body) body.classList.add('active');
+  });
+});
+
+// ================================================================
+// CONVERSOR — Lógica de conversión lineal (factor base en metros/gramos/etc.)
+// ================================================================
+const CONV_MAP = {
+  longitud:  { val: 'l-val',   val2: 'l-val2',   from: 'l-from',   to: 'l-to',   res: 'res-longitud'  },
+  masa:      { val: 'm-val',   val2: 'm-val2',   from: 'm-from',   to: 'm-to',   res: 'res-masa'      },
+  volumen:   { val: 'v-val',   val2: 'v-val2',   from: 'v-from',   to: 'v-to',   res: 'res-volumen'   },
+  angulo:    { val: 'a-val',   val2: 'a-val2',   from: 'a-from',   to: 'a-to',   res: 'res-angulo'    },
+  velocidad: { val: 'vel-val', val2: 'vel-val2', from: 'vel-from', to: 'vel-to', res: 'res-velocidad' },
+  area:      { val: 'ar-val',  val2: 'ar-val2',  from: 'ar-from',  to: 'ar-to',  res: 'res-area'      },
+  tiempo:    { val: 'ti-val',  val2: 'ti-val2',  from: 'ti-from',  to: 'ti-to',  res: 'res-tiempo'    },
+  energia:   { val: 'en-val',  val2: 'en-val2',  from: 'en-from',  to: 'en-to',  res: 'res-energia'   },
 };
 
-let S = loadState();
-let ticker = null;
-let tStart = null, tStartLeft = null, tStartFocusSec = null, tStartTodaySec = null;
-
-function loadState() {
-  try {
-    const raw = localStorage.getItem('ff_v2');
-    if (raw) {
-      const p = JSON.parse(raw);
-      const today = new Date().toDateString();
-      if (p.lastStudyDate && p.lastStudyDate !== today) {
-        const yest = new Date(); yest.setDate(yest.getDate()-1);
-        if (p.lastStudyDate !== yest.toDateString()) p.streak = 0;
-        p.todayPomos = 0; p.todayFocusSec = 0;
-      }
-      p.status    = 'idle';
-      p.mode      = 'focus';
-      p.cfg       = Object.assign({}, DEF.cfg, p.cfg || {});
-      p.timeLeft  = p.cfg.focus * 60;
-      p.totalTime = p.cfg.focus * 60;
-      p.unlocked  = p.unlocked  || [];
-      p.cyclePos  = p.cyclePos  || 0;
-      p.weekData  = p.weekData  || {};
-      return p;
-    }
-  } catch(e){}
-  return JSON.parse(JSON.stringify(DEF));
+function fmtNum(n) {
+  if (isNaN(n) || !isFinite(n)) return '—';
+  if (Math.abs(n) < 1e-10 && n !== 0) return n.toExponential(6);
+  if (Math.abs(n) >= 1e12) return n.toExponential(6);
+  // Máximo 10 decimales significativos
+  const s = parseFloat(n.toPrecision(10)).toString();
+  return s;
 }
 
-function save() {
-  try { localStorage.setItem('ff_v2', JSON.stringify(S)); } catch(e){}
+function convertUnit(cat) {
+  const ids = CONV_MAP[cat];
+  const val  = parseFloat(document.getElementById(ids.val).value);
+  const from = parseFloat(document.getElementById(ids.from).value);
+  const to   = parseFloat(document.getElementById(ids.to).value);
+  if (isNaN(val)) { document.getElementById(ids.res).textContent = 'Introduce un valor para convertir'; document.getElementById(ids.val2).value = ''; return; }
+  const result = val * (from / to);
+  document.getElementById(ids.val2).value = fmtNum(result);
+  const fromName = document.getElementById(ids.from).options[document.getElementById(ids.from).selectedIndex].text;
+  const toName   = document.getElementById(ids.to).options[document.getElementById(ids.to).selectedIndex].text;
+  document.getElementById(ids.res).textContent = `${val} ${fromName} = ${fmtNum(result)} ${toName}`;
 }
 
-// =====================================================================
-// AUDIO
-// =====================================================================
-let actx = null;
-function actxGet() {
-  if (!actx) actx = new (window.AudioContext || window.webkitAudioContext)();
-  return actx;
-}
-function tone(f, dur, type='sine', vol=0.1) {
-  if (!S.cfg.sound) return;
-  try {
-    const ctx = actxGet();
-    const o = ctx.createOscillator();
-    const g = ctx.createGain();
-    o.connect(g); g.connect(ctx.destination);
-    o.type = type; o.frequency.value = f;
-    g.gain.setValueAtTime(vol, ctx.currentTime);
-    g.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + dur);
-    o.start(ctx.currentTime); o.stop(ctx.currentTime + dur);
-  } catch(e){}
-}
-function sfxComplete() {
-  [[523.25,0],[659.25,200],[783.99,400],[1046.5,650]].forEach(([f,d])=>setTimeout(()=>tone(f,0.4,'sine',0.14),d));
-}
-function sfxBreakEnd() { tone(880,0.25,'sine',0.12); setTimeout(()=>tone(660,0.4,'sine',0.12),250); }
-function sfxXP()       { tone(440,0.1,'sine',0.08); setTimeout(()=>tone(554,0.15,'sine',0.08),100); }
-function sfxLevelUp()  { [261,329,392,523,659,784].forEach((f,i)=>setTimeout(()=>tone(f,0.3,'triangle',0.12),i*110)); }
-
-// =====================================================================
-// TIMER
-// =====================================================================
-const CIRC = 2 * Math.PI * 120;
-
-function setMode(mode, autoStart=false) {
-  stop();
-  S.mode = mode;
-  document.body.dataset.mode = mode;
-  document.querySelectorAll('.mode-tab').forEach(t => t.classList.toggle('active', t.dataset.mode === mode));
-  const mins = mode==='focus' ? S.cfg.focus : mode==='short' ? S.cfg.short : S.cfg.long;
-  S.timeLeft = mins*60; S.totalTime = mins*60; S.status = 'idle';
-  document.getElementById('timer-mode-lbl').textContent =
-    mode==='focus' ? 'FOCUS' : mode==='short' ? 'DESCANSO' : 'DESCANSO LARGO';
-  refreshDisplay(); refreshRing(); refreshPlayBtn();
-  if (autoStart) startTimer();
+function convertUnitInverse(cat) {
+  const ids = CONV_MAP[cat];
+  const val2 = parseFloat(document.getElementById(ids.val2).value);
+  const from = parseFloat(document.getElementById(ids.from).value);
+  const to   = parseFloat(document.getElementById(ids.to).value);
+  if (isNaN(val2)) { document.getElementById(ids.res).textContent = 'Introduce un valor para convertir'; document.getElementById(ids.val).value = ''; return; }
+  const result = val2 * (to / from);
+  document.getElementById(ids.val).value = fmtNum(result);
+  const fromName = document.getElementById(ids.from).options[document.getElementById(ids.from).selectedIndex].text;
+  const toName   = document.getElementById(ids.to).options[document.getElementById(ids.to).selectedIndex].text;
+  document.getElementById(ids.res).textContent = `${fmtNum(result)} ${fromName} = ${val2} ${toName}`;
 }
 
-function startTimer() {
-  if (S.status==='running') return;
-  if (actx && actx.state==='suspended') actx.resume();
-  S.status = 'running';
-  tStart         = Date.now();
-  tStartLeft     = S.timeLeft;
-  tStartFocusSec = S.totalFocusSec;
-  tStartTodaySec = S.todayFocusSec;
-  document.getElementById('ring-wrap').classList.add('running');
-  refreshPlayBtn();
-  ticker = setInterval(() => {
-    const elapsed = Math.round((Date.now() - tStart) / 1000);
-    const newLeft = Math.max(0, tStartLeft - elapsed);
-    if (S.mode === 'focus') {
-      S.totalFocusSec = tStartFocusSec + elapsed;
-      S.todayFocusSec = tStartTodaySec + elapsed;
-    }
-    S.timeLeft = newLeft;
-    refreshDisplay(); refreshRing(); refreshStats();
-    if (elapsed % 60 === 0) save();
-    if (newLeft === 0) onComplete();
-  }, 400);
-}
+// ================================================================
+// CONVERSOR — Temperatura (fórmulas especiales, no lineales)
+// ================================================================
+function convertTemp() {
+  const val  = parseFloat(document.getElementById('t-val').value);
+  const from = document.getElementById('t-from').value;
+  const to   = document.getElementById('t-to').value;
+  if (isNaN(val)) { document.getElementById('res-temperatura').textContent = 'Introduce un valor para convertir'; document.getElementById('t-val2').value = ''; return; }
 
-function stop() {
-  clearInterval(ticker); ticker = null;
-  document.getElementById('ring-wrap').classList.remove('running');
-  S.status = (S.status==='running') ? 'paused' : S.status;
-  refreshPlayBtn(); save();
-}
-
-function resetTimer() { stop(); setMode(S.mode); }
-
-// Saltar NO da XP — solo avanza de fase
-function skipTimer() {
-  stop();
-  onComplete(/* natural= */ false);
-}
-
-function todayKey() {
-  const d = new Date();
-  return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
-}
-
-function onComplete(natural = true) {
-  clearInterval(ticker); ticker = null;
-  document.getElementById('ring-wrap').classList.remove('running');
-  document.getElementById('ring-wrap').classList.add('flash');
-  setTimeout(()=>document.getElementById('ring-wrap').classList.remove('flash'), 1100);
-  S.status = 'idle';
-
-  if (S.mode === 'focus') {
-    S.cyclePos++;
-
-    // Solo contabilizar estadísticas y XP si llegó a 00:00 de forma natural
-    if (natural) {
-      S.totalPomos++;
-      S.todayPomos++;
-
-      // Registrar en weekData
-      const key = todayKey();
-      S.weekData[key] = (S.weekData[key] || 0) + 1;
-
-      const today = new Date().toDateString();
-      if (S.lastStudyDate !== today) {
-        const yest = new Date(); yest.setDate(yest.getDate()-1);
-        S.streak = S.lastStudyDate===yest.toDateString() ? S.streak+1 : 1;
-        S.lastStudyDate = today;
-      }
-
-      sfxComplete();
-      addXP(50, `+50 XP — Pomodoro completado 🍅`);
-      refreshWeekChart();
-
-      // Avanzar misión activa si existe
-      missionPomoComplete();
-    }
-
-    const iv = S.cfg.interval;
-    if (S.cyclePos >= iv) {
-      S.cyclePos = 0;
-      if (natural) {
-        checkAch('cycle_complete');
-        setTimeout(()=>addXP(100, `+100 XP Bonus — ¡Ciclo completo! 🔄`), 1600);
-        setTimeout(()=>toast('t-done','¡CICLO COMPLETO!',`${iv} pomodoros, tómate un descanso largo 🌙`), 2000);
-      }
-      setTimeout(()=>setMode('long', S.cfg.abreak), S.cfg.abreak ? 2800 : 2600);
-    } else {
-      if (natural) toast('t-done','¡POMODORO COMPLETADO!',`#${S.totalPomos} — ¡Sigue así! 💪`);
-      setTimeout(()=>setMode('short', S.cfg.abreak), S.cfg.abreak ? 1800 : 1400);
-    }
-
-    if (natural) checkAllAchs();
-  } else {
-    sfxBreakEnd();
-    toast('t-done','¡BREAK TERMINADO!','Hora de otro pomodoro 🎯');
-    setTimeout(()=>setMode('focus', S.cfg.afocus), S.cfg.afocus ? 1800 : 1000);
+  // Convertir a Celsius primero
+  let celsius;
+  switch(from) {
+    case 'C': celsius = val; break;
+    case 'F': celsius = (val - 32) * 5/9; break;
+    case 'K': celsius = val - 273.15; break;
+    case 'R': celsius = (val - 491.67) * 5/9; break;
   }
 
-  refreshDots(); refreshStats(); save();
-}
-
-// =====================================================================
-// XP & LEVEL
-// =====================================================================
-function addXP(amt, msg) {
-  const lvBefore = levelFromXP(S.xp);
-  S.xp += amt;
-  const lvAfter = levelFromXP(S.xp);
-  sfxXP();
-  toast('t-xp','XP GANADO', msg);
-  if (lvAfter > lvBefore) {
-    setTimeout(()=>{
-      sfxLevelUp(); spawnParticles();
-      toast('t-ach',`¡LEVEL UP! NIVEL ${lvAfter}`,`${lvName(lvAfter)} desbloqueado 🎉`);
-      if (lvAfter>=5)  checkAch('level_5');
-      if (lvAfter>=10) checkAch('level_10');
-      if (lvAfter>=25) checkAch('level_25');
-    }, 900);
-  }
-  refreshXP(); save();
-}
-
-// =====================================================================
-// ACHIEVEMENTS
-// =====================================================================
-function checkAch(id) {
-  if (S.unlocked.includes(id)) return;
-  S.unlocked.push(id);
-  const a = ACHS.find(x=>x.id===id);
-  if (!a) return;
-  setTimeout(()=>{
-    toast('t-ach','🏆 LOGRO DESBLOQUEADO', `${a.icon} ${a.name}`);
-    if (a.xp>0) setTimeout(()=>addXP(a.xp,`+${a.xp} XP — Logro: ${a.name}`),1000);
-  }, 2600);
-  save();
-}
-function checkAllAchs() {
-  const h = S.totalFocusSec/3600;
-  const hr = new Date().getHours();
-  if (S.totalPomos>=1)    checkAch('first_pomo');
-  if (S.todayPomos>=5)    checkAch('pomo_5_day');
-  if (S.todayPomos>=10)   checkAch('pomo_10_day');
-  if (S.totalPomos>=50)   checkAch('pomo_50_total');
-  if (S.totalPomos>=100)  checkAch('pomo_100_total');
-  if (S.totalPomos>=500)  checkAch('pomo_500_total');
-  if (h>=1)               checkAch('hours_1');
-  if (h>=10)              checkAch('hours_10');
-  if (h>=50)              checkAch('hours_50');
-  if (h>=100)             checkAch('hours_100');
-  if (S.streak>=3)        checkAch('streak_3');
-  if (S.streak>=7)        checkAch('streak_7');
-  if (S.streak>=30)       checkAch('streak_30');
-  if (hr>=23||hr<1)       checkAch('night_owl');
-  if (hr>=5&&hr<7)        checkAch('early_bird');
-}
-
-// =====================================================================
-// RENDER
-// =====================================================================
-function refreshDisplay() {
-  const m = Math.floor(S.timeLeft/60);
-  const s = S.timeLeft%60;
-  document.getElementById('timer-digits').textContent =
-    `${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
-}
-function refreshRing() {
-  const pct = S.timeLeft / S.totalTime;
-  document.getElementById('ring-prog').style.strokeDashoffset = CIRC * (1-pct);
-}
-function refreshPlayBtn() {
-  document.getElementById('btn-play').textContent = S.status==='running' ? '⏸' : '▶';
-  if (typeof renderSlot === 'function') renderSlot();
-}
-function refreshDots() {
-  const wrap = document.getElementById('cycle-dots');
-  wrap.innerHTML = '';
-  for (let i=0; i<S.cfg.interval; i++) {
-    const d = document.createElement('div');
-    d.className = 'c-dot' + (i < S.cyclePos ? ' done' : '');
-    wrap.appendChild(d);
-  }
-}
-function refreshXP() {
-  const { lv, inLv, need, pct } = xpProgress(S.xp);
-  document.getElementById('lvl-badge').textContent = `LVL ${lv}`;
-  document.getElementById('lvl-name').textContent  = lvName(lv);
-  document.getElementById('xp-count').textContent  = `${inLv} / ${need} XP`;
-  document.getElementById('xp-fill').style.width   = `${pct*100}%`;
-}
-function refreshStats() {
-  const todH = S.todayFocusSec/3600;
-  document.getElementById('s-today-p').textContent = S.todayPomos;
-  document.getElementById('s-today-h').textContent = todH>=1 ? `${todH.toFixed(1)}h` : `${Math.floor(S.todayFocusSec/60)}m`;
-  document.getElementById('s-streak').textContent  = `${S.streak}🔥`;
-  document.getElementById('s-total').textContent   = S.totalPomos;
-}
-
-// ---- GRÁFICA SEMANAL ----
-const DAYS_ES = ['Dom','Lun','Mar','Mié','Jue','Vie','Sáb'];
-function refreshWeekChart() {
-  const wrap = document.getElementById('week-bars');
-  if (!wrap) return;
-
-  // Construir array de los últimos 7 días
-  const days = [];
-  for (let i=6; i>=0; i--) {
-    const d = new Date();
-    d.setDate(d.getDate() - i);
-    const key = `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
-    days.push({ key, label: DAYS_ES[d.getDay()], isToday: i===0 });
+  // Desde Celsius al destino
+  let result;
+  switch(to) {
+    case 'C': result = celsius; break;
+    case 'F': result = celsius * 9/5 + 32; break;
+    case 'K': result = celsius + 273.15; break;
+    case 'R': result = (celsius + 273.15) * 9/5; break;
   }
 
-  const values = days.map(d => S.weekData[d.key] || 0);
-  const maxVal = Math.max(...values, 1);
-  const weekTotal = values.reduce((a,b)=>a+b, 0);
-  document.getElementById('week-total').textContent = `${weekTotal} pomodoro${weekTotal!==1?'s':''} esta semana`;
-
-  wrap.innerHTML = days.map((d,i) => {
-    const pct = values[i] / maxVal * 100;
-    return `
-      <div class="week-bar-wrap">
-        <div class="week-bar-track">
-          <div class="week-bar-fill${d.isToday?' today':''}" style="height:${pct}%"></div>
-        </div>
-        <div class="week-bar-label${d.isToday?' today':''}">${d.label}</div>
-      </div>`;
-  }).join('');
+  document.getElementById('t-val2').value = fmtNum(result);
+  const fromNames = { C:'°C', F:'°F', K:'K', R:'°R' };
+  document.getElementById('res-temperatura').textContent = `${val} ${fromNames[from]} = ${fmtNum(result)} ${fromNames[to]}`;
 }
 
-function initAll() {
-  document.body.dataset.mode = S.mode;
-  document.querySelectorAll('.mode-tab').forEach(t=>t.classList.toggle('active',t.dataset.mode===S.mode));
-  refreshDisplay(); refreshRing(); refreshPlayBtn();
-  refreshXP(); refreshStats(); refreshDots(); refreshWeekChart();
-}
+// ================================================================
+// BUSCADOR en tiempo real
+// ================================================================
+const allSections  = document.querySelectorAll('.section-block');
+const allLinkCards = document.querySelectorAll('.link-card, .soon-card');
+const searchInput  = document.getElementById('search-input');
+const searchCount  = document.getElementById('search-count');
+const noResults    = document.getElementById('no-results');
+const noResultsTerm = document.getElementById('no-results-term');
 
-// =====================================================================
-// TOAST
-// =====================================================================
-function toast(type, ttl, msg) {
-  const wrap = document.getElementById('toast-wrap');
-  const el = document.createElement('div');
-  el.className = `toast ${type}`;
-  el.innerHTML = `<div class="toast-ttl">${ttl}</div><div class="toast-msg">${msg}</div>`;
-  wrap.appendChild(el);
-  setTimeout(()=>{
-    el.style.animation='t-out 0.38s ease forwards';
-    setTimeout(()=>el.remove(),400);
-  },3600);
-}
+searchInput.addEventListener('input', () => {
+  const q = searchInput.value.trim().toLowerCase();
 
-// =====================================================================
-// PARTICLES
-// =====================================================================
-function spawnParticles() {
-  const cols=['#00d4ff','#ff7043','#ffd600','#00ff98','#b06aff'];
-  const cx=window.innerWidth/2, cy=window.innerHeight/2;
-  for (let i=0;i<24;i++){
-    const p=document.createElement('div');
-    p.className='px';
-    const a=(i/24)*Math.PI*2;
-    const r=70+Math.random()*130;
-    p.style.cssText=`left:${cx}px;top:${cy}px;width:${4+Math.random()*5}px;height:${4+Math.random()*5}px;background:${cols[i%cols.length]};--dx:${Math.cos(a)*r}px;--dy:${Math.sin(a)*r-60}px;animation-duration:${0.8+Math.random()*0.5}s;animation-delay:${Math.random()*0.2}s;`;
-    document.body.appendChild(p);
-    setTimeout(()=>p.remove(),1400);
-  }
-}
-
-// =====================================================================
-// MODALS
-// =====================================================================
-function renderAchs() {
-  document.getElementById('ach-unlocked').textContent = S.unlocked.length;
-  const xpTot = ACHS.filter(a=>S.unlocked.includes(a.id)).reduce((s,a)=>s+a.xp,0);
-  document.getElementById('ach-total-xp').textContent = xpTot;
-  const grid = document.getElementById('ach-grid');
-  grid.innerHTML = ACHS.map(a=>{
-    const un = S.unlocked.includes(a.id);
-    return `<div class="acard ${un?'unlocked':'locked'}">
-      ${un?'<div class="acard-check">✓</div>':''}
-      <div class="acard-icon">${a.icon}</div>
-      <div class="acard-name">${a.name}</div>
-      <div class="acard-desc">${a.desc}</div>
-      ${a.xp>0?`<div class="acard-xp">+${a.xp} XP</div>`:''}
-    </div>`;
-  }).join('');
-}
-
-function renderStatsModal() {
-  const h  = (S.totalFocusSec/3600).toFixed(1);
-  const th = (S.todayFocusSec/3600).toFixed(1);
-  document.getElementById('stats-mbody').innerHTML = `
-    <div class="stats-grid-modal">
-      <div class="stat-cell"><div class="stat-cell-val">${S.totalPomos}</div><div class="stat-cell-label">Total Pomodoros</div></div>
-      <div class="stat-cell"><div class="stat-cell-val">${h}h</div><div class="stat-cell-label">Horas Totales</div></div>
-      <div class="stat-cell"><div class="stat-cell-val" style="color:var(--xp)">${S.streak}🔥</div><div class="stat-cell-label">Racha</div></div>
-      <div class="stat-cell"><div class="stat-cell-val" style="color:var(--gold)">${S.unlocked.length}/${ACHS.length}</div><div class="stat-cell-label">Logros</div></div>
-    </div>
-
-    <!-- ANUNCIO 2 — dentro del modal de stats -->
-    <div class="ad-modal">
-      <ins class="adsbygoogle"
-           style="display:block"
-           data-ad-client="ca-pub-9027862604686644"
-           data-ad-slot="auto"
-           data-ad-format="auto"
-           data-full-width-responsive="true"></ins>
-    </div>
-
-    <div style="background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:16px;margin-bottom:16px">
-      <div class="sgroup-title" style="margin-bottom:12px">HOY</div>
-      <div class="stat-detail-row"><span>Pomodoros completados</span><span>${S.todayPomos}</span></div>
-      <div class="stat-detail-row"><span>Tiempo de focus</span><span>${th}h</span></div>
-      <div class="stat-detail-row"><span>Nivel actual</span><span>LVL ${levelFromXP(S.xp)}</span></div>
-      <div class="stat-detail-row"><span>XP total</span><span>${S.xp} XP</span></div>
-    </div>
-    <div style="text-align:center">
-      <button onclick="doReset()" style="background:rgba(255,50,50,0.1);border:1px solid rgba(255,50,50,0.25);color:#ff6b6b;padding:9px 22px;border-radius:8px;cursor:pointer;font-family:'Outfit',sans-serif;font-size:13px;font-weight:500">
-        🗑️ Resetear todos los datos
-      </button>
-    </div>`;
-
-  // Activar el anuncio del modal
-  try { (adsbygoogle = window.adsbygoogle || []).push({}); } catch(e){}
-}
-
-function doReset() {
-  if (confirm('¿Seguro? Se borrarán todos tus datos, XP y logros permanentemente.')) {
-    localStorage.removeItem('ff_v2');
-    S = JSON.parse(JSON.stringify(DEF));
-    S.cfg = Object.assign({},DEF.cfg);
-    initAll(); closeAll();
-    toast('t-done','RESET COMPLETO','Empezando desde cero 🌱');
-  }
-}
-
-function loadCfgUI() {
-  document.getElementById('cfg-focus').value    = S.cfg.focus;
-  document.getElementById('cfg-short').value    = S.cfg.short;
-  document.getElementById('cfg-long').value     = S.cfg.long;
-  document.getElementById('cfg-interval').value = S.cfg.interval;
-  document.getElementById('tog-sound').classList.toggle('on',  S.cfg.sound);
-  document.getElementById('tog-abreak').classList.toggle('on', S.cfg.abreak);
-  document.getElementById('tog-afocus').classList.toggle('on', S.cfg.afocus);
-}
-
-// =====================================================================
-// EVENTS
-// =====================================================================
-document.getElementById('btn-play').addEventListener('click',()=>{
-  if (actx && actx.state==='suspended') actx.resume();
-  if (S.status==='running') stop(); else startTimer();
-});
-document.getElementById('btn-reset').addEventListener('click', resetTimer);
-document.getElementById('btn-skip').addEventListener('click',  skipTimer);
-
-document.querySelectorAll('.mode-tab').forEach(t=>{
-  t.addEventListener('click',()=>{ if(S.status==='running')stop(); setMode(t.dataset.mode); });
-});
-
-document.getElementById('btn-stats').addEventListener('click',()=>{ renderStatsModal(); openOv('ov-stats'); });
-document.getElementById('btn-achs').addEventListener('click', ()=>{ renderAchs();       openOv('ov-achs');  });
-document.getElementById('btn-cfg').addEventListener('click',  ()=>{ loadCfgUI();        openOv('ov-cfg');   });
-
-document.querySelectorAll('.mclose').forEach(b=>{
-  b.addEventListener('click',()=>closeOv(b.dataset.ov));
-});
-document.querySelectorAll('.overlay').forEach(ov=>{
-  ov.addEventListener('click',e=>{ if(e.target===ov) closeOv(ov.id); });
-});
-document.querySelectorAll('.tog').forEach(t=>{
-  t.addEventListener('click',()=>t.classList.toggle('on'));
-});
-
-document.getElementById('btn-save-cfg').addEventListener('click',()=>{
-  S.cfg.focus    = Math.max(1, parseInt(document.getElementById('cfg-focus').value)    || 25);
-  S.cfg.short    = Math.max(1, parseInt(document.getElementById('cfg-short').value)    || 5);
-  S.cfg.long     = Math.max(5, parseInt(document.getElementById('cfg-long').value)     || 15);
-  S.cfg.interval = Math.max(2, parseInt(document.getElementById('cfg-interval').value) || 4);
-  S.cfg.sound    = document.getElementById('tog-sound').classList.contains('on');
-  S.cfg.abreak   = document.getElementById('tog-abreak').classList.contains('on');
-  S.cfg.afocus   = document.getElementById('tog-afocus').classList.contains('on');
-  save(); setMode('focus'); refreshDots(); closeOv('ov-cfg');
-  toast('t-done','GUARDADO','Configuración aplicada ✓');
-});
-
-function openOv(id)  { document.getElementById(id).classList.add('open'); }
-function closeOv(id) { document.getElementById(id).classList.remove('open'); }
-function closeAll()  { document.querySelectorAll('.overlay').forEach(o=>o.classList.remove('open')); }
-
-document.addEventListener('keydown', e => {
-  if (e.target.tagName==='INPUT') return;
-  if (e.code==='Space') { e.preventDefault(); if (S.status==='running') stop(); else startTimer(); }
-  if (e.code==='KeyR') resetTimer();
-  if (e.code==='Escape') closeAll();
-});
-
-setInterval(()=>{
-  if (S.status==='running') {
-    const m=String(Math.floor(S.timeLeft/60)).padStart(2,'0');
-    const s=String(S.timeLeft%60).padStart(2,'0');
-    document.title=`${m}:${s} — PomodoroXP`;
-  } else {
-    document.title='PomodoroXP — Motor de Estudio';
-  }
-}, 1000);
-
-// =====================================================================
-// SISTEMA DE MISIONES — v1.2
-// =====================================================================
-
-const MISSIONS_KEY   = 'pxp_missions_v1';
-const HISTORY_KEY    = 'pxp_missions_history_v1';
-
-let missions         = loadMissions();    // array de misiones activas
-let missionHistory   = loadHistory();     // array de misiones completadas
-let connectedMission = null;              // id de la misión conectada al slot
-
-function loadMissions() {
-  try { const r = localStorage.getItem(MISSIONS_KEY); return r ? JSON.parse(r) : []; } catch(e) { return []; }
-}
-function loadHistory() {
-  try { const r = localStorage.getItem(HISTORY_KEY);  return r ? JSON.parse(r) : []; } catch(e) { return []; }
-}
-function saveMissions() {
-  try {
-    localStorage.setItem(MISSIONS_KEY,  JSON.stringify(missions));
-    localStorage.setItem(HISTORY_KEY,   JSON.stringify(missionHistory));
-  } catch(e) {}
-}
-
-// --- CREAR MISIÓN ---
-function createMission() {
-  const nameEl = document.getElementById('mission-name-input');
-  const estEl  = document.getElementById('mission-est-input');
-  const name   = nameEl.value.trim();
-  if (!name) { nameEl.focus(); return; }
-
-  const mission = {
-    id:        Date.now(),
-    name,
-    est:       parseInt(estEl.value) || 0,   // pomodoros estimados (0 = sin estimar)
-    done:      0,                             // pomodoros completados
-    createdAt: new Date().toISOString()
-  };
-
-  missions.push(mission);
-  saveMissions();
-  nameEl.value = '';
-  estEl.value  = '0';
-  renderMissions();
-  toast('t-done', '✓ Misión creada', `"${name}" lista para iniciar`);
-}
-
-// --- CONECTAR AL SLOT ---
-function connectMission(id) {
-  connectedMission = id;
-  renderMissions();
-  renderSlot();
-
-  const m = missions.find(m => m.id === id);
-  if (m) toast('t-done', '⚡ Misión conectada', `"${m.name}" activa en el Slot`);
-}
-
-// --- DESCONECTAR ---
-function disconnectMission() {
-  connectedMission = null;
-  renderMissions();
-  renderSlot();
-}
-
-// --- COMPLETAR MISIÓN ---
-function completeMission(id) {
-  const idx = missions.findIndex(m => m.id === id);
-  if (idx === -1) return;
-  const m = missions.splice(idx, 1)[0];
-  m.completedAt = new Date().toISOString();
-  missionHistory.unshift(m);
-  if (missionHistory.length > 50) missionHistory.pop(); // cap historial
-  if (connectedMission === id) connectedMission = null;
-  saveMissions();
-  renderMissions();
-  renderSlot();
-  renderHistory();
-  toast('t-done', '🏁 ¡Misión completada!', `"${m.name}" enviada al historial`);
-}
-
-// --- ELIMINAR MISIÓN ---
-function deleteMission(id) {
-  missions = missions.filter(m => m.id !== id);
-  if (connectedMission === id) connectedMission = null;
-  saveMissions();
-  renderMissions();
-  renderSlot();
-}
-
-// --- LLAMADA DESDE onComplete (solo si natural=true) ---
-function missionPomoComplete() {
-  if (!connectedMission) return;
-  const m = missions.find(m => m.id === connectedMission);
-  if (!m) return;
-
-  m.done++;
-  saveMissions();
-  renderMissions();
-  renderSlot();
-
-  const isOver = m.est > 0 && m.done > m.est;
-  if (isOver) {
-    toast('t-xp', '⚡ SOBRECARGA', `"${m.name}" superó los ${m.est} pomodoros estimados`);
-  } else {
-    toast('t-done', '⚡ +1 Misión', `"${m.name}" · ${m.done}/${m.est || '?'} 🍅`);
-  }
-}
-
-// --- RENDER SLOT ---
-function renderSlot() {
-  const slot      = document.getElementById('mission-slot');
-  const emptyText = document.getElementById('slot-empty-text');
-  const mInfo     = document.getElementById('slot-mission-info');
-  const mName     = document.getElementById('slot-mission-name');
-  const mMeta     = document.getElementById('slot-mission-meta');
-  const mDisc     = document.getElementById('slot-disconnect');
-
-  const m = connectedMission ? missions.find(m => m.id === connectedMission) : null;
-
-  if (!m) {
-    slot.classList.remove('active');
-    emptyText.style.display = '';
-    mInfo.style.display     = 'none';
-    mDisc.style.display     = 'none';
-  } else {
-    const isRunning = S.status === 'running' && S.mode === 'focus';
-    slot.classList.toggle('active', isRunning);
-    emptyText.style.display = 'none';
-    mInfo.style.display     = '';
-    mDisc.style.display     = '';
-    mName.textContent       = m.name;
-    const pct = m.est > 0 ? ` · ${m.done}/${m.est} 🍅` : ` · ${m.done} 🍅`;
-    mMeta.textContent       = `Misión activa${pct}`;
-  }
-}
-
-// --- RENDER MISSIONS LIST ---
-function renderMissions() {
-  const list  = document.getElementById('missions-list');
-  const count = document.getElementById('missions-count');
-
-  count.textContent = `${missions.length} activa${missions.length !== 1 ? 's' : ''}`;
-
-  if (!missions.length) {
-    list.innerHTML = `<div class="missions-empty">Sin misiones activas.<br>Crea una para empezar a rastrear tu progreso. 🎯</div>`;
+  if (!q) {
+    // Sin búsqueda: mostrar todo
+    allSections.forEach(s => s.style.display = '');
+    allLinkCards.forEach(c => c.style.display = '');
+    searchCount.textContent = '';
+    noResults.classList.remove('visible');
     return;
   }
 
-  list.innerHTML = missions.map(m => {
-    const isConn  = connectedMission === m.id;
-    const est     = m.est || 0;
-    const done    = m.done;
-    const total   = Math.max(est, done);   // mostrar al menos los completados
+  let visibleCount = 0;
 
-    // Build energy segments
-    let segsHtml = '';
-    if (total > 0) {
-      for (let i = 0; i < total; i++) {
-        let cls = 'energy-seg';
-        if (i < done) cls += i < est || est === 0 ? ' filled' : ' overcharge';
-        segsHtml += `<div class="${cls}"></div>`;
-      }
-    }
+  allSections.forEach(section => {
+    const secText = (section.dataset.section || '').toLowerCase();
+    const cards   = section.querySelectorAll('.link-card, .soon-card');
+    let secVisible = false;
 
-    const overcharge = est > 0 && done > est;
-    const labelCls   = overcharge ? 'energy-label overcharge' : 'energy-label';
-    const labelTxt   = est > 0
-      ? `<span>${done}</span> / ${est} pomodoros${overcharge ? ' ⚡ SOBRECARGA' : ''}`
-      : `<span>${done}</span> pomodoros completados`;
+    cards.forEach(card => {
+      const tags    = (card.dataset.tags || '').toLowerCase();
+      const name    = (card.querySelector('.link-card-name, .soon-title')?.textContent || '').toLowerCase();
+      const desc    = (card.querySelector('.link-card-desc, .soon-desc')?.textContent || '').toLowerCase();
+      const matches = tags.includes(q) || name.includes(q) || desc.includes(q);
+      card.style.display = matches ? '' : 'none';
+      if (matches) { secVisible = true; visibleCount++; }
+    });
 
-    return `
-      <div class="mission-card${isConn ? ' connected' : ''}">
-        <div class="mission-card-top">
-          <div class="mission-card-name${isConn ? ' connected' : ''}">${escH(m.name)}</div>
-          ${isConn ? '<span class="mission-badge active-badge">⚡ ACTIVA</span>' : ''}
-        </div>
-        ${total > 0 ? `
-          <div class="${labelCls}">${labelTxt}</div>
-          <div class="energy-tank">${segsHtml}</div>
-        ` : `<div style="font-size:11px;color:var(--text-faint);margin-bottom:8px">Sin pomodoros estimados</div>`}
-        <div class="mission-card-btns">
-          ${!isConn
-            ? `<button class="btn-mission connect" onclick="connectMission(${m.id})">⚡ Conectar al Slot</button>`
-            : `<button class="btn-mission" onclick="disconnectMission()">Desconectar</button>`
-          }
-          <button class="btn-mission complete" onclick="completeMission(${m.id})">✓ Completar</button>
-          <button class="btn-mission del"      onclick="deleteMission(${m.id})">✕</button>
-        </div>
-      </div>`;
-  }).join('');
-}
+    // Mostrar sección si el título coincide aunque las cards no
+    const titleMatch = secText.includes(q);
+    if (titleMatch) { cards.forEach(c => c.style.display = ''); secVisible = true; }
+    section.style.display = secVisible ? '' : 'none';
+  });
 
-// --- RENDER HISTORY ---
-function renderHistory() {
-  const toggle = document.getElementById('history-toggle');
-  const hCount = document.getElementById('history-count');
-  const hList  = document.getElementById('history-list');
-
-  toggle.style.display = missionHistory.length ? '' : 'none';
-  hCount.textContent   = missionHistory.length;
-
-  hList.innerHTML = missionHistory.slice(0, 20).map(m =>
-    `<div class="history-item">
-      <span class="hi-name">✓ ${escH(m.name)}</span>
-      <span class="hi-pomos">${m.done} 🍅</span>
-    </div>`
-  ).join('');
-}
-
-function toggleHistory() {
-  document.getElementById('history-list').classList.toggle('open');
-}
-
-function escH(s) {
-  return String(s).replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
-}
-
-// =====================================================================
-// BOOT
-// =====================================================================
-initAll();
-// Inicializar sistema de misiones
-renderMissions();
-renderSlot();
-renderHistory();
-// Exponer funciones globales para Firebase
-window.S       = S;
-window.initAll = initAll;
-window.toast   = toast;
-
-// ---- AUTH MODAL ----
-function switchAuthTab(tab) {
-  const isReg = tab === 'register';
-  document.getElementById('field-username').style.display = isReg ? 'block' : 'none';
-  document.getElementById('btn-auth-submit').textContent  = isReg ? 'Crear cuenta' : 'Entrar';
-  document.getElementById('tab-login').style.borderColor    = isReg ? 'transparent' : 'var(--focus)';
-  document.getElementById('tab-login').style.background     = isReg ? 'transparent' : 'var(--focus-d)';
-  document.getElementById('tab-login').style.color          = isReg ? 'var(--text-dim)' : 'var(--focus)';
-  document.getElementById('tab-register').style.borderColor = isReg ? 'var(--focus)' : 'transparent';
-  document.getElementById('tab-register').style.background  = isReg ? 'var(--focus-d)' : 'transparent';
-  document.getElementById('tab-register').style.color       = isReg ? 'var(--focus)' : 'var(--text-dim)';
-  document.getElementById('auth-error').style.display = 'none';
-  document.getElementById('auth-title').textContent = isReg ? '👤 CREAR CUENTA' : '👤 INICIAR SESIÓN';
-  switchAuthTab._current = tab;
-}
-switchAuthTab._current = 'login';
-window.switchAuthTab = switchAuthTab;
-
-async function submitAuth() {
-  const email    = document.getElementById('auth-email').value.trim();
-  const password = document.getElementById('auth-password').value;
-  const errDiv   = document.getElementById('auth-error');
-  errDiv.style.display = 'none';
-
-  if (!window.FB) { errDiv.textContent = 'Firebase no cargado aún'; errDiv.style.display='block'; return; }
-
-  let result;
-  if (switchAuthTab._current === 'register') {
-    const username = document.getElementById('auth-username').value.trim() || email.split('@')[0];
-    result = await window.FB.registerEmail(email, password, username);
-  } else {
-    result = await window.FB.loginEmail(email, password);
-  }
-
-  if (result.ok) {
-    closeOv('ov-auth');
-  } else {
-    errDiv.textContent = result.msg;
-    errDiv.style.display = 'block';
-  }
-}
-window.submitAuth = submitAuth;
-
-// Botón auth — abre modal o perfil
-document.getElementById('btn-auth').addEventListener('click', () => {
-  const user = window._fbUser;
-  if (user) {
-    document.getElementById('auth-logged').style.display = 'block';
-    document.getElementById('auth-form').style.display   = 'none';
-    document.getElementById('auth-user-name').textContent  = user.displayName || user.email.split('@')[0];
-    document.getElementById('auth-user-email').textContent = user.email;
-    document.getElementById('cloud-pomos').textContent  = S.totalPomos;
-    document.getElementById('cloud-xp').textContent     = S.xp + ' XP';
-    document.getElementById('cloud-streak').textContent = S.streak + ' días';
-  } else {
-    document.getElementById('auth-logged').style.display = 'none';
-    document.getElementById('auth-form').style.display   = 'block';
-    switchAuthTab('login');
-  }
-  openOv('ov-auth');
+  searchCount.textContent = visibleCount > 0 ? `${visibleCount}` : '';
+  noResultsTerm.textContent = searchInput.value.trim();
+  noResults.classList.toggle('visible', visibleCount === 0);
 });
-
-// Botón ranking
-document.getElementById('btn-ranking').addEventListener('click', async () => {
-  openOv('ov-ranking');
-  const body = document.getElementById('ranking-body');
-  body.innerHTML = '<div style="text-align:center;padding:20px;color:var(--text-dim)">Cargando...</div>';
-  if (!window.FB) { body.innerHTML = '<div style="text-align:center;padding:20px;color:var(--text-dim)">Firebase no disponible</div>'; return; }
-  const rows = await window.FB.getRanking();
-  if (!rows.length) { body.innerHTML = '<div style="text-align:center;padding:30px;color:var(--text-dim)">Aún no hay datos en el ranking.<br>¡Sé el primero en registrarte! 🚀</div>'; return; }
-  const medals = ['🥇','🥈','🥉'];
-  body.innerHTML = `
-    <div style="margin-bottom:16px">
-      ${rows.map(r=>`
-        <div style="display:flex;align-items:center;gap:12px;padding:12px;background:${r.isMe?'rgba(0,212,255,0.07)':'var(--bg2)'};border:1px solid ${r.isMe?'var(--focus)':'var(--border)'};border-radius:10px;margin-bottom:8px">
-          <div style="font-size:20px;width:28px;text-align:center">${medals[r.rank-1]||r.rank}</div>
-          <div style="flex:1">
-            <div style="font-size:13px;font-weight:700;color:${r.isMe?'var(--focus)':'var(--text)'}">${r.username}${r.isMe?' (tú)':''}</div>
-            <div style="font-size:10px;color:var(--text-dim)">${r.hours}h de focus</div>
-          </div>
-          <div style="text-align:right">
-            <div style="font-family:'Orbitron',monospace;font-size:14px;color:var(--text)">${r.pomos} 🍅</div>
-            <div style="font-size:10px;color:var(--xp)">${r.xp} XP</div>
-          </div>
-        </div>`).join('')}
-    </div>
-    ${!window._fbUser ? '<div style="text-align:center;font-size:12px;color:var(--text-dim)">Regístrate para aparecer en el ranking 👆</div>' : ''}`;
-});
-
-// Sync automático cada vez que se completa un pomodoro (hook)
-const _origOnComplete = window._onComplete;
-function syncAfterPomo() { if (window.FB && window._fbUser) window.FB.syncToCloud(S); }
-
-// Guardar referencia al usuario actual
-window._fbUser = null;
-
-console.log('%cPOMODOROXP v1.2','font-size:20px;font-weight:900;color:#00d4ff;font-family:monospace');
-console.log('%cSistema de Misiones + Bugfix XP skip ⚡','color:#5c78a8;font-family:monospace');
-</script>
-
-<!-- Firebase -->
-<script type="module" src="firebase.js"></script>
-
-<!-- ====== BANNER DE COOKIES ====== -->
-<div id="cookie-banner">
-  <div class="cookie-text">
-    🍪 <strong>Usamos cookies</strong> propias y de terceros (Google AdSense, Firebase, Analytics) para mejorar tu experiencia y mostrar publicidad relevante. Puedes aceptar todas o rechazar las no esenciales. <a href="cookies.html">Más información</a>
-  </div>
-  <div class="cookie-btns">
-    <button class="btn-cookie-reject" onclick="cookieChoice(false)">Solo esenciales</button>
-    <button class="btn-cookie-accept" onclick="cookieChoice(true)">✓ Aceptar todas</button>
-  </div>
-</div>
-
-<script>
-(function() {
-  const COOKIE_KEY = 'pxp_cookie_consent';
-  const consent    = localStorage.getItem(COOKIE_KEY);
-  const banner     = document.getElementById('cookie-banner');
-
-  // Si ya decidió, ocultamos de inmediato
-  if (consent !== null) banner.classList.add('hidden');
-
-  window.cookieChoice = function(accepted) {
-    localStorage.setItem(COOKIE_KEY, accepted ? 'accepted' : 'rejected');
-    banner.classList.add('hidden');
-    // Si rechaza, intentamos desactivar AdSense personalizado
-    if (!accepted && window.googletag) {
-      try { googletag.pubads().setRequestNonPersonalizedAds(1); } catch(e){}
-    }
-  };
-})();
 </script>
 
 </body>
