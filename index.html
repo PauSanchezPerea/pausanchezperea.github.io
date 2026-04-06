@@ -645,6 +645,219 @@ body[data-mode="long"]  .btn-play { border-color: var(--long);  background: var(
 .px { position: fixed; pointer-events: none; z-index: 998; border-radius: 50%; animation: px-fly 1s ease-out forwards; }
 @keyframes px-fly { 0% { opacity:1; transform: translate(0,0) scale(1); } 100% { opacity:0; transform: translate(var(--dx),var(--dy)) scale(0.4); } }
 
+/* ---- MISSION SLOT ---- */
+.mission-slot {
+  width: 100%;
+  background: rgba(0,212,255,0.03);
+  border: 1px solid rgba(0,212,255,0.15);
+  border-radius: 12px;
+  padding: 10px 16px;
+  margin-top: 10px;
+  min-height: 46px;
+  display: flex; align-items: center; gap: 10px;
+  transition: all 0.3s;
+  position: relative; overflow: hidden;
+}
+.mission-slot::before {
+  content: '';
+  position: absolute; inset: 0;
+  background: linear-gradient(90deg, transparent, rgba(0,212,255,0.04), transparent);
+  transform: translateX(-100%);
+  transition: none;
+}
+.mission-slot.active {
+  border-color: rgba(0,212,255,0.4);
+  box-shadow: 0 0 18px rgba(0,212,255,0.1), inset 0 0 18px rgba(0,212,255,0.04);
+  animation: slot-pulse 2.5s ease-in-out infinite;
+}
+@keyframes slot-pulse {
+  0%,100% { box-shadow: 0 0 12px rgba(0,212,255,0.1), inset 0 0 12px rgba(0,212,255,0.03); }
+  50%      { box-shadow: 0 0 28px rgba(0,212,255,0.22), inset 0 0 22px rgba(0,212,255,0.08); }
+}
+.slot-icon { font-size: 18px; flex-shrink: 0; }
+.slot-content { flex: 1; min-width: 0; }
+.slot-name {
+  font-size: 13px; font-weight: 700; color: var(--text);
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.slot-empty { font-size: 12px; color: var(--text-faint); font-style: italic; }
+.slot-meta { font-size: 10px; color: var(--text-dim); margin-top: 2px; }
+.slot-disconnect {
+  width: 24px; height: 24px; border-radius: 6px;
+  border: 1px solid var(--border); background: transparent;
+  color: var(--text-faint); font-size: 12px; cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  transition: all 0.2s; flex-shrink: 0;
+}
+.slot-disconnect:hover { border-color: rgba(255,50,50,0.3); color: #ff6b6b; }
+
+/* ---- MISSIONS PANEL ---- */
+.missions-panel {
+  width: 100%;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 16px 18px;
+  margin-bottom: 24px;
+  backdrop-filter: blur(12px);
+}
+.missions-header {
+  display: flex; justify-content: space-between; align-items: center;
+  margin-bottom: 14px;
+}
+.missions-title {
+  font-size: 9px; color: var(--focus);
+  text-transform: uppercase; letter-spacing: 0.24em; font-weight: 700;
+}
+.missions-count {
+  font-size: 10px; color: var(--text-dim);
+  font-family: 'Orbitron', monospace;
+}
+
+/* Mission create form */
+.mission-create {
+  display: flex; gap: 8px; margin-bottom: 14px; flex-wrap: wrap;
+}
+.mission-input {
+  flex: 1; min-width: 150px;
+  background: var(--bg2); border: 1px solid var(--border);
+  border-radius: 9px; color: var(--text);
+  font-family: 'Outfit', sans-serif; font-size: 13px;
+  padding: 9px 12px; transition: border-color 0.2s;
+}
+.mission-input:focus { outline: none; border-color: var(--focus); box-shadow: 0 0 8px var(--focus-d); }
+.mission-input::placeholder { color: var(--text-faint); }
+.mission-est {
+  background: var(--bg2); border: 1px solid var(--border);
+  border-radius: 9px; color: var(--text);
+  font-family: 'Orbitron', monospace; font-size: 12px;
+  padding: 9px 10px; cursor: pointer; width: 90px;
+  transition: border-color 0.2s;
+}
+.mission-est:focus { outline: none; border-color: var(--focus); }
+.btn-create-mission {
+  padding: 9px 16px;
+  background: var(--focus-d); border: 1px solid var(--focus);
+  border-radius: 9px; color: var(--focus);
+  font-family: 'Outfit', sans-serif; font-size: 12px; font-weight: 700;
+  cursor: pointer; transition: all 0.22s; white-space: nowrap;
+}
+.btn-create-mission:hover { background: rgba(0,212,255,0.22); box-shadow: 0 0 12px var(--focus-d); }
+
+/* Mission cards list */
+.missions-list { display: flex; flex-direction: column; gap: 10px; }
+.mission-card {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 12px 14px;
+  transition: border-color 0.22s;
+  position: relative;
+}
+.mission-card.connected {
+  border-color: rgba(0,212,255,0.35);
+  background: rgba(0,212,255,0.04);
+}
+.mission-card.completed {
+  opacity: 0.45; filter: grayscale(0.6);
+}
+.mission-card-top {
+  display: flex; align-items: center; gap: 10px; margin-bottom: 10px;
+}
+.mission-card-name {
+  flex: 1; font-size: 14px; font-weight: 700; color: var(--text);
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.mission-card-name.connected { color: var(--focus); }
+.mission-badge {
+  font-size: 9px; font-weight: 700; letter-spacing: 0.12em;
+  padding: 2px 8px; border-radius: 20px; flex-shrink: 0;
+  text-transform: uppercase;
+}
+.mission-badge.active-badge {
+  background: var(--focus-d); color: var(--focus);
+  border: 1px solid rgba(0,212,255,0.25);
+}
+
+/* Energy tank */
+.energy-tank {
+  display: flex; gap: 4px; margin-bottom: 10px; flex-wrap: wrap;
+}
+.energy-seg {
+  height: 10px; flex: 1; min-width: 12px; max-width: 44px;
+  border-radius: 3px;
+  background: rgba(0,212,255,0.08);
+  border: 1px solid rgba(0,212,255,0.18);
+  transition: background 0.6s ease, border-color 0.4s, box-shadow 0.6s;
+  position: relative; overflow: hidden;
+}
+.energy-seg.filled {
+  background: linear-gradient(90deg, var(--focus), rgba(0,212,255,0.6));
+  border-color: var(--focus);
+  box-shadow: 0 0 6px rgba(0,212,255,0.5);
+}
+.energy-seg.overcharge {
+  background: linear-gradient(90deg, var(--xp), rgba(255,112,67,0.6));
+  border-color: var(--xp);
+  box-shadow: 0 0 6px rgba(255,112,67,0.5);
+}
+.energy-seg::after {
+  content: '';
+  position: absolute; top: 0; left: -100%; width: 60%;
+  height: 100%; background: rgba(255,255,255,0.25);
+  transform: skewX(-20deg);
+  transition: left 0.4s ease;
+}
+.energy-seg.filled::after { left: 120%; }
+
+.energy-label {
+  font-size: 10px; color: var(--text-dim); margin-bottom: 6px;
+  font-family: 'Orbitron', monospace;
+}
+.energy-label span { color: var(--focus); }
+.energy-label.overcharge span { color: var(--xp); }
+
+/* Mission card buttons */
+.mission-card-btns { display: flex; gap: 6px; flex-wrap: wrap; }
+.btn-mission {
+  padding: 6px 12px; border-radius: 7px;
+  font-family: 'Outfit', sans-serif; font-size: 11px; font-weight: 600;
+  cursor: pointer; transition: all 0.2s; border: 1px solid var(--border);
+  background: transparent; color: var(--text-dim);
+}
+.btn-mission:hover { color: var(--text); border-color: var(--border-h); }
+.btn-mission.connect { border-color: rgba(0,212,255,0.3); color: var(--focus); background: var(--focus-d); }
+.btn-mission.connect:hover { background: rgba(0,212,255,0.2); }
+.btn-mission.complete { border-color: rgba(0,255,152,0.3); color: var(--short); }
+.btn-mission.complete:hover { background: var(--short-d); }
+.btn-mission.del { border-color: rgba(255,50,50,0.2); color: #ff6b6b; }
+.btn-mission.del:hover { background: rgba(255,50,50,0.1); }
+
+/* Missions empty */
+.missions-empty {
+  text-align: center; padding: 22px;
+  color: var(--text-faint); font-size: 13px; line-height: 1.6;
+}
+
+/* Historial toggle */
+.history-toggle {
+  font-size: 11px; color: var(--text-dim); cursor: pointer;
+  text-align: center; padding: 8px 0 0;
+  border-top: 1px solid var(--border); margin-top: 12px;
+  transition: color 0.2s;
+}
+.history-toggle:hover { color: var(--focus); }
+.history-list { margin-top: 10px; display: none; }
+.history-list.open { display: block; }
+.history-item {
+  display: flex; align-items: center; gap: 8px;
+  padding: 7px 0; border-bottom: 1px solid var(--border);
+  font-size: 12px; color: var(--text-dim);
+}
+.history-item:last-child { border-bottom: none; }
+.history-item .hi-name { flex: 1; }
+.history-item .hi-pomos { font-family: 'Orbitron', monospace; font-size: 11px; color: var(--focus); }
+
 /* ---- TOOLKIT BUTTON ---- */
 .toolkit-btn {
   display: block; width: 100%;
@@ -915,7 +1128,7 @@ body[data-mode="long"]  .btn-play { border-color: var(--long);  background: var(
       <div class="logo-icon">⚡</div>
       <div class="logo-wordmark">
         <div class="logo-name">POMODOROXP</div>
-        <div class="logo-sub">Motor de Estudio · v1.1</div>
+        <div class="logo-sub">Motor de Estudio · v1.2</div>
       </div>
     </div>
     <nav class="nav">
@@ -949,6 +1162,19 @@ body[data-mode="long"]  .btn-play { border-color: var(--long);  background: var(
       </div>
     </div>
     <div class="cycle-dots" id="cycle-dots"></div>
+
+    <!-- MISSION SLOT — debajo del reloj -->
+    <div class="mission-slot" id="mission-slot">
+      <span class="slot-icon">⚡</span>
+      <div class="slot-content">
+        <div class="slot-empty" id="slot-empty-text">Ninguna misión conectada. Selecciona una abajo.</div>
+        <div id="slot-mission-info" style="display:none">
+          <div class="slot-name" id="slot-mission-name"></div>
+          <div class="slot-meta" id="slot-mission-meta"></div>
+        </div>
+      </div>
+      <button class="slot-disconnect" id="slot-disconnect" style="display:none" onclick="disconnectMission()" title="Desconectar misión">✕</button>
+    </div>
   </div>
 
   <!-- Controls -->
@@ -956,6 +1182,42 @@ body[data-mode="long"]  .btn-play { border-color: var(--long);  background: var(
     <button class="btn-circle" id="btn-reset" title="Reset (R)">↺</button>
     <button class="btn-circle btn-play" id="btn-play" title="Play/Pause (Espacio)">▶</button>
     <button class="btn-circle" id="btn-skip" title="Saltar">⏭</button>
+  </div>
+
+  <!-- PANEL DE MISIONES -->
+  <div class="missions-panel">
+    <div class="missions-header">
+      <div class="missions-title">⚡ Panel de Misiones</div>
+      <div class="missions-count" id="missions-count">0 activas</div>
+    </div>
+
+    <!-- Crear misión -->
+    <div class="mission-create">
+      <input class="mission-input" id="mission-name-input" type="text"
+        placeholder="Nombre de la misión..." maxlength="60"
+        onkeydown="if(event.key==='Enter')createMission()">
+      <select class="mission-est" id="mission-est-input">
+        <option value="0">Est. 🍅</option>
+        <option value="1">1 🍅</option>
+        <option value="2">2 🍅</option>
+        <option value="3">3 🍅</option>
+        <option value="4">4 🍅</option>
+        <option value="5">5 🍅</option>
+        <option value="6">6 🍅</option>
+        <option value="7">7 🍅</option>
+        <option value="8">8 🍅</option>
+      </select>
+      <button class="btn-create-mission" onclick="createMission()">＋ Crear</button>
+    </div>
+
+    <!-- Lista de misiones activas -->
+    <div class="missions-list" id="missions-list"></div>
+
+    <!-- Historial -->
+    <div class="history-toggle" id="history-toggle" onclick="toggleHistory()" style="display:none">
+      📋 Ver historial completadas (<span id="history-count">0</span>)
+    </div>
+    <div class="history-list" id="history-list"></div>
   </div>
 
   <!-- BOTÓN TOOLKIT — alta visibilidad entre controles y XP -->
@@ -1111,18 +1373,13 @@ body[data-mode="long"]  .btn-play { border-color: var(--long);  background: var(
 
     <!-- Bloque 3: Versión actual -->
     <div class="about-card">
-      <div class="about-tag">📦 Versión actual — v1.1</div>
+      <div class="about-tag">📦 Versión actual — v1.2</div>
       <h2 class="about-h2">Estado del proyecto</h2>
       <p class="about-p">
-        PomodoroXP se encuentra actualmente en su versión <strong>1.1</strong>, una aplicación
-        web completamente funcional que no requiere instalación ni registro. Todos los datos
-        se guardan automáticamente en tu navegador, por lo que puedes empezar a usarla
-        inmediatamente sin crear ninguna cuenta.
+        PomodoroXP se encuentra actualmente en su versión <strong>1.2</strong>. Esta actualización introduce el <strong>Gestor de Misiones Inteligente</strong>, un sistema integrado directamente con el temporizador que permite crear misiones de estudio con pomodoros estimados, conectarlas al slot activo bajo el reloj y ver cómo el tanque de energía se va llenando en tiempo real con cada pomodoro completado de forma natural.
       </p>
       <p class="about-p">
-        En esta versión ya está integrado el sistema de <strong>login opcional con Firebase</strong>,
-        que permite a los usuarios que lo deseen guardar sus datos en la nube y acceder a su
-        progreso desde cualquier dispositivo.
+        También se corrigió un bug importante: el botón de saltar fase ya no otorga XP ni cuenta pomodoros, asegurando que las recompensas solo se ganan cuando el temporizador llega a cero de forma legítima. En esta versión ya está integrado el sistema de <strong>login opcional con Firebase</strong>, que permite a los usuarios que lo deseen guardar sus datos en la nube y acceder a su progreso desde cualquier dispositivo.
       </p>
     </div>
 
@@ -1567,14 +1824,19 @@ function stop() {
 }
 
 function resetTimer() { stop(); setMode(S.mode); }
-function skipTimer()  { stop(); onComplete(); }
+
+// Saltar NO da XP — solo avanza de fase
+function skipTimer() {
+  stop();
+  onComplete(/* natural= */ false);
+}
 
 function todayKey() {
   const d = new Date();
   return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
 }
 
-function onComplete() {
+function onComplete(natural = true) {
   clearInterval(ticker); ticker = null;
   document.getElementById('ring-wrap').classList.remove('running');
   document.getElementById('ring-wrap').classList.add('flash');
@@ -1582,38 +1844,47 @@ function onComplete() {
   S.status = 'idle';
 
   if (S.mode === 'focus') {
-    S.totalPomos++;
-    S.todayPomos++;
     S.cyclePos++;
 
-    // Registrar en weekData
-    const key = todayKey();
-    S.weekData[key] = (S.weekData[key] || 0) + 1;
+    // Solo contabilizar estadísticas y XP si llegó a 00:00 de forma natural
+    if (natural) {
+      S.totalPomos++;
+      S.todayPomos++;
 
-    const today = new Date().toDateString();
-    if (S.lastStudyDate !== today) {
-      const yest = new Date(); yest.setDate(yest.getDate()-1);
-      S.streak = S.lastStudyDate===yest.toDateString() ? S.streak+1 : 1;
-      S.lastStudyDate = today;
+      // Registrar en weekData
+      const key = todayKey();
+      S.weekData[key] = (S.weekData[key] || 0) + 1;
+
+      const today = new Date().toDateString();
+      if (S.lastStudyDate !== today) {
+        const yest = new Date(); yest.setDate(yest.getDate()-1);
+        S.streak = S.lastStudyDate===yest.toDateString() ? S.streak+1 : 1;
+        S.lastStudyDate = today;
+      }
+
+      sfxComplete();
+      addXP(50, `+50 XP — Pomodoro completado 🍅`);
+      refreshWeekChart();
+
+      // Avanzar misión activa si existe
+      missionPomoComplete();
     }
-
-    sfxComplete();
-    addXP(50, `+50 XP — Pomodoro completado 🍅`);
-    refreshWeekChart();
 
     const iv = S.cfg.interval;
     if (S.cyclePos >= iv) {
       S.cyclePos = 0;
-      checkAch('cycle_complete');
-      setTimeout(()=>addXP(100, `+100 XP Bonus — ¡Ciclo completo! 🔄`), 1600);
-      setTimeout(()=>toast('t-done','¡CICLO COMPLETO!',`${iv} pomodoros, tómate un descanso largo 🌙`), 2000);
+      if (natural) {
+        checkAch('cycle_complete');
+        setTimeout(()=>addXP(100, `+100 XP Bonus — ¡Ciclo completo! 🔄`), 1600);
+        setTimeout(()=>toast('t-done','¡CICLO COMPLETO!',`${iv} pomodoros, tómate un descanso largo 🌙`), 2000);
+      }
       setTimeout(()=>setMode('long', S.cfg.abreak), S.cfg.abreak ? 2800 : 2600);
     } else {
-      toast('t-done','¡POMODORO COMPLETADO!',`#${S.totalPomos} — ¡Sigue así! 💪`);
+      if (natural) toast('t-done','¡POMODORO COMPLETADO!',`#${S.totalPomos} — ¡Sigue así! 💪`);
       setTimeout(()=>setMode('short', S.cfg.abreak), S.cfg.abreak ? 1800 : 1400);
     }
 
-    checkAllAchs();
+    if (natural) checkAllAchs();
   } else {
     sfxBreakEnd();
     toast('t-done','¡BREAK TERMINADO!','Hora de otro pomodoro 🎯');
@@ -1693,6 +1964,7 @@ function refreshRing() {
 }
 function refreshPlayBtn() {
   document.getElementById('btn-play').textContent = S.status==='running' ? '⏸' : '▶';
+  if (typeof renderSlot === 'function') renderSlot();
 }
 function refreshDots() {
   const wrap = document.getElementById('cycle-dots');
@@ -1929,9 +2201,230 @@ setInterval(()=>{
 }, 1000);
 
 // =====================================================================
+// SISTEMA DE MISIONES — v1.2
+// =====================================================================
+
+const MISSIONS_KEY   = 'pxp_missions_v1';
+const HISTORY_KEY    = 'pxp_missions_history_v1';
+
+let missions         = loadMissions();    // array de misiones activas
+let missionHistory   = loadHistory();     // array de misiones completadas
+let connectedMission = null;              // id de la misión conectada al slot
+
+function loadMissions() {
+  try { const r = localStorage.getItem(MISSIONS_KEY); return r ? JSON.parse(r) : []; } catch(e) { return []; }
+}
+function loadHistory() {
+  try { const r = localStorage.getItem(HISTORY_KEY);  return r ? JSON.parse(r) : []; } catch(e) { return []; }
+}
+function saveMissions() {
+  try {
+    localStorage.setItem(MISSIONS_KEY,  JSON.stringify(missions));
+    localStorage.setItem(HISTORY_KEY,   JSON.stringify(missionHistory));
+  } catch(e) {}
+}
+
+// --- CREAR MISIÓN ---
+function createMission() {
+  const nameEl = document.getElementById('mission-name-input');
+  const estEl  = document.getElementById('mission-est-input');
+  const name   = nameEl.value.trim();
+  if (!name) { nameEl.focus(); return; }
+
+  const mission = {
+    id:        Date.now(),
+    name,
+    est:       parseInt(estEl.value) || 0,   // pomodoros estimados (0 = sin estimar)
+    done:      0,                             // pomodoros completados
+    createdAt: new Date().toISOString()
+  };
+
+  missions.push(mission);
+  saveMissions();
+  nameEl.value = '';
+  estEl.value  = '0';
+  renderMissions();
+  toast('t-done', '✓ Misión creada', `"${name}" lista para iniciar`);
+}
+
+// --- CONECTAR AL SLOT ---
+function connectMission(id) {
+  connectedMission = id;
+  renderMissions();
+  renderSlot();
+
+  const m = missions.find(m => m.id === id);
+  if (m) toast('t-done', '⚡ Misión conectada', `"${m.name}" activa en el Slot`);
+}
+
+// --- DESCONECTAR ---
+function disconnectMission() {
+  connectedMission = null;
+  renderMissions();
+  renderSlot();
+}
+
+// --- COMPLETAR MISIÓN ---
+function completeMission(id) {
+  const idx = missions.findIndex(m => m.id === id);
+  if (idx === -1) return;
+  const m = missions.splice(idx, 1)[0];
+  m.completedAt = new Date().toISOString();
+  missionHistory.unshift(m);
+  if (missionHistory.length > 50) missionHistory.pop(); // cap historial
+  if (connectedMission === id) connectedMission = null;
+  saveMissions();
+  renderMissions();
+  renderSlot();
+  renderHistory();
+  toast('t-done', '🏁 ¡Misión completada!', `"${m.name}" enviada al historial`);
+}
+
+// --- ELIMINAR MISIÓN ---
+function deleteMission(id) {
+  missions = missions.filter(m => m.id !== id);
+  if (connectedMission === id) connectedMission = null;
+  saveMissions();
+  renderMissions();
+  renderSlot();
+}
+
+// --- LLAMADA DESDE onComplete (solo si natural=true) ---
+function missionPomoComplete() {
+  if (!connectedMission) return;
+  const m = missions.find(m => m.id === connectedMission);
+  if (!m) return;
+
+  m.done++;
+  saveMissions();
+  renderMissions();
+  renderSlot();
+
+  const isOver = m.est > 0 && m.done > m.est;
+  if (isOver) {
+    toast('t-xp', '⚡ SOBRECARGA', `"${m.name}" superó los ${m.est} pomodoros estimados`);
+  } else {
+    toast('t-done', '⚡ +1 Misión', `"${m.name}" · ${m.done}/${m.est || '?'} 🍅`);
+  }
+}
+
+// --- RENDER SLOT ---
+function renderSlot() {
+  const slot      = document.getElementById('mission-slot');
+  const emptyText = document.getElementById('slot-empty-text');
+  const mInfo     = document.getElementById('slot-mission-info');
+  const mName     = document.getElementById('slot-mission-name');
+  const mMeta     = document.getElementById('slot-mission-meta');
+  const mDisc     = document.getElementById('slot-disconnect');
+
+  const m = connectedMission ? missions.find(m => m.id === connectedMission) : null;
+
+  if (!m) {
+    slot.classList.remove('active');
+    emptyText.style.display = '';
+    mInfo.style.display     = 'none';
+    mDisc.style.display     = 'none';
+  } else {
+    const isRunning = S.status === 'running' && S.mode === 'focus';
+    slot.classList.toggle('active', isRunning);
+    emptyText.style.display = 'none';
+    mInfo.style.display     = '';
+    mDisc.style.display     = '';
+    mName.textContent       = m.name;
+    const pct = m.est > 0 ? ` · ${m.done}/${m.est} 🍅` : ` · ${m.done} 🍅`;
+    mMeta.textContent       = `Misión activa${pct}`;
+  }
+}
+
+// --- RENDER MISSIONS LIST ---
+function renderMissions() {
+  const list  = document.getElementById('missions-list');
+  const count = document.getElementById('missions-count');
+
+  count.textContent = `${missions.length} activa${missions.length !== 1 ? 's' : ''}`;
+
+  if (!missions.length) {
+    list.innerHTML = `<div class="missions-empty">Sin misiones activas.<br>Crea una para empezar a rastrear tu progreso. 🎯</div>`;
+    return;
+  }
+
+  list.innerHTML = missions.map(m => {
+    const isConn  = connectedMission === m.id;
+    const est     = m.est || 0;
+    const done    = m.done;
+    const total   = Math.max(est, done);   // mostrar al menos los completados
+
+    // Build energy segments
+    let segsHtml = '';
+    if (total > 0) {
+      for (let i = 0; i < total; i++) {
+        let cls = 'energy-seg';
+        if (i < done) cls += i < est || est === 0 ? ' filled' : ' overcharge';
+        segsHtml += `<div class="${cls}"></div>`;
+      }
+    }
+
+    const overcharge = est > 0 && done > est;
+    const labelCls   = overcharge ? 'energy-label overcharge' : 'energy-label';
+    const labelTxt   = est > 0
+      ? `<span>${done}</span> / ${est} pomodoros${overcharge ? ' ⚡ SOBRECARGA' : ''}`
+      : `<span>${done}</span> pomodoros completados`;
+
+    return `
+      <div class="mission-card${isConn ? ' connected' : ''}">
+        <div class="mission-card-top">
+          <div class="mission-card-name${isConn ? ' connected' : ''}">${escH(m.name)}</div>
+          ${isConn ? '<span class="mission-badge active-badge">⚡ ACTIVA</span>' : ''}
+        </div>
+        ${total > 0 ? `
+          <div class="${labelCls}">${labelTxt}</div>
+          <div class="energy-tank">${segsHtml}</div>
+        ` : `<div style="font-size:11px;color:var(--text-faint);margin-bottom:8px">Sin pomodoros estimados</div>`}
+        <div class="mission-card-btns">
+          ${!isConn
+            ? `<button class="btn-mission connect" onclick="connectMission(${m.id})">⚡ Conectar al Slot</button>`
+            : `<button class="btn-mission" onclick="disconnectMission()">Desconectar</button>`
+          }
+          <button class="btn-mission complete" onclick="completeMission(${m.id})">✓ Completar</button>
+          <button class="btn-mission del"      onclick="deleteMission(${m.id})">✕</button>
+        </div>
+      </div>`;
+  }).join('');
+}
+
+// --- RENDER HISTORY ---
+function renderHistory() {
+  const toggle = document.getElementById('history-toggle');
+  const hCount = document.getElementById('history-count');
+  const hList  = document.getElementById('history-list');
+
+  toggle.style.display = missionHistory.length ? '' : 'none';
+  hCount.textContent   = missionHistory.length;
+
+  hList.innerHTML = missionHistory.slice(0, 20).map(m =>
+    `<div class="history-item">
+      <span class="hi-name">✓ ${escH(m.name)}</span>
+      <span class="hi-pomos">${m.done} 🍅</span>
+    </div>`
+  ).join('');
+}
+
+function toggleHistory() {
+  document.getElementById('history-list').classList.toggle('open');
+}
+
+function escH(s) {
+  return String(s).replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+
+// =====================================================================
 // BOOT
 // =====================================================================
 initAll();
+// Inicializar sistema de misiones
+renderMissions();
+renderSlot();
+renderHistory();
 // Exponer funciones globales para Firebase
 window.S       = S;
 window.initAll = initAll;
@@ -2033,8 +2526,8 @@ function syncAfterPomo() { if (window.FB && window._fbUser) window.FB.syncToClou
 // Guardar referencia al usuario actual
 window._fbUser = null;
 
-console.log('%cPOMODOROXP v1.1','font-size:20px;font-weight:900;color:#00d4ff;font-family:monospace');
-console.log('%cMotor de Estudio — AdSense + Gráfica semanal ⚡','color:#5c78a8;font-family:monospace');
+console.log('%cPOMODOROXP v1.2','font-size:20px;font-weight:900;color:#00d4ff;font-family:monospace');
+console.log('%cSistema de Misiones + Bugfix XP skip ⚡','color:#5c78a8;font-family:monospace');
 </script>
 
 <!-- Firebase -->
