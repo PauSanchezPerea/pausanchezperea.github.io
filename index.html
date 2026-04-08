@@ -1128,11 +1128,11 @@ body[data-mode="long"]  .btn-play { border-color: var(--long);  background: var(
       <div class="logo-icon">⚡</div>
       <div class="logo-wordmark">
         <div class="logo-name">POMODOROXP</div>
-        <div class="logo-sub">Motor de Estudio · v1.2</div>
+        <div class="logo-sub">Motor de Estudio · v1.3</div>
       </div>
     </div>
     <nav class="nav">
-      <button class="nav-btn" id="btn-stats">📊 <span class="nav-label">Stats</span></button>
+      <button class="nav-btn" id="btn-stats" onclick="window.location.href='dashboard.html'">📊 <span class="nav-label">Stats</span></button>
       <button class="nav-btn" id="btn-achs">🏆 <span class="nav-label">Logros</span></button>
       <button class="nav-btn" id="btn-ranking">🥇 <span class="nav-label">Ranking</span></button>
       <button class="nav-btn" id="btn-auth">👤 <span class="nav-label">Entrar</span></button>
@@ -1196,6 +1196,15 @@ body[data-mode="long"]  .btn-play { border-color: var(--long);  background: var(
       <input class="mission-input" id="mission-name-input" type="text"
         placeholder="Nombre de la misión..." maxlength="60"
         onkeydown="if(event.key==='Enter')createMission()">
+      <select class="mission-est" id="mission-cat-input" style="width:110px">
+        <option value="Otros" disabled selected>🏷 Categoría</option>
+        <option value="Matemáticas">📐 Mates</option>
+        <option value="Programación">💻 Prog.</option>
+        <option value="Historia">📜 Historia</option>
+        <option value="Idiomas">🌍 Idiomas</option>
+        <option value="Ciencias">🔬 Ciencias</option>
+        <option value="Otros">📁 Otros</option>
+      </select>
       <select class="mission-est" id="mission-est-input">
         <option value="0">Est. 🍅</option>
         <option value="1">1 🍅</option>
@@ -1706,10 +1715,14 @@ const DEF = {
   cyclePos: 0,
   totalPomos: 0, todayPomos: 0,
   totalFocusSec: 0, todayFocusSec: 0,
+  shortBreakSec: 0, longBreakSec: 0,   // v1.3 — tiempo en descansos
   lastStudyDate: null, streak: 0,
+  maxStreak: 0,                          // v1.3 — récord histórico de racha
   xp: 0,
   unlocked: [],
-  weekData: {},   // { "YYYY-MM-DD": N pomodoros }
+  weekData: {},
+  missionsTotal: 0, missionsDone: 0,    // v1.3 — seguimiento de misiones
+  fastestMission: null,                  // v1.3 — { name, pomos, cat }
   cfg: { focus:25, short:5, long:15, interval:4, sound:true, abreak:false, afocus:false }
 };
 
@@ -1728,14 +1741,21 @@ function loadState() {
         if (p.lastStudyDate !== yest.toDateString()) p.streak = 0;
         p.todayPomos = 0; p.todayFocusSec = 0;
       }
-      p.status    = 'idle';
-      p.mode      = 'focus';
-      p.cfg       = Object.assign({}, DEF.cfg, p.cfg || {});
-      p.timeLeft  = p.cfg.focus * 60;
-      p.totalTime = p.cfg.focus * 60;
-      p.unlocked  = p.unlocked  || [];
-      p.cyclePos  = p.cyclePos  || 0;
-      p.weekData  = p.weekData  || {};
+      p.status         = 'idle';
+      p.mode           = 'focus';
+      p.cfg            = Object.assign({}, DEF.cfg, p.cfg || {});
+      p.timeLeft       = p.cfg.focus * 60;
+      p.totalTime      = p.cfg.focus * 60;
+      p.unlocked       = p.unlocked       || [];
+      p.cyclePos       = p.cyclePos       || 0;
+      p.weekData       = p.weekData       || {};
+      // v1.3 new fields — graceful defaults
+      p.shortBreakSec  = p.shortBreakSec  || 0;
+      p.longBreakSec   = p.longBreakSec   || 0;
+      p.maxStreak      = p.maxStreak      || p.streak || 0;
+      p.missionsTotal  = p.missionsTotal  || 0;
+      p.missionsDone   = p.missionsDone   || 0;
+      p.fastestMission = p.fastestMission || null;
       return p;
     }
   } catch(e){}
@@ -1800,6 +1820,9 @@ function startTimer() {
   tStartLeft     = S.timeLeft;
   tStartFocusSec = S.totalFocusSec;
   tStartTodaySec = S.todayFocusSec;
+  // v1.3 — guardar punto de partida para descansos
+  const tStartShort = S.shortBreakSec || 0;
+  const tStartLong  = S.longBreakSec  || 0;
   document.getElementById('ring-wrap').classList.add('running');
   refreshPlayBtn();
   ticker = setInterval(() => {
@@ -1808,6 +1831,10 @@ function startTimer() {
     if (S.mode === 'focus') {
       S.totalFocusSec = tStartFocusSec + elapsed;
       S.todayFocusSec = tStartTodaySec + elapsed;
+    } else if (S.mode === 'short') {
+      S.shortBreakSec = tStartShort + elapsed;  // v1.3 — acumula con elapsed correcto
+    } else if (S.mode === 'long') {
+      S.longBreakSec  = tStartLong  + elapsed;  // v1.3 — acumula con elapsed correcto
     }
     S.timeLeft = newLeft;
     refreshDisplay(); refreshRing(); refreshStats();
@@ -1861,6 +1888,8 @@ function onComplete(natural = true) {
         S.streak = S.lastStudyDate===yest.toDateString() ? S.streak+1 : 1;
         S.lastStudyDate = today;
       }
+      // v1.3 — actualizar récord histórico de racha
+      if (S.streak > (S.maxStreak || 0)) S.maxStreak = S.streak;
 
       sfxComplete();
       addXP(50, `+50 XP — Pomodoro completado 🍅`);
@@ -1892,6 +1921,8 @@ function onComplete(natural = true) {
   }
 
   refreshDots(); refreshStats(); save();
+  // v1.3 — sincronizar nuevos datos con Firebase si el usuario está logueado
+  if (typeof syncAfterPomo === 'function') syncAfterPomo();
 }
 
 // =====================================================================
@@ -2228,21 +2259,26 @@ function saveMissions() {
 function createMission() {
   const nameEl = document.getElementById('mission-name-input');
   const estEl  = document.getElementById('mission-est-input');
+  const catEl  = document.getElementById('mission-cat-input');
   const name   = nameEl.value.trim();
   if (!name) { nameEl.focus(); return; }
 
   const mission = {
     id:        Date.now(),
     name,
-    est:       parseInt(estEl.value) || 0,   // pomodoros estimados (0 = sin estimar)
-    done:      0,                             // pomodoros completados
+    cat:       catEl ? catEl.value : 'Otros',   // v1.3 — categoría
+    est:       parseInt(estEl.value) || 0,
+    done:      0,
     createdAt: new Date().toISOString()
   };
 
   missions.push(mission);
+  S.missionsTotal = (S.missionsTotal || 0) + 1;  // v1.3
+  save();
   saveMissions();
   nameEl.value = '';
   estEl.value  = '0';
+  if (catEl) catEl.value = 'Otros';
   renderMissions();
   toast('t-done', '✓ Misión creada', `"${name}" lista para iniciar`);
 }
@@ -2271,8 +2307,21 @@ function completeMission(id) {
   const m = missions.splice(idx, 1)[0];
   m.completedAt = new Date().toISOString();
   missionHistory.unshift(m);
-  if (missionHistory.length > 50) missionHistory.pop(); // cap historial
+  if (missionHistory.length > 50) missionHistory.pop();
   if (connectedMission === id) connectedMission = null;
+
+  // v1.3 — estadísticas globales de misiones
+  S.missionsDone = (S.missionsDone || 0) + 1;
+
+  // v1.3 — récord de misión más rápida (menos pomodoros, mínimo 1)
+  if (m.done >= 1) {
+    const fastest = S.fastestMission;
+    if (!fastest || m.done < fastest.pomos) {
+      S.fastestMission = { name: m.name, pomos: m.done, cat: m.cat || 'Otros' };
+    }
+  }
+
+  save();
   saveMissions();
   renderMissions();
   renderSlot();
@@ -2526,8 +2575,8 @@ function syncAfterPomo() { if (window.FB && window._fbUser) window.FB.syncToClou
 // Guardar referencia al usuario actual
 window._fbUser = null;
 
-console.log('%cPOMODOROXP v1.2','font-size:20px;font-weight:900;color:#00d4ff;font-family:monospace');
-console.log('%cSistema de Misiones + Bugfix XP skip ⚡','color:#5c78a8;font-family:monospace');
+console.log('%cPOMODOROXP v1.3','font-size:20px;font-weight:900;color:#00d4ff;font-family:monospace');
+console.log('%cTimer fix + Dashboard real data + Firebase sync ⚡','color:#5c78a8;font-family:monospace');
 </script>
 
 <!-- Firebase -->
