@@ -1,6 +1,6 @@
 // =====================================================================
-// POMODOROXP — Firebase v1.0
-// Login + Guardado en nube + Ranking global
+// POMODOROXP — Firebase v1.1
+// Login + Guardado en nube (Sincronización avanzada v1.3) + Ranking
 // =====================================================================
 
 import { initializeApp }                          from "https://www.gstatic.com/firebasejs/12.11.0/firebase-app.js";
@@ -57,6 +57,11 @@ export async function registerEmail(email, password, username) {
       totalFocusSec: 0,
       xp:            0,
       streak:        0,
+      maxStreak:     0,
+      shortBreakSec: 0,
+      longBreakSec:  0,
+      missionsTotal: 0,
+      missionsDone:  0,
       createdAt:     serverTimestamp()
     });
     showToastFB('✓ Cuenta creada', `Bienvenido, ${username}!`);
@@ -96,6 +101,7 @@ export async function loginGoogle() {
         totalFocusSec: 0,
         xp:            0,
         streak:        0,
+        maxStreak:     0,
         createdAt:     serverTimestamp()
       });
     }
@@ -115,7 +121,7 @@ export async function logout() {
 }
 
 // =====================================================================
-// SYNC — Guardar stats en la nube
+// SYNC — Guardar stats en la nube (v1.1 soporta campos v1.3)
 // =====================================================================
 export async function syncToCloud(S) {
   const user = auth.currentUser;
@@ -126,6 +132,12 @@ export async function syncToCloud(S) {
       totalFocusSec: S.totalFocusSec,
       xp:            S.xp,
       streak:        S.streak,
+      maxStreak:     S.maxStreak || 0,
+      shortBreakSec: S.shortBreakSec || 0,
+      longBreakSec:  S.longBreakSec || 0,
+      missionsTotal: S.missionsTotal || 0,
+      missionsDone:  S.missionsDone || 0,
+      fastestMission: S.fastestMission || null,
       weekData:      S.weekData || {},
       lastSync:      serverTimestamp()
     }, { merge: true });
@@ -135,23 +147,43 @@ export async function syncToCloud(S) {
 }
 
 // =====================================================================
-// SYNC — Cargar stats desde la nube
+// SYNC — Cargar stats desde la nube (Merge inteligente)
 // =====================================================================
 export async function syncFromCloud(uid) {
   try {
     const snap = await getDoc(doc(db, 'users', uid));
     if (!snap.exists()) return;
     const data = snap.data();
-    // Merge con estado local (gana el mayor)
+    
+    // Merge con estado local (gana el valor más alto para progreso)
     if (typeof window.S !== 'undefined') {
-      if (data.totalPomos    > window.S.totalPomos)    window.S.totalPomos    = data.totalPomos;
-      if (data.totalFocusSec > window.S.totalFocusSec) window.S.totalFocusSec = data.totalFocusSec;
-      if (data.xp            > window.S.xp)            window.S.xp            = data.xp;
-      if (data.streak        > window.S.streak)        window.S.streak        = data.streak;
-      if (data.weekData) window.S.weekData = Object.assign(data.weekData, window.S.weekData || {});
+      const S = window.S;
+      if (data.totalPomos    > S.totalPomos)    S.totalPomos    = data.totalPomos;
+      if (data.totalFocusSec > S.totalFocusSec) S.totalFocusSec = data.totalFocusSec;
+      if (data.xp            > S.xp)            S.xp            = data.xp;
+      if (data.streak        > S.streak)        S.streak        = data.streak;
+      if (data.maxStreak     > S.maxStreak)     S.maxStreak     = data.maxStreak;
+      
+      // Tiempos de descanso
+      if (data.shortBreakSec > (S.shortBreakSec || 0)) S.shortBreakSec = data.shortBreakSec;
+      if (data.longBreakSec  > (S.longBreakSec  || 0)) S.longBreakSec  = data.longBreakSec;
+      
+      // Misiones
+      if (data.missionsTotal > (S.missionsTotal || 0)) S.missionsTotal = data.missionsTotal;
+      if (data.missionsDone  > (S.missionsDone  || 0)) S.missionsDone  = data.missionsDone;
+      
+      // Misión más rápida (gana el que tenga MENOS pomodoros, pero más de 0)
+      if (data.fastestMission && data.fastestMission.pomos > 0) {
+        if (!S.fastestMission || data.fastestMission.pomos < S.fastestMission.pomos) {
+          S.fastestMission = data.fastestMission;
+        }
+      }
+
+      if (data.weekData) S.weekData = Object.assign(data.weekData, S.weekData || {});
+      
       if (typeof window.initAll === 'function') window.initAll();
     }
-    console.log('Datos sincronizados desde la nube ☁️');
+    console.log('Sincronización v1.1 completada ☁️');
   } catch(e) {
     console.warn('Sync from cloud error:', e);
   }
@@ -198,7 +230,6 @@ function updateAuthUI(user) {
 // HELPERS
 // =====================================================================
 function showToastFB(ttl, msg) {
-  // Usa el sistema de toasts ya existente en index.html
   if (typeof window.toast === 'function') {
     window.toast('t-done', ttl, msg);
   }
