@@ -10,11 +10,6 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;900&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
-<!-- ============================================================
-     FOCUSFLOW — Motor de Estudio v1.1
-     Cambios: zonas AdSense integradas + gráfica semanal
-     ============================================================ -->
-
 <style>
 /* ---- VARIABLES ---- */
 :root {
@@ -501,6 +496,118 @@ body[data-mode="long"]  .btn-play { border-color: var(--long);  background: var(
 .mclose:hover { border-color: var(--focus); color: var(--text); }
 .mbody { padding: 24px; }
 
+/* ---- SESSION SUMMARY MODAL ---- */
+.session-overlay {
+  display: none;
+  position: fixed; inset: 0;
+  background: rgba(2,4,10,0.88);
+  backdrop-filter: blur(14px);
+  z-index: 300;
+  align-items: center; justify-content: center;
+  padding: 20px;
+}
+.session-overlay.open { display: flex; }
+
+.session-box {
+  background: var(--bg3);
+  border: 1px solid rgba(0,212,255,0.3);
+  border-radius: 22px;
+  width: 100%; max-width: 420px;
+  overflow: hidden;
+  box-shadow: 0 0 60px rgba(0,212,255,0.12), 0 0 120px rgba(255,112,67,0.06);
+  animation: session-in 0.45s cubic-bezier(0.34,1.56,0.64,1);
+}
+@keyframes session-in {
+  from { opacity:0; transform: scale(0.82) translateY(28px); }
+  to   { opacity:1; transform: scale(1)    translateY(0); }
+}
+
+/* Top glow bar */
+.session-glow-bar {
+  height: 3px;
+  background: linear-gradient(90deg, var(--focus), var(--xp), var(--long), var(--focus));
+  background-size: 300% 100%;
+  animation: glow-slide 2.5s linear infinite;
+}
+@keyframes glow-slide {
+  0%   { background-position: 0% 50%; }
+  100% { background-position: 300% 50%; }
+}
+
+.session-body { padding: 28px 28px 24px; text-align: center; }
+
+/* Title */
+.session-title {
+  font-family: 'Orbitron', monospace;
+  font-size: 17px; font-weight: 900;
+  letter-spacing: 0.1em; color: var(--text);
+  margin-bottom: 6px;
+  animation: title-pulse 1.8s ease-in-out infinite;
+}
+@keyframes title-pulse {
+  0%,100% { text-shadow: 0 0 12px rgba(0,212,255,0.4); }
+  50%      { text-shadow: 0 0 28px rgba(0,212,255,0.8), 0 0 50px rgba(0,212,255,0.3); }
+}
+.session-subtitle {
+  font-size: 11px; color: var(--text-dim);
+  text-transform: uppercase; letter-spacing: 0.22em;
+  margin-bottom: 24px;
+}
+
+/* Big pomo count */
+.session-pomo-badge {
+  display: inline-flex; align-items: center; justify-content: center;
+  font-size: 52px; margin-bottom: 20px;
+  animation: badge-bounce 0.6s cubic-bezier(0.34,1.56,0.64,1) 0.2s both;
+}
+@keyframes badge-bounce {
+  from { transform: scale(0); opacity: 0; }
+  to   { transform: scale(1); opacity: 1; }
+}
+
+/* Reward cards */
+.session-rewards {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 10px; margin-bottom: 18px;
+}
+.session-reward {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: 12px; padding: 12px 10px;
+  text-align: center; transition: border-color 0.22s;
+}
+.session-reward.xp-card   { border-color: rgba(255,112,67,0.28);  background: rgba(255,112,67,0.06); }
+.session-reward.streak-card { border-color: rgba(255,214,0,0.25);   background: rgba(255,214,0,0.05); }
+.session-reward.mission-card { border-color: rgba(0,212,255,0.25);   background: rgba(0,212,255,0.05); grid-column: 1/-1; }
+.session-reward.cycle-card { border-color: rgba(176,106,255,0.28); background: rgba(176,106,255,0.06); grid-column: 1/-1; }
+
+.sr-icon  { font-size: 22px; margin-bottom: 5px; }
+.sr-val   { font-family: 'Orbitron', monospace; font-size: 18px; font-weight: 700; margin-bottom: 3px; }
+.sr-val.xp-col      { color: var(--xp); }
+.sr-val.streak-col  { color: var(--gold); }
+.sr-val.mission-col { color: var(--focus); font-size: 14px; }
+.sr-val.cycle-col   { color: var(--long); font-size: 14px; }
+.sr-label { font-size: 9px; color: var(--text-dim); text-transform: uppercase; letter-spacing: 0.16em; }
+
+/* CTA button */
+.btn-session-close {
+  width: 100%; padding: 14px;
+  background: linear-gradient(135deg, var(--focus-d), rgba(0,212,255,0.08));
+  border: 1px solid var(--focus);
+  border-radius: 12px; color: var(--focus);
+  font-family: 'Orbitron', monospace;
+  font-size: 12px; font-weight: 700;
+  cursor: pointer; transition: all 0.26s;
+  letter-spacing: 0.1em;
+  box-shadow: 0 0 20px rgba(0,212,255,0.1);
+}
+.btn-session-close:hover {
+  background: rgba(0,212,255,0.2);
+  box-shadow: 0 0 34px rgba(0,212,255,0.28);
+  transform: translateY(-1px);
+}
+.btn-session-close:active { transform: none; }
+
 /* ---- AD ZONE dentro del modal de stats ---- */
 .ad-modal {
   width: 100%;
@@ -940,118 +1047,6 @@ body[data-mode="long"]  .btn-play { border-color: var(--long);  background: var(
 }
 .toolkit-btn:hover .toolkit-btn-arrow { transform: translateX(6px); }
 
-/* ---- SESSION SUMMARY MODAL ---- */
-.session-overlay {
-  display: none;
-  position: fixed; inset: 0;
-  background: rgba(2,4,10,0.88);
-  backdrop-filter: blur(14px);
-  z-index: 300;
-  align-items: center; justify-content: center;
-  padding: 20px;
-}
-.session-overlay.open { display: flex; }
-
-.session-box {
-  background: var(--bg3);
-  border: 1px solid rgba(0,212,255,0.3);
-  border-radius: 22px;
-  width: 100%; max-width: 420px;
-  overflow: hidden;
-  box-shadow: 0 0 60px rgba(0,212,255,0.12), 0 0 120px rgba(255,112,67,0.06);
-  animation: session-in 0.45s cubic-bezier(0.34,1.56,0.64,1);
-}
-@keyframes session-in {
-  from { opacity:0; transform: scale(0.82) translateY(28px); }
-  to   { opacity:1; transform: scale(1)    translateY(0); }
-}
-
-/* Top glow bar */
-.session-glow-bar {
-  height: 3px;
-  background: linear-gradient(90deg, var(--focus), var(--xp), var(--long), var(--focus));
-  background-size: 300% 100%;
-  animation: glow-slide 2.5s linear infinite;
-}
-@keyframes glow-slide {
-  0%   { background-position: 0% 50%; }
-  100% { background-position: 300% 50%; }
-}
-
-.session-body { padding: 28px 28px 24px; text-align: center; }
-
-/* Title */
-.session-title {
-  font-family: 'Orbitron', monospace;
-  font-size: 17px; font-weight: 900;
-  letter-spacing: 0.1em; color: var(--text);
-  margin-bottom: 6px;
-  animation: title-pulse 1.8s ease-in-out infinite;
-}
-@keyframes title-pulse {
-  0%,100% { text-shadow: 0 0 12px rgba(0,212,255,0.4); }
-  50%      { text-shadow: 0 0 28px rgba(0,212,255,0.8), 0 0 50px rgba(0,212,255,0.3); }
-}
-.session-subtitle {
-  font-size: 11px; color: var(--text-dim);
-  text-transform: uppercase; letter-spacing: 0.22em;
-  margin-bottom: 24px;
-}
-
-/* Big pomo count */
-.session-pomo-badge {
-  display: inline-flex; align-items: center; justify-content: center;
-  font-size: 52px; margin-bottom: 20px;
-  animation: badge-bounce 0.6s cubic-bezier(0.34,1.56,0.64,1) 0.2s both;
-}
-@keyframes badge-bounce {
-  from { transform: scale(0); opacity: 0; }
-  to   { transform: scale(1); opacity: 1; }
-}
-
-/* Reward cards */
-.session-rewards {
-  display: grid; grid-template-columns: 1fr 1fr;
-  gap: 10px; margin-bottom: 18px;
-}
-.session-reward {
-  background: var(--bg2);
-  border: 1px solid var(--border);
-  border-radius: 12px; padding: 12px 10px;
-  text-align: center; transition: border-color 0.22s;
-}
-.session-reward.xp-card   { border-color: rgba(255,112,67,0.28);  background: rgba(255,112,67,0.06); }
-.session-reward.streak-card { border-color: rgba(255,214,0,0.25);   background: rgba(255,214,0,0.05); }
-.session-reward.mission-card { border-color: rgba(0,212,255,0.25);   background: rgba(0,212,255,0.05); grid-column: 1/-1; }
-.session-reward.cycle-card { border-color: rgba(176,106,255,0.28); background: rgba(176,106,255,0.06); grid-column: 1/-1; }
-
-.sr-icon  { font-size: 22px; margin-bottom: 5px; }
-.sr-val   { font-family: 'Orbitron', monospace; font-size: 18px; font-weight: 700; margin-bottom: 3px; }
-.sr-val.xp-col      { color: var(--xp); }
-.sr-val.streak-col  { color: var(--gold); }
-.sr-val.mission-col { color: var(--focus); font-size: 14px; }
-.sr-val.cycle-col   { color: var(--long); font-size: 14px; }
-.sr-label { font-size: 9px; color: var(--text-dim); text-transform: uppercase; letter-spacing: 0.16em; }
-
-/* CTA button */
-.btn-session-close {
-  width: 100%; padding: 14px;
-  background: linear-gradient(135deg, var(--focus-d), rgba(0,212,255,0.08));
-  border: 1px solid var(--focus);
-  border-radius: 12px; color: var(--focus);
-  font-family: 'Orbitron', monospace;
-  font-size: 12px; font-weight: 700;
-  cursor: pointer; transition: all 0.26s;
-  letter-spacing: 0.1em;
-  box-shadow: 0 0 20px rgba(0,212,255,0.1);
-}
-.btn-session-close:hover {
-  background: rgba(0,212,255,0.2);
-  box-shadow: 0 0 34px rgba(0,212,255,0.28);
-  transform: translateY(-1px);
-}
-.btn-session-close:active { transform: none; }
-
 /* ---- COOKIE BANNER ---- */
 #cookie-banner {
   position: fixed; bottom: 0; left: 0; right: 0;
@@ -1234,13 +1229,12 @@ body[data-mode="long"]  .btn-play { border-color: var(--long);  background: var(
 
 <div id="app">
 
-  <!-- Header -->
   <header class="header">
     <div class="logo">
       <div class="logo-icon">⚡</div>
       <div class="logo-wordmark">
         <div class="logo-name">POMODOROXP</div>
-        <div class="logo-sub">Motor de Estudio · v1.4 (Beta)</div>
+        <div class="logo-sub">Motor de Estudio · v1.4</div>
       </div>
     </div>
     <nav class="nav">
@@ -1252,14 +1246,12 @@ body[data-mode="long"]  .btn-play { border-color: var(--long);  background: var(
     </nav>
   </header>
 
-  <!-- Mode Tabs -->
   <div class="mode-tabs">
     <button class="mode-tab active" data-mode="focus">🎯 Focus</button>
     <button class="mode-tab" data-mode="short">☕ Descanso Corto</button>
     <button class="mode-tab" data-mode="long">🌙 Descanso Largo</button>
   </div>
 
-  <!-- Timer Ring -->
   <div class="timer-section">
     <div class="timer-ring-wrap" id="ring-wrap">
       <svg class="timer-svg" viewBox="0 0 300 300" xmlns="http://www.w3.org/2000/svg">
@@ -1275,7 +1267,6 @@ body[data-mode="long"]  .btn-play { border-color: var(--long);  background: var(
     </div>
     <div class="cycle-dots" id="cycle-dots"></div>
 
-    <!-- MISSION SLOT — debajo del reloj -->
     <div class="mission-slot" id="mission-slot">
       <span class="slot-icon">⚡</span>
       <div class="slot-content">
@@ -1289,21 +1280,18 @@ body[data-mode="long"]  .btn-play { border-color: var(--long);  background: var(
     </div>
   </div>
 
-  <!-- Controls -->
   <div class="controls">
     <button class="btn-circle" id="btn-reset" title="Reset (R)">↺</button>
     <button class="btn-circle btn-play" id="btn-play" title="Play/Pause (Espacio)">▶</button>
     <button class="btn-circle" id="btn-skip" title="Saltar">⏭</button>
   </div>
 
-  <!-- PANEL DE MISIONES -->
   <div class="missions-panel">
     <div class="missions-header">
       <div class="missions-title">⚡ Panel de Misiones</div>
       <div class="missions-count" id="missions-count">0 activas</div>
     </div>
 
-    <!-- Crear misión -->
     <div class="mission-create">
       <input class="mission-input" id="mission-name-input" type="text"
         placeholder="Nombre de la misión..." maxlength="60"
@@ -1331,17 +1319,14 @@ body[data-mode="long"]  .btn-play { border-color: var(--long);  background: var(
       <button class="btn-create-mission" onclick="createMission()">＋ Crear</button>
     </div>
 
-    <!-- Lista de misiones activas -->
     <div class="missions-list" id="missions-list"></div>
 
-    <!-- Historial -->
     <div class="history-toggle" id="history-toggle" onclick="toggleHistory()" style="display:none">
       📋 Ver historial completadas (<span id="history-count">0</span>)
     </div>
     <div class="history-list" id="history-list"></div>
   </div>
 
-  <!-- BOTÓN TOOLKIT — alta visibilidad entre controles y XP -->
   <a href="toolkit.html" class="toolkit-btn">
     <div class="toolkit-btn-glow"></div>
     <div class="toolkit-btn-content">
@@ -1356,7 +1341,6 @@ body[data-mode="long"]  .btn-play { border-color: var(--long);  background: var(
     </div>
   </a>
 
-  <!-- XP Bar -->
   <div class="xp-panel">
     <div class="xp-top">
       <div class="xp-left">
@@ -1368,7 +1352,6 @@ body[data-mode="long"]  .btn-play { border-color: var(--long);  background: var(
     <div class="xp-track"><div class="xp-fill" id="xp-fill" style="width:0%"></div></div>
   </div>
 
-  <!-- Stats row -->
   <div class="stats-row">
     <div class="scard">
       <div class="scard-val" id="s-today-p">0</div>
@@ -1388,7 +1371,6 @@ body[data-mode="long"]  .btn-play { border-color: var(--long);  background: var(
     </div>
   </div>
 
-  <!-- Gráfica semanal -->
   <div class="week-panel">
     <div class="week-header">
       <div class="week-title">📈 Esta semana</div>
@@ -1397,9 +1379,6 @@ body[data-mode="long"]  .btn-play { border-color: var(--long);  background: var(
     <div class="week-bars" id="week-bars"></div>
   </div>
 
-  <!-- ══════════════════════════════════════════
-       ANUNCIO 1 — Banner principal
-       ══════════════════════════════════════════ -->
   <div class="ad-banner">
     <ins class="adsbygoogle"
          style="display:block"
@@ -1410,21 +1389,13 @@ body[data-mode="long"]  .btn-play { border-color: var(--long);  background: var(
     <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
   </div>
 
-  <!-- Footer legal -->
   <div class="app-footer">
     <a href="privacy.html">Política de privacidad</a>
     <a href="cookies.html">Cookies</a>
   </div>
 
-</div><!-- /#app -->
+</div><div id="about-section">
 
-<!-- ══════════════════════════════════════════════════════
-     SECCIÓN DE CONTENIDO — Sobre PomodoroXP
-     (Texto para SEO + espacios para anuncios AdSense)
-     ══════════════════════════════════════════════════════ -->
-<div id="about-section">
-
-  <!-- Anuncio 3 — Banner entre app y contenido -->
   <div class="ad-banner" style="max-width:780px;margin:0 auto 40px;padding:0 24px">
     <ins class="adsbygoogle"
          style="display:block"
@@ -1437,7 +1408,6 @@ body[data-mode="long"]  .btn-play { border-color: var(--long);  background: var(
 
   <div class="about-wrap">
 
-    <!-- Bloque 1: Qué es -->
     <div class="about-card">
       <div class="about-tag">🍅 ¿Qué es PomodoroXP?</div>
       <h2 class="about-h2">El temporizador Pomodoro que te recompensa por estudiar</h2>
@@ -1456,7 +1426,6 @@ body[data-mode="long"]  .btn-play { border-color: var(--long);  background: var(
       </p>
     </div>
 
-    <!-- Anuncio 4 — dentro del contenido -->
     <div class="ad-banner" style="margin:0 0 32px">
       <ins class="adsbygoogle"
            style="display:block"
@@ -1467,7 +1436,6 @@ body[data-mode="long"]  .btn-play { border-color: var(--long);  background: var(
       <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
     </div>
 
-    <!-- Bloque 2: Cómo funciona -->
     <div class="about-card">
       <div class="about-tag">⚙️ Cómo funciona</div>
       <h2 class="about-h2">Simple de usar, difícil de dejar</h2>
@@ -1492,19 +1460,17 @@ body[data-mode="long"]  .btn-play { border-color: var(--long);  background: var(
       </div>
     </div>
 
-    <!-- Bloque 3: Versión actual -->
     <div class="about-card">
-      <div class="about-tag">📦 Versión actual — v1.2</div>
+      <div class="about-tag">📦 Versión actual — v1.4</div>
       <h2 class="about-h2">Estado del proyecto</h2>
       <p class="about-p">
-        PomodoroXP se encuentra actualmente en su versión <strong>1.2</strong>. Esta actualización introduce el <strong>Gestor de Misiones Inteligente</strong>, un sistema integrado directamente con el temporizador que permite crear misiones de estudio con pomodoros estimados, conectarlas al slot activo bajo el reloj y ver cómo el tanque de energía se va llenando en tiempo real con cada pomodoro completado de forma natural.
+        PomodoroXP se encuentra actualmente en su versión <strong>1.4</strong>. Esta actualización introduce el <strong>Modal de Resumen de Sesión</strong>, que proporciona feedback inmediato y gratificante al completar cada pomodoro de focus, mostrando la experiencia ganada, la racha actual y el progreso de las misiones conectadas.
       </p>
       <p class="about-p">
-        También se corrigió un bug importante: el botón de saltar fase ya no otorga XP ni cuenta pomodoros, asegurando que las recompensas solo se ganan cuando el temporizador llega a cero de forma legítima. En esta versión ya está integrado el sistema de <strong>login opcional con Firebase</strong>, que permite a los usuarios que lo deseen guardar sus datos en la nube y acceder a su progreso desde cualquier dispositivo.
+        Además, se ha mejorado la integración con el <strong>Dashboard de Rendimiento</strong>, garantizando que todos los datos de descansos, categorías de estudio y récords se guarden correctamente tanto a nivel local como en la nube mediante Firebase.
       </p>
     </div>
 
-    <!-- Anuncio 5 — entre bloques de contenido -->
     <div class="ad-banner" style="margin:0 0 32px">
       <ins class="adsbygoogle"
            style="display:block"
@@ -1515,7 +1481,6 @@ body[data-mode="long"]  .btn-play { border-color: var(--long);  background: var(
       <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
     </div>
 
-    <!-- Bloque 4: Roadmap -->
     <div class="about-card">
       <div class="about-tag">🚀 Próximamente</div>
       <h2 class="about-h2">Ideas y funciones futuras</h2>
@@ -1526,18 +1491,13 @@ body[data-mode="long"]  .btn-play { border-color: var(--long);  background: var(
       <div class="roadmap">
         <div class="road-item road-soon">
           <div class="road-badge">Próximo</div>
-          <div class="road-title">🥇 Ranking global</div>
-          <div class="road-desc">Compite con estudiantes de todo el mundo. Top 10 semanal y mensual ordenado por pomodoros completados y horas de estudio.</div>
-        </div>
-        <div class="road-item road-soon">
-          <div class="road-badge">Próximo</div>
-          <div class="road-title">📊 Estadísticas avanzadas</div>
-          <div class="road-desc">Gráficas mensuales y anuales, récords personales, comparativas semana a semana y resumen detallado de tu productividad.</div>
+          <div class="road-title">🥇 Ranking global dinámico</div>
+          <div class="road-desc">Visualiza a los mejores estudiantes de la semana y compite por subir de nivel en la clasificación.</div>
         </div>
         <div class="road-item road-mid">
           <div class="road-badge road-badge-mid">Planificado</div>
-          <div class="road-title">✅ Gestor de tareas</div>
-          <div class="road-desc">Crea listas de tareas y vincula cada pomodoro a una tarea concreta. Mide exactamente cuánto tiempo dedicas a cada proyecto.</div>
+          <div class="road-title">🎵 Reproductor Lo-fi</div>
+          <div class="road-desc">Música de concentración integrada directamente en la aplicación.</div>
         </div>
         <div class="road-item road-mid">
           <div class="road-badge road-badge-mid">Planificado</div>
@@ -1552,7 +1512,6 @@ body[data-mode="long"]  .btn-play { border-color: var(--long);  background: var(
       </div>
     </div>
 
-    <!-- Bloque 5: Técnica Pomodoro -->
     <div class="about-card">
       <div class="about-tag">📚 La técnica Pomodoro</div>
       <h2 class="about-h2">Por qué funciona estudiar con pomodoros</h2>
@@ -1575,7 +1534,6 @@ body[data-mode="long"]  .btn-play { border-color: var(--long);  background: var(
       </p>
     </div>
 
-    <!-- Anuncio 6 — final del contenido -->
     <div class="ad-banner" style="margin:0 0 40px">
       <ins class="adsbygoogle"
            style="display:block"
@@ -1586,21 +1544,16 @@ body[data-mode="long"]  .btn-play { border-color: var(--long);  background: var(
       <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
     </div>
 
-    <!-- Footer final -->
     <div class="about-footer">
       <div class="about-footer-logo">🍅 PomodoroXP</div>
-      <div class="about-footer-sub">Hecho con ☕ y muchos pomodoros · v1.1</div>
+      <div class="about-footer-sub">Hecho con ☕ y muchos pomodoros · v1.4</div>
       <div class="about-footer-links">
         <a href="privacy.html">Privacidad</a>
         <a href="cookies.html">Cookies</a>
       </div>
     </div>
 
-  </div><!-- /.about-wrap -->
-</div><!-- /#about-section -->
-
-<!-- ====== MODAL: SETTINGS ====== -->
-<div class="overlay" id="ov-cfg">
+  </div></div><div class="overlay" id="ov-cfg">
   <div class="mbox">
     <div class="mhead">
       <div class="mtitle">⚙ CONFIGURACIÓN</div>
@@ -1649,7 +1602,6 @@ body[data-mode="long"]  .btn-play { border-color: var(--long);  background: var(
   </div>
 </div>
 
-<!-- ====== MODAL: ACHIEVEMENTS ====== -->
 <div class="overlay" id="ov-achs">
   <div class="mbox" style="max-width:560px">
     <div class="mhead">
@@ -1666,7 +1618,6 @@ body[data-mode="long"]  .btn-play { border-color: var(--long);  background: var(
   </div>
 </div>
 
-<!-- ====== MODAL: STATS ====== -->
 <div class="overlay" id="ov-stats">
   <div class="mbox">
     <div class="mhead">
@@ -1679,7 +1630,6 @@ body[data-mode="long"]  .btn-play { border-color: var(--long);  background: var(
 
 <div class="toast-wrap" id="toast-wrap"></div>
 
-<!-- ====== MODAL: AUTH ====== -->
 <div class="overlay" id="ov-auth">
   <div class="mbox">
     <div class="mhead">
@@ -1688,7 +1638,6 @@ body[data-mode="long"]  .btn-play { border-color: var(--long);  background: var(
     </div>
     <div class="mbody" id="auth-body">
 
-      <!-- Vista: usuario conectado -->
       <div id="auth-logged" style="display:none;text-align:center">
         <div style="font-size:48px;margin-bottom:12px">👤</div>
         <div id="auth-user-name" style="font-size:18px;font-weight:700;margin-bottom:4px"></div>
@@ -1705,7 +1654,6 @@ body[data-mode="long"]  .btn-play { border-color: var(--long);  background: var(
         </button>
       </div>
 
-      <!-- Vista: formulario login/register -->
       <div id="auth-form">
         <div style="display:flex;gap:4px;background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:4px;margin-bottom:20px">
           <button id="tab-login" onclick="switchAuthTab('login')" style="flex:1;padding:8px;border:1px solid var(--focus);border-radius:8px;background:var(--focus-d);color:var(--focus);font-family:'Outfit',sans-serif;font-size:12px;font-weight:600;cursor:pointer">Entrar</button>
@@ -1744,7 +1692,6 @@ body[data-mode="long"]  .btn-play { border-color: var(--long);  background: var(
   </div>
 </div>
 
-<!-- ====== MODAL: RANKING ====== -->
 <div class="overlay" id="ov-ranking">
   <div class="mbox" style="max-width:560px">
     <div class="mhead">
@@ -2238,7 +2185,6 @@ function renderStatsModal() {
       <div class="stat-cell"><div class="stat-cell-val" style="color:var(--gold)">${S.unlocked.length}/${ACHS.length}</div><div class="stat-cell-label">Logros</div></div>
     </div>
 
-    <!-- ANUNCIO 2 — dentro del modal de stats -->
     <div class="ad-modal">
       <ins class="adsbygoogle"
            style="display:block"
@@ -2785,10 +2731,8 @@ console.log('%cPOMODOROXP v1.3','font-size:20px;font-weight:900;color:#00d4ff;fo
 console.log('%cTimer fix + Dashboard real data + Firebase sync ⚡','color:#5c78a8;font-family:monospace');
 </script>
 
-<!-- Firebase -->
 <script type="module" src="firebase.js"></script>
 
-<!-- ====== MODAL: RESUMEN DE SESIÓN v1.4 ====== -->
 <div class="session-overlay" id="session-overlay">
   <div class="session-box">
     <div class="session-glow-bar"></div>
@@ -2799,8 +2743,7 @@ console.log('%cTimer fix + Dashboard real data + Firebase sync ⚡','color:#5c78
       <div class="session-subtitle" id="session-subtitle">Pomodoro #<span id="session-pomo-num">0</span></div>
 
       <div class="session-rewards" id="session-rewards">
-        <!-- Generado por JS -->
-      </div>
+        </div>
 
       <button class="btn-session-close" onclick="closeSessionSummary()">
         ☕ ¡A por el descanso!
@@ -2810,7 +2753,6 @@ console.log('%cTimer fix + Dashboard real data + Firebase sync ⚡','color:#5c78
   </div>
 </div>
 
-<!-- ====== BANNER DE COOKIES ====== -->
 <div id="cookie-banner">
   <div class="cookie-text">
     🍪 <strong>Usamos cookies</strong> propias y de terceros (Google AdSense, Firebase, Analytics) para mejorar tu experiencia y mostrar publicidad relevante. Puedes aceptar todas o rechazar las no esenciales. <a href="cookies.html">Más información</a>
@@ -2843,3 +2785,4 @@ console.log('%cTimer fix + Dashboard real data + Firebase sync ⚡','color:#5c78
 
 </body>
 </html>
+}
