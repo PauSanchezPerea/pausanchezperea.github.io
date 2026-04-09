@@ -940,6 +940,118 @@ body[data-mode="long"]  .btn-play { border-color: var(--long);  background: var(
 }
 .toolkit-btn:hover .toolkit-btn-arrow { transform: translateX(6px); }
 
+/* ---- SESSION SUMMARY MODAL ---- */
+.session-overlay {
+  display: none;
+  position: fixed; inset: 0;
+  background: rgba(2,4,10,0.88);
+  backdrop-filter: blur(14px);
+  z-index: 300;
+  align-items: center; justify-content: center;
+  padding: 20px;
+}
+.session-overlay.open { display: flex; }
+
+.session-box {
+  background: var(--bg3);
+  border: 1px solid rgba(0,212,255,0.3);
+  border-radius: 22px;
+  width: 100%; max-width: 420px;
+  overflow: hidden;
+  box-shadow: 0 0 60px rgba(0,212,255,0.12), 0 0 120px rgba(255,112,67,0.06);
+  animation: session-in 0.45s cubic-bezier(0.34,1.56,0.64,1);
+}
+@keyframes session-in {
+  from { opacity:0; transform: scale(0.82) translateY(28px); }
+  to   { opacity:1; transform: scale(1)    translateY(0); }
+}
+
+/* Top glow bar */
+.session-glow-bar {
+  height: 3px;
+  background: linear-gradient(90deg, var(--focus), var(--xp), var(--long), var(--focus));
+  background-size: 300% 100%;
+  animation: glow-slide 2.5s linear infinite;
+}
+@keyframes glow-slide {
+  0%   { background-position: 0% 50%; }
+  100% { background-position: 300% 50%; }
+}
+
+.session-body { padding: 28px 28px 24px; text-align: center; }
+
+/* Title */
+.session-title {
+  font-family: 'Orbitron', monospace;
+  font-size: 17px; font-weight: 900;
+  letter-spacing: 0.1em; color: var(--text);
+  margin-bottom: 6px;
+  animation: title-pulse 1.8s ease-in-out infinite;
+}
+@keyframes title-pulse {
+  0%,100% { text-shadow: 0 0 12px rgba(0,212,255,0.4); }
+  50%      { text-shadow: 0 0 28px rgba(0,212,255,0.8), 0 0 50px rgba(0,212,255,0.3); }
+}
+.session-subtitle {
+  font-size: 11px; color: var(--text-dim);
+  text-transform: uppercase; letter-spacing: 0.22em;
+  margin-bottom: 24px;
+}
+
+/* Big pomo count */
+.session-pomo-badge {
+  display: inline-flex; align-items: center; justify-content: center;
+  font-size: 52px; margin-bottom: 20px;
+  animation: badge-bounce 0.6s cubic-bezier(0.34,1.56,0.64,1) 0.2s both;
+}
+@keyframes badge-bounce {
+  from { transform: scale(0); opacity: 0; }
+  to   { transform: scale(1); opacity: 1; }
+}
+
+/* Reward cards */
+.session-rewards {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 10px; margin-bottom: 18px;
+}
+.session-reward {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: 12px; padding: 12px 10px;
+  text-align: center; transition: border-color 0.22s;
+}
+.session-reward.xp-card   { border-color: rgba(255,112,67,0.28);  background: rgba(255,112,67,0.06); }
+.session-reward.streak-card { border-color: rgba(255,214,0,0.25);   background: rgba(255,214,0,0.05); }
+.session-reward.mission-card { border-color: rgba(0,212,255,0.25);   background: rgba(0,212,255,0.05); grid-column: 1/-1; }
+.session-reward.cycle-card { border-color: rgba(176,106,255,0.28); background: rgba(176,106,255,0.06); grid-column: 1/-1; }
+
+.sr-icon  { font-size: 22px; margin-bottom: 5px; }
+.sr-val   { font-family: 'Orbitron', monospace; font-size: 18px; font-weight: 700; margin-bottom: 3px; }
+.sr-val.xp-col      { color: var(--xp); }
+.sr-val.streak-col  { color: var(--gold); }
+.sr-val.mission-col { color: var(--focus); font-size: 14px; }
+.sr-val.cycle-col   { color: var(--long); font-size: 14px; }
+.sr-label { font-size: 9px; color: var(--text-dim); text-transform: uppercase; letter-spacing: 0.16em; }
+
+/* CTA button */
+.btn-session-close {
+  width: 100%; padding: 14px;
+  background: linear-gradient(135deg, var(--focus-d), rgba(0,212,255,0.08));
+  border: 1px solid var(--focus);
+  border-radius: 12px; color: var(--focus);
+  font-family: 'Orbitron', monospace;
+  font-size: 12px; font-weight: 700;
+  cursor: pointer; transition: all 0.26s;
+  letter-spacing: 0.1em;
+  box-shadow: 0 0 20px rgba(0,212,255,0.1);
+}
+.btn-session-close:hover {
+  background: rgba(0,212,255,0.2);
+  box-shadow: 0 0 34px rgba(0,212,255,0.28);
+  transform: translateY(-1px);
+}
+.btn-session-close:active { transform: none; }
+
 /* ---- COOKIE BANNER ---- */
 #cookie-banner {
   position: fixed; bottom: 0; left: 0; right: 0;
@@ -1897,6 +2009,9 @@ function onComplete(natural = true) {
 
       // Avanzar misión activa si existe
       missionPomoComplete();
+
+      // v1.4 — Modal de resumen de sesión
+      showSessionSummary();
     }
 
     const iv = S.cfg.interval;
@@ -2467,6 +2582,97 @@ function escH(s) {
 }
 
 // =====================================================================
+// SESSION SUMMARY MODAL — v1.4
+// =====================================================================
+
+function showSessionSummary() {
+  // Datos del estado actual
+  const pomoNum  = S.totalPomos;
+  const streak   = S.streak;
+  const xpEarned = 50; // XP base por pomodoro natural
+
+  // Misión conectada
+  const mission = connectedMission
+    ? missions.find(m => m.id === connectedMission)
+    : null;
+
+  // ¿Ciclo completado en este pomodoro?
+  const cycleJustDone = S.cyclePos >= S.cfg.interval;
+
+  // Actualizar número de pomodoro en el título
+  document.getElementById('session-pomo-num').textContent = pomoNum;
+
+  // Cambiar emoji si es ciclo completo
+  document.querySelector('.session-pomo-badge').textContent = cycleJustDone ? '🔄' : '🍅';
+
+  // Construir tarjetas de recompensa
+  const rewardsEl = document.getElementById('session-rewards');
+  let html = '';
+
+  // XP ganado
+  html += `
+    <div class="session-reward xp-card">
+      <div class="sr-icon">⚡</div>
+      <div class="sr-val xp-col">+${xpEarned} XP</div>
+      <div class="sr-label">Experiencia ganada</div>
+    </div>`;
+
+  // Racha
+  html += `
+    <div class="session-reward streak-card">
+      <div class="sr-icon">🔥</div>
+      <div class="sr-val streak-col">${streak} día${streak !== 1 ? 's' : ''}</div>
+      <div class="sr-label">Racha actual</div>
+    </div>`;
+
+  // Misión activa (ocupa las 2 columnas)
+  if (mission) {
+    const done = mission.done;
+    const est  = mission.est || 0;
+    const pct  = est > 0 ? Math.min(100, Math.round((done / est) * 100)) : null;
+    const progText = est > 0
+      ? `${done} / ${est} 🍅 · ${pct}%`
+      : `${done} 🍅 completados`;
+
+    html += `
+      <div class="session-reward mission-card">
+        <div class="sr-icon">🎯</div>
+        <div class="sr-val mission-col">${escH(mission.name)}</div>
+        <div class="sr-label">${progText}</div>
+      </div>`;
+  }
+
+  // Bonus de ciclo completo
+  if (cycleJustDone) {
+    html += `
+      <div class="session-reward cycle-card">
+        <div class="sr-icon">🏆</div>
+        <div class="sr-val cycle-col">¡Ciclo completo! +100 XP</div>
+        <div class="sr-label">${S.cfg.interval} pomodoros de racha</div>
+      </div>`;
+  }
+
+  rewardsEl.innerHTML = html;
+
+  // Mostrar overlay con pequeño delay para que se vea después del flash del ring
+  setTimeout(() => {
+    document.getElementById('session-overlay').classList.add('open');
+  }, 700);
+}
+
+function closeSessionSummary() {
+  document.getElementById('session-overlay').classList.remove('open');
+}
+
+// Cerrar con Escape o clic fuera
+document.addEventListener('keydown', e => {
+  if (e.code === 'Escape') closeSessionSummary();
+});
+document.getElementById('session-overlay').addEventListener('click', e => {
+  if (e.target === document.getElementById('session-overlay')) closeSessionSummary();
+});
+
+// =====================================================================
 // BOOT
 // =====================================================================
 initAll();
@@ -2581,6 +2787,28 @@ console.log('%cTimer fix + Dashboard real data + Firebase sync ⚡','color:#5c78
 
 <!-- Firebase -->
 <script type="module" src="firebase.js"></script>
+
+<!-- ====== MODAL: RESUMEN DE SESIÓN v1.4 ====== -->
+<div class="session-overlay" id="session-overlay">
+  <div class="session-box">
+    <div class="session-glow-bar"></div>
+    <div class="session-body">
+
+      <div class="session-pomo-badge">🍅</div>
+      <div class="session-title">¡SESIÓN COMPLETADA!</div>
+      <div class="session-subtitle" id="session-subtitle">Pomodoro #<span id="session-pomo-num">0</span></div>
+
+      <div class="session-rewards" id="session-rewards">
+        <!-- Generado por JS -->
+      </div>
+
+      <button class="btn-session-close" onclick="closeSessionSummary()">
+        ☕ ¡A por el descanso!
+      </button>
+
+    </div>
+  </div>
+</div>
 
 <!-- ====== BANNER DE COOKIES ====== -->
 <div id="cookie-banner">
