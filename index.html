@@ -965,246 +965,6 @@ body[data-mode="long"]  .btn-play { border-color: var(--long);  background: var(
 .history-item .hi-name { flex: 1; }
 .history-item .hi-pomos { font-family: 'Orbitron', monospace; font-size: 11px; color: var(--focus); }
 
-/* ---- TOOLKIT BUTTON ---- */
-.toolkit-btn {
-  display: block; width: 100%;
-  position: relative; overflow: hidden;
-  background: var(--bg3);
-  border: 1px solid rgba(0,212,255,0.25);
-  border-radius: var(--radius);
-  padding: 22px 24px;
-  text-decoration: none;
-  margin-bottom: 20px;
-  transition: all 0.32s cubic-bezier(0.34,1.56,0.64,1);
-  backdrop-filter: blur(12px);
-}
-.toolkit-btn::before {
-  content: '';
-  position: absolute; inset: 0;
-  background: linear-gradient(135deg,
-    rgba(0,212,255,0.08) 0%,
-    rgba(0,255,152,0.06) 50%,
-    rgba(176,106,255,0.08) 100%);
-  opacity: 0; transition: opacity 0.32s;
-}
-.toolkit-btn:hover {
-  border-color: var(--focus);
-  transform: translateY(-3px);
-  box-shadow: 0 12px 40px rgba(0,212,255,0.18), 0 0 0 1px rgba(0,212,255,0.15);
-}
-.toolkit-btn:hover::before { opacity: 1; }
-.toolkit-btn:active { transform: translateY(-1px); }
-.toolkit-btn-glow {
-  position: absolute; inset: -2px;
-  background: linear-gradient(90deg,
-    var(--focus), var(--short), var(--long), var(--focus));
-  background-size: 300% 100%;
-  border-radius: calc(var(--radius) + 2px);
-  opacity: 0; z-index: -1;
-  transition: opacity 0.32s;
-  animation: tk-glow-move 3s linear infinite;
-  filter: blur(8px);
-}
-.toolkit-btn:hover .toolkit-btn-glow { opacity: 0.5; }
-@keyframes tk-glow-move {
-  0%   { background-position: 0% 50%; }
-  100% { background-position: 300% 50%; }
-}
-.toolkit-btn-content {
-  position: relative; z-index: 1;
-  display: flex; align-items: center; justify-content: space-between; gap: 16px;
-}
-.toolkit-btn-left { display: flex; align-items: center; gap: 16px; }
-.toolkit-btn-icon {
-  font-size: 30px;
-  width: 54px; height: 54px;
-  background: linear-gradient(135deg, var(--focus-d), rgba(0,255,152,0.1));
-  border: 1px solid rgba(0,212,255,0.25);
-  border-radius: 14px;
-  display: flex; align-items: center; justify-content: center;
-  flex-shrink: 0;
-  transition: transform 0.32s cubic-bezier(0.34,1.56,0.64,1);
-}
-.toolkit-btn:hover .toolkit-btn-icon { transform: scale(1.12) rotate(-5deg); }
-.toolkit-btn-title {
-  font-family: 'Orbitron', monospace;
-  font-size: 16px; font-weight: 900;
-  letter-spacing: 0.08em;
-  background: linear-gradient(135deg, var(--focus) 0%, var(--short) 60%, #fff 100%);
-  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-  background-clip: text;
-  margin-bottom: 4px;
-}
-.toolkit-btn-sub {
-  font-size: 11px; color: var(--text-dim);
-  letter-spacing: 0.04em; font-weight: 500;
-}
-.toolkit-btn-arrow {
-  font-size: 24px; color: var(--focus);
-  font-weight: 700; flex-shrink: 0;
-  transition: transform 0.28s cubic-bezier(0.34,1.56,0.64,1);
-  font-family: 'Orbitron', monospace;
-}
-.toolkit-btn:hover .toolkit-btn-arrow { transform: translateX(6px); }
-
-/* ---- COOKIE BANNER ---- */
-#cookie-banner {
-  position: fixed; bottom: 0; left: 0; right: 0;
-  z-index: 9999;
-  background: rgba(7,12,24,0.97);
-  border-top: 1px solid rgba(0,212,255,0.2);
-  backdrop-filter: blur(18px);
-  padding: 18px 24px;
-  display: flex; align-items: center; justify-content: space-between;
-  gap: 16px; flex-wrap: wrap;
-  box-shadow: 0 -8px 32px rgba(0,0,0,0.5);
-  transform: translateY(0);
-  transition: transform 0.4s cubic-bezier(0.4,0,0.2,1);
-}
-#cookie-banner.hidden {
-  transform: translateY(110%);
-  pointer-events: none;
-}
-.cookie-text {
-  flex: 1; min-width: 240px;
-  font-size: 13px; color: var(--text-dim); line-height: 1.6;
-}
-.cookie-text strong { color: var(--text); }
-.cookie-text a { color: var(--focus); text-decoration: none; }
-.cookie-text a:hover { text-decoration: underline; }
-.cookie-btns { display: flex; gap: 8px; flex-shrink: 0; flex-wrap: wrap; }
-.btn-cookie-accept {
-  padding: 9px 20px; border-radius: 9px;
-  background: var(--focus-d); border: 1px solid var(--focus);
-  color: var(--focus); font-family: 'Outfit', sans-serif;
-  font-size: 13px; font-weight: 700; cursor: pointer;
-  transition: all 0.22s; letter-spacing: 0.04em; white-space: nowrap;
-}
-.btn-cookie-accept:hover { background: rgba(0,212,255,0.22); box-shadow: 0 0 14px var(--focus-d); }
-.btn-cookie-reject {
-  padding: 9px 16px; border-radius: 9px;
-  background: transparent; border: 1px solid var(--border);
-  color: var(--text-dim); font-family: 'Outfit', sans-serif;
-  font-size: 13px; font-weight: 500; cursor: pointer;
-  transition: all 0.22s; white-space: nowrap;
-}
-.btn-cookie-reject:hover { border-color: var(--border-h); color: var(--text); }
-
-/* ---- FOOTER ---- */
-.app-footer {
-  text-align: center; padding: 20px 0 0;
-  border-top: 1px solid var(--border);
-  margin-top: 10px;
-}
-.app-footer a {
-  color: var(--text-faint); font-size: 11px;
-  text-decoration: none; margin: 0 10px;
-  transition: color 0.2s;
-}
-.app-footer a:hover { color: var(--text-dim); }
-
-/* ---- ABOUT SECTION ---- */
-#about-section {
-  position: relative; z-index: 1;
-  background: var(--bg2);
-  border-top: 1px solid var(--border);
-  margin-top: 40px;
-  padding: 50px 0 0;
-}
-.about-wrap {
-  max-width: 780px;
-  margin: 0 auto;
-  padding: 0 24px;
-}
-.about-card {
-  background: var(--card);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  padding: 28px 28px 24px;
-  margin-bottom: 24px;
-  backdrop-filter: blur(10px);
-}
-.about-tag {
-  font-size: 10px; color: var(--focus);
-  text-transform: uppercase; letter-spacing: 0.22em;
-  font-weight: 700; margin-bottom: 10px;
-}
-.about-h2 {
-  font-family: 'Orbitron', monospace;
-  font-size: 16px; font-weight: 700;
-  color: var(--text);
-  margin-bottom: 14px; line-height: 1.4;
-}
-.about-p {
-  font-size: 14px; color: var(--text-dim);
-  line-height: 1.75; margin-bottom: 12px;
-}
-.about-p:last-child { margin-bottom: 0; }
-.about-p strong { color: var(--text); font-weight: 600; }
-
-/* Features grid */
-.about-features {
-  display: grid; grid-template-columns: 1fr 1fr;
-  gap: 12px; margin-top: 16px;
-}
-.about-feat {
-  display: flex; gap: 10px; align-items: flex-start;
-  background: var(--bg2); border: 1px solid var(--border);
-  border-radius: 10px; padding: 12px;
-  font-size: 13px; color: var(--text-dim); line-height: 1.5;
-}
-.about-feat strong { color: var(--text); }
-.about-feat-icon { font-size: 18px; flex-shrink: 0; margin-top: 1px; }
-
-/* Roadmap */
-.roadmap { display: flex; flex-direction: column; gap: 12px; margin-top: 16px; }
-.road-item {
-  background: var(--bg2); border: 1px solid var(--border);
-  border-radius: 10px; padding: 14px 16px;
-  display: flex; flex-direction: column; gap: 5px;
-}
-.road-badge {
-  display: inline-block; font-size: 9px; font-weight: 700;
-  letter-spacing: 0.16em; text-transform: uppercase;
-  padding: 3px 8px; border-radius: 20px;
-  background: rgba(0,212,255,0.12); color: var(--focus);
-  border: 1px solid rgba(0,212,255,0.2);
-  width: fit-content; margin-bottom: 4px;
-}
-.road-badge-mid { background: rgba(176,106,255,0.12); color: var(--long); border-color: rgba(176,106,255,0.2); }
-.road-badge-fut { background: rgba(255,112,67,0.12); color: var(--xp); border-color: rgba(255,112,67,0.2); }
-.road-title { font-size: 14px; font-weight: 700; color: var(--text); }
-.road-desc { font-size: 12px; color: var(--text-dim); line-height: 1.6; }
-
-/* About footer */
-.about-footer {
-  text-align: center; padding: 30px 0 40px;
-  border-top: 1px solid var(--border); margin-top: 10px;
-}
-.about-footer-logo {
-  font-family: 'Orbitron', monospace;
-  font-size: 14px; font-weight: 700; color: var(--focus);
-  margin-bottom: 6px;
-}
-.about-footer-sub { font-size: 11px; color: var(--text-faint); margin-bottom: 14px; }
-.about-footer-links a {
-  color: var(--text-faint); font-size: 11px;
-  text-decoration: none; margin: 0 10px; transition: color 0.2s;
-}
-.about-footer-links a:hover { color: var(--text-dim); }
-
-@media (max-width: 560px) {
-  .about-features { grid-template-columns: 1fr; }
-  .about-card { padding: 20px 16px; }
-  .about-h2 { font-size: 14px; }
-}
-
-/* ---- SCROLLBAR ---- */
-::-webkit-scrollbar { width: 4px; }
-::-webkit-scrollbar-track { background: transparent; }
-::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
-
-/* ---- RESPONSIVE ---- */
 @media (max-width: 560px) {
   .stats-row { grid-template-columns: repeat(2,1fr); }
   .timer-digits { font-size: 44px; }
@@ -1234,7 +994,7 @@ body[data-mode="long"]  .btn-play { border-color: var(--long);  background: var(
       <div class="logo-icon">⚡</div>
       <div class="logo-wordmark">
         <div class="logo-name">POMODOROXP</div>
-        <div class="logo-sub">Motor de Estudio · v1.4</div>
+        <div class="logo-sub">Motor de Estudio · v1.5</div>
       </div>
     </div>
     <nav class="nav">
@@ -1394,166 +1154,7 @@ body[data-mode="long"]  .btn-play { border-color: var(--long);  background: var(
     <a href="cookies.html">Cookies</a>
   </div>
 
-</div><div id="about-section">
-
-  <div class="ad-banner" style="max-width:780px;margin:0 auto 40px;padding:0 24px">
-    <ins class="adsbygoogle"
-         style="display:block"
-         data-ad-client="ca-pub-9027862604686644"
-         data-ad-slot="auto"
-         data-ad-format="auto"
-         data-full-width-responsive="true"></ins>
-    <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
-  </div>
-
-  <div class="about-wrap">
-
-    <div class="about-card">
-      <div class="about-tag">🍅 ¿Qué es PomodoroXP?</div>
-      <h2 class="about-h2">El temporizador Pomodoro que te recompensa por estudiar</h2>
-      <p class="about-p">
-        PomodoroXP es una aplicación web gratuita de productividad basada en la
-        <strong>técnica Pomodoro</strong>, un método de gestión del tiempo desarrollado por
-        Francesco Cirillo a finales de los años 80. La idea es simple: trabajas en bloques
-        de concentración de 25 minutos, separados por descansos cortos de 5 minutos.
-        Cada cuatro bloques completas un ciclo y te mereces un descanso largo.
-      </p>
-      <p class="about-p">
-        Lo que diferencia a PomodoroXP de cualquier otro temporizador es su
-        <strong>sistema de gamificación</strong>: cada pomodoro completado te otorga XP,
-        subes de nivel, desbloqueas logros y acumulas rachas de días de estudio consecutivos.
-        Estudiar se convierte en un juego donde tú eres el protagonista.
-      </p>
-    </div>
-
-    <div class="ad-banner" style="margin:0 0 32px">
-      <ins class="adsbygoogle"
-           style="display:block"
-           data-ad-client="ca-pub-9027862604686644"
-           data-ad-slot="auto"
-           data-ad-format="auto"
-           data-full-width-responsive="true"></ins>
-      <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
-    </div>
-
-    <div class="about-card">
-      <div class="about-tag">⚙️ Cómo funciona</div>
-      <h2 class="about-h2">Simple de usar, difícil de dejar</h2>
-      <p class="about-p">
-        Abre PomodoroXP, pulsa el botón de inicio y empieza a concentrarte. El temporizador
-        cuenta los 25 minutos mientras el anillo visual te muestra el progreso en tiempo real.
-        Al terminar, suena una señal, ganas XP y la app te lleva automáticamente al descanso.
-      </p>
-      <p class="about-p">
-        Puedes <strong>personalizar completamente los tiempos</strong>: sesiones de focus de
-        1 a 120 minutos, descansos cortos, descansos largos y el número de pomodoros por ciclo.
-        También puedes activar el modo automático para que la app encadene sesiones sola sin
-        que tengas que tocar nada.
-      </p>
-      <div class="about-features">
-        <div class="about-feat"><span class="about-feat-icon">🎯</span><div><strong>Timer visual</strong> con anillo SVG animado y cuenta regresiva en tiempo real</div></div>
-        <div class="about-feat"><span class="about-feat-icon">⚡</span><div><strong>Sistema XP y niveles</strong> con 10 rangos desde Estudiante hasta Leyenda</div></div>
-        <div class="about-feat"><span class="about-feat-icon">🏆</span><div><strong>19 logros desbloqueables</strong> con recompensas de XP adicional</div></div>
-        <div class="about-feat"><span class="about-feat-icon">🔥</span><div><strong>Racha de días</strong> para mantener la constancia de estudio</div></div>
-        <div class="about-feat"><span class="about-feat-icon">📈</span><div><strong>Gráfica semanal</strong> con tus pomodoros de los últimos 7 días</div></div>
-        <div class="about-feat"><span class="about-feat-icon">🌙</span><div><strong>Modo oscuro</strong> diseño tecnológico pensado para sesiones nocturnas</div></div>
-      </div>
-    </div>
-
-    <div class="about-card">
-      <div class="about-tag">📦 Versión actual — v1.4</div>
-      <h2 class="about-h2">Estado del proyecto</h2>
-      <p class="about-p">
-        PomodoroXP se encuentra actualmente en su versión <strong>1.4</strong>. Esta actualización introduce el <strong>Modal de Resumen de Sesión</strong>, que proporciona feedback inmediato y gratificante al completar cada pomodoro de focus, mostrando la experiencia ganada, la racha actual y el progreso de las misiones conectadas.
-      </p>
-      <p class="about-p">
-        Además, se ha mejorado la integración con el <strong>Dashboard de Rendimiento</strong>, garantizando que todos los datos de descansos, categorías de estudio y récords se guarden correctamente tanto a nivel local como en la nube mediante Firebase.
-      </p>
-    </div>
-
-    <div class="ad-banner" style="margin:0 0 32px">
-      <ins class="adsbygoogle"
-           style="display:block"
-           data-ad-client="ca-pub-9027862604686644"
-           data-ad-slot="auto"
-           data-ad-format="auto"
-           data-full-width-responsive="true"></ins>
-      <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
-    </div>
-
-    <div class="about-card">
-      <div class="about-tag">🚀 Próximamente</div>
-      <h2 class="about-h2">Ideas y funciones futuras</h2>
-      <p class="about-p">
-        PomodoroXP está en desarrollo activo. Estas son las funciones planeadas para
-        las próximas versiones:
-      </p>
-      <div class="roadmap">
-        <div class="road-item road-soon">
-          <div class="road-badge">Próximo</div>
-          <div class="road-title">🥇 Ranking global dinámico</div>
-          <div class="road-desc">Visualiza a los mejores estudiantes de la semana y compite por subir de nivel en la clasificación.</div>
-        </div>
-        <div class="road-item road-mid">
-          <div class="road-badge road-badge-mid">Planificado</div>
-          <div class="road-title">🎵 Reproductor Lo-fi</div>
-          <div class="road-desc">Música de concentración integrada directamente en la aplicación.</div>
-        </div>
-        <div class="road-item road-mid">
-          <div class="road-badge road-badge-mid">Planificado</div>
-          <div class="road-title">👥 Sistema de amigos</div>
-          <div class="road-desc">Añade amigos, compara estadísticas, reta a otros usuarios y estudiad juntos en sesiones sincronizadas.</div>
-        </div>
-        <div class="road-item road-future">
-          <div class="road-badge road-badge-fut">Futuro</div>
-          <div class="road-title">📱 App móvil</div>
-          <div class="road-desc">Versión nativa para iOS y Android con notificaciones, widgets y sincronización completa con la versión web.</div>
-        </div>
-      </div>
-    </div>
-
-    <div class="about-card">
-      <div class="about-tag">📚 La técnica Pomodoro</div>
-      <h2 class="about-h2">Por qué funciona estudiar con pomodoros</h2>
-      <p class="about-p">
-        La técnica Pomodoro se basa en un principio psicológico fundamental: el cerebro humano
-        no está diseñado para mantener la concentración de forma indefinida. Los descansos
-        regulares no son una pérdida de tiempo, sino una <strong>estrategia para maximizar
-        el rendimiento cognitivo</strong>.
-      </p>
-      <p class="about-p">
-        Estudios en neurociencia del aprendizaje indican que alternar periodos de trabajo
-        intenso con descansos breves mejora la consolidación de la memoria, reduce la fatiga
-        mental y mantiene los niveles de dopamina —el neurotransmisor de la motivación—
-        más estables a lo largo de la sesión de estudio.
-      </p>
-      <p class="about-p">
-        PomodoroXP añade una capa extra a esta técnica: el sistema de recompensas. Cada vez
-        que completas un pomodoro, tu cerebro recibe una señal de logro que refuerza el
-        hábito de estudio. Con el tiempo, la constancia se vuelve automática.
-      </p>
-    </div>
-
-    <div class="ad-banner" style="margin:0 0 40px">
-      <ins class="adsbygoogle"
-           style="display:block"
-           data-ad-client="ca-pub-9027862604686644"
-           data-ad-slot="auto"
-           data-ad-format="auto"
-           data-full-width-responsive="true"></ins>
-      <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
-    </div>
-
-    <div class="about-footer">
-      <div class="about-footer-logo">🍅 PomodoroXP</div>
-      <div class="about-footer-sub">Hecho con ☕ y muchos pomodoros · v1.4</div>
-      <div class="about-footer-links">
-        <a href="privacy.html">Privacidad</a>
-        <a href="cookies.html">Cookies</a>
-      </div>
-    </div>
-
-  </div></div><div class="overlay" id="ov-cfg">
+</div><div class="overlay" id="ov-cfg">
   <div class="mbox">
     <div class="mhead">
       <div class="mtitle">⚙ CONFIGURACIÓN</div>
@@ -1700,6 +1301,26 @@ body[data-mode="long"]  .btn-play { border-color: var(--long);  background: var(
     </div>
     <div class="mbody" id="ranking-body">
       <div style="text-align:center;padding:20px;color:var(--text-dim)">Cargando ranking...</div>
+    </div>
+  </div>
+</div>
+
+<div class="session-overlay" id="session-overlay">
+  <div class="session-box">
+    <div class="session-glow-bar"></div>
+    <div class="session-body">
+
+      <div class="session-pomo-badge">🍅</div>
+      <div class="session-title">¡SESIÓN COMPLETADA!</div>
+      <div class="session-subtitle" id="session-subtitle">Pomodoro #<span id="session-pomo-num">0</span></div>
+
+      <div class="session-rewards" id="session-rewards">
+        </div>
+
+      <button class="btn-session-close" onclick="closeSessionSummary()">
+        ☕ ¡A por el descanso!
+      </button>
+
     </div>
   </div>
 </div>
@@ -1891,9 +1512,9 @@ function startTimer() {
       S.totalFocusSec = tStartFocusSec + elapsed;
       S.todayFocusSec = tStartTodaySec + elapsed;
     } else if (S.mode === 'short') {
-      S.shortBreakSec = tStartShort + elapsed;  // v1.3 — acumula con elapsed correcto
+      S.shortBreakSec = tStartShort + elapsed;  // v1.3
     } else if (S.mode === 'long') {
-      S.longBreakSec  = tStartLong  + elapsed;  // v1.3 — acumula con elapsed correcto
+      S.longBreakSec  = tStartLong  + elapsed;  // v1.3
     }
     S.timeLeft = newLeft;
     refreshDisplay(); refreshRing(); refreshStats();
@@ -1911,7 +1532,6 @@ function stop() {
 
 function resetTimer() { stop(); setMode(S.mode); }
 
-// Saltar NO da XP — solo avanza de fase
 function skipTimer() {
   stop();
   onComplete(/* natural= */ false);
@@ -1932,12 +1552,10 @@ function onComplete(natural = true) {
   if (S.mode === 'focus') {
     S.cyclePos++;
 
-    // Solo contabilizar estadísticas y XP si llegó a 00:00 de forma natural
     if (natural) {
       S.totalPomos++;
       S.todayPomos++;
 
-      // Registrar en weekData
       const key = todayKey();
       S.weekData[key] = (S.weekData[key] || 0) + 1;
 
@@ -1947,17 +1565,12 @@ function onComplete(natural = true) {
         S.streak = S.lastStudyDate===yest.toDateString() ? S.streak+1 : 1;
         S.lastStudyDate = today;
       }
-      // v1.3 — actualizar récord histórico de racha
       if (S.streak > (S.maxStreak || 0)) S.maxStreak = S.streak;
 
       sfxComplete();
       addXP(50, `+50 XP — Pomodoro completado 🍅`);
       refreshWeekChart();
-
-      // Avanzar misión activa si existe
       missionPomoComplete();
-
-      // v1.4 — Modal de resumen de sesión
       showSessionSummary();
     }
 
@@ -1983,7 +1596,6 @@ function onComplete(natural = true) {
   }
 
   refreshDots(); refreshStats(); save();
-  // v1.3 — sincronizar nuevos datos con Firebase si el usuario está logueado
   if (typeof syncAfterPomo === 'function') syncAfterPomo();
 }
 
@@ -2120,6 +1732,8 @@ function initAll() {
   document.querySelectorAll('.mode-tab').forEach(t=>t.classList.toggle('active',t.dataset.mode===S.mode));
   refreshDisplay(); refreshRing(); refreshPlayBtn();
   refreshXP(); refreshStats(); refreshDots(); refreshWeekChart();
+  if (typeof renderMissions === 'function') renderMissions();
+  if (typeof renderSlot === 'function') renderSlot();
 }
 
 // =====================================================================
@@ -2207,7 +1821,6 @@ function renderStatsModal() {
       </button>
     </div>`;
 
-  // Activar el anuncio del modal
   try { (adsbygoogle = window.adsbygoogle || []).push({}); } catch(e){}
 }
 
@@ -2293,15 +1906,14 @@ setInterval(()=>{
 }, 1000);
 
 // =====================================================================
-// SISTEMA DE MISIONES — v1.2
+// SISTEMA DE MISIONES
 // =====================================================================
-
 const MISSIONS_KEY   = 'pxp_missions_v1';
 const HISTORY_KEY    = 'pxp_missions_history_v1';
 
-let missions         = loadMissions();    // array de misiones activas
-let missionHistory   = loadHistory();     // array de misiones completadas
-let connectedMission = null;              // id de la misión conectada al slot
+let missions         = loadMissions();
+let missionHistory   = loadHistory();
+let connectedMission = null;
 
 function loadMissions() {
   try { const r = localStorage.getItem(MISSIONS_KEY); return r ? JSON.parse(r) : []; } catch(e) { return []; }
@@ -2316,7 +1928,6 @@ function saveMissions() {
   } catch(e) {}
 }
 
-// --- CREAR MISIÓN ---
 function createMission() {
   const nameEl = document.getElementById('mission-name-input');
   const estEl  = document.getElementById('mission-est-input');
@@ -2327,41 +1938,33 @@ function createMission() {
   const mission = {
     id:        Date.now(),
     name,
-    cat:       catEl ? catEl.value : 'Otros',   // v1.3 — categoría
+    cat:       catEl ? catEl.value : 'Otros',
     est:       parseInt(estEl.value) || 0,
     done:      0,
     createdAt: new Date().toISOString()
   };
 
   missions.push(mission);
-  S.missionsTotal = (S.missionsTotal || 0) + 1;  // v1.3
-  save();
-  saveMissions();
-  nameEl.value = '';
-  estEl.value  = '0';
+  S.missionsTotal = (S.missionsTotal || 0) + 1;
+  save(); saveMissions();
+  nameEl.value = ''; estEl.value  = '0';
   if (catEl) catEl.value = 'Otros';
   renderMissions();
   toast('t-done', '✓ Misión creada', `"${name}" lista para iniciar`);
 }
 
-// --- CONECTAR AL SLOT ---
 function connectMission(id) {
   connectedMission = id;
-  renderMissions();
-  renderSlot();
-
+  renderMissions(); renderSlot();
   const m = missions.find(m => m.id === id);
   if (m) toast('t-done', '⚡ Misión conectada', `"${m.name}" activa en el Slot`);
 }
 
-// --- DESCONECTAR ---
 function disconnectMission() {
   connectedMission = null;
-  renderMissions();
-  renderSlot();
+  renderMissions(); renderSlot();
 }
 
-// --- COMPLETAR MISIÓN ---
 function completeMission(id) {
   const idx = missions.findIndex(m => m.id === id);
   if (idx === -1) return;
@@ -2371,10 +1974,7 @@ function completeMission(id) {
   if (missionHistory.length > 50) missionHistory.pop();
   if (connectedMission === id) connectedMission = null;
 
-  // v1.3 — estadísticas globales de misiones
   S.missionsDone = (S.missionsDone || 0) + 1;
-
-  // v1.3 — récord de misión más rápida (menos pomodoros, mínimo 1)
   if (m.done >= 1) {
     const fastest = S.fastestMission;
     if (!fastest || m.done < fastest.pomos) {
@@ -2382,33 +1982,24 @@ function completeMission(id) {
     }
   }
 
-  save();
-  saveMissions();
-  renderMissions();
-  renderSlot();
-  renderHistory();
+  save(); saveMissions();
+  renderMissions(); renderSlot(); renderHistory();
   toast('t-done', '🏁 ¡Misión completada!', `"${m.name}" enviada al historial`);
 }
 
-// --- ELIMINAR MISIÓN ---
 function deleteMission(id) {
   missions = missions.filter(m => m.id !== id);
   if (connectedMission === id) connectedMission = null;
-  saveMissions();
-  renderMissions();
-  renderSlot();
+  saveMissions(); renderMissions(); renderSlot();
 }
 
-// --- LLAMADA DESDE onComplete (solo si natural=true) ---
 function missionPomoComplete() {
   if (!connectedMission) return;
   const m = missions.find(m => m.id === connectedMission);
   if (!m) return;
 
   m.done++;
-  saveMissions();
-  renderMissions();
-  renderSlot();
+  saveMissions(); renderMissions(); renderSlot();
 
   const isOver = m.est > 0 && m.done > m.est;
   if (isOver) {
@@ -2418,7 +2009,6 @@ function missionPomoComplete() {
   }
 }
 
-// --- RENDER SLOT ---
 function renderSlot() {
   const slot      = document.getElementById('mission-slot');
   const emptyText = document.getElementById('slot-empty-text');
@@ -2446,11 +2036,9 @@ function renderSlot() {
   }
 }
 
-// --- RENDER MISSIONS LIST ---
 function renderMissions() {
   const list  = document.getElementById('missions-list');
   const count = document.getElementById('missions-count');
-
   count.textContent = `${missions.length} activa${missions.length !== 1 ? 's' : ''}`;
 
   if (!missions.length) {
@@ -2462,9 +2050,8 @@ function renderMissions() {
     const isConn  = connectedMission === m.id;
     const est     = m.est || 0;
     const done    = m.done;
-    const total   = Math.max(est, done);   // mostrar al menos los completados
+    const total   = Math.max(est, done);
 
-    // Build energy segments
     let segsHtml = '';
     if (total > 0) {
       for (let i = 0; i < total; i++) {
@@ -2502,7 +2089,6 @@ function renderMissions() {
   }).join('');
 }
 
-// --- RENDER HISTORY ---
 function renderHistory() {
   const toggle = document.getElementById('history-toggle');
   const hCount = document.getElementById('history-count');
@@ -2519,67 +2105,39 @@ function renderHistory() {
   ).join('');
 }
 
-function toggleHistory() {
-  document.getElementById('history-list').classList.toggle('open');
-}
-
-function escH(s) {
-  return String(s).replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
-}
+function toggleHistory() { document.getElementById('history-list').classList.toggle('open'); }
+function escH(s) { return String(s).replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
 
 // =====================================================================
-// SESSION SUMMARY MODAL — v1.4
+// SESSION SUMMARY MODAL
 // =====================================================================
-
 function showSessionSummary() {
-  // Datos del estado actual
   const pomoNum  = S.totalPomos;
   const streak   = S.streak;
-  const xpEarned = 50; // XP base por pomodoro natural
-
-  // Misión conectada
-  const mission = connectedMission
-    ? missions.find(m => m.id === connectedMission)
-    : null;
-
-  // ¿Ciclo completado en este pomodoro?
+  const xpEarned = 50; 
+  const mission = connectedMission ? missions.find(m => m.id === connectedMission) : null;
   const cycleJustDone = S.cyclePos >= S.cfg.interval;
 
-  // Actualizar número de pomodoro en el título
   document.getElementById('session-pomo-num').textContent = pomoNum;
-
-  // Cambiar emoji si es ciclo completo
   document.querySelector('.session-pomo-badge').textContent = cycleJustDone ? '🔄' : '🍅';
 
-  // Construir tarjetas de recompensa
-  const rewardsEl = document.getElementById('session-rewards');
-  let html = '';
-
-  // XP ganado
-  html += `
+  let html = `
     <div class="session-reward xp-card">
       <div class="sr-icon">⚡</div>
       <div class="sr-val xp-col">+${xpEarned} XP</div>
       <div class="sr-label">Experiencia ganada</div>
-    </div>`;
-
-  // Racha
-  html += `
+    </div>
     <div class="session-reward streak-card">
       <div class="sr-icon">🔥</div>
       <div class="sr-val streak-col">${streak} día${streak !== 1 ? 's' : ''}</div>
       <div class="sr-label">Racha actual</div>
     </div>`;
 
-  // Misión activa (ocupa las 2 columnas)
   if (mission) {
     const done = mission.done;
     const est  = mission.est || 0;
     const pct  = est > 0 ? Math.min(100, Math.round((done / est) * 100)) : null;
-    const progText = est > 0
-      ? `${done} / ${est} 🍅 · ${pct}%`
-      : `${done} 🍅 completados`;
-
+    const progText = est > 0 ? `${done} / ${est} 🍅 · ${pct}%` : `${done} 🍅 completados`;
     html += `
       <div class="session-reward mission-card">
         <div class="sr-icon">🎯</div>
@@ -2588,7 +2146,6 @@ function showSessionSummary() {
       </div>`;
   }
 
-  // Bonus de ciclo completo
   if (cycleJustDone) {
     html += `
       <div class="session-reward cycle-card">
@@ -2598,22 +2155,12 @@ function showSessionSummary() {
       </div>`;
   }
 
-  rewardsEl.innerHTML = html;
-
-  // Mostrar overlay con pequeño delay para que se vea después del flash del ring
-  setTimeout(() => {
-    document.getElementById('session-overlay').classList.add('open');
-  }, 700);
+  document.getElementById('session-rewards').innerHTML = html;
+  setTimeout(() => document.getElementById('session-overlay').classList.add('open'), 700);
 }
 
-function closeSessionSummary() {
-  document.getElementById('session-overlay').classList.remove('open');
-}
-
-// Cerrar con Escape o clic fuera
-document.addEventListener('keydown', e => {
-  if (e.code === 'Escape') closeSessionSummary();
-});
+function closeSessionSummary() { document.getElementById('session-overlay').classList.remove('open'); }
+document.addEventListener('keydown', e => { if (e.code === 'Escape') closeSessionSummary(); });
 document.getElementById('session-overlay').addEventListener('click', e => {
   if (e.target === document.getElementById('session-overlay')) closeSessionSummary();
 });
@@ -2622,16 +2169,15 @@ document.getElementById('session-overlay').addEventListener('click', e => {
 // BOOT
 // =====================================================================
 initAll();
-// Inicializar sistema de misiones
 renderMissions();
 renderSlot();
 renderHistory();
-// Exponer funciones globales para Firebase
+
 window.S       = S;
 window.initAll = initAll;
 window.toast   = toast;
 
-// ---- AUTH MODAL ----
+// ---- AUTH & RANKING ----
 function switchAuthTab(tab) {
   const isReg = tab === 'register';
   document.getElementById('field-username').style.display = isReg ? 'block' : 'none';
@@ -2654,27 +2200,17 @@ async function submitAuth() {
   const password = document.getElementById('auth-password').value;
   const errDiv   = document.getElementById('auth-error');
   errDiv.style.display = 'none';
-
   if (!window.FB) { errDiv.textContent = 'Firebase no cargado aún'; errDiv.style.display='block'; return; }
-
   let result;
   if (switchAuthTab._current === 'register') {
     const username = document.getElementById('auth-username').value.trim() || email.split('@')[0];
     result = await window.FB.registerEmail(email, password, username);
-  } else {
-    result = await window.FB.loginEmail(email, password);
-  }
-
-  if (result.ok) {
-    closeOv('ov-auth');
-  } else {
-    errDiv.textContent = result.msg;
-    errDiv.style.display = 'block';
-  }
+  } else { result = await window.FB.loginEmail(email, password); }
+  if (result.ok) closeOv('ov-auth');
+  else { errDiv.textContent = result.msg; errDiv.style.display = 'block'; }
 }
 window.submitAuth = submitAuth;
 
-// Botón auth — abre modal o perfil
 document.getElementById('btn-auth').addEventListener('click', () => {
   const user = window._fbUser;
   if (user) {
@@ -2693,7 +2229,6 @@ document.getElementById('btn-auth').addEventListener('click', () => {
   openOv('ov-auth');
 });
 
-// Botón ranking
 document.getElementById('btn-ranking').addEventListener('click', async () => {
   openOv('ov-ranking');
   const body = document.getElementById('ranking-body');
@@ -2701,88 +2236,50 @@ document.getElementById('btn-ranking').addEventListener('click', async () => {
   if (!window.FB) { body.innerHTML = '<div style="text-align:center;padding:20px;color:var(--text-dim)">Firebase no disponible</div>'; return; }
   const rows = await window.FB.getRanking();
   if (!rows.length) { body.innerHTML = '<div style="text-align:center;padding:30px;color:var(--text-dim)">Aún no hay datos en el ranking.<br>¡Sé el primero en registrarte! 🚀</div>'; return; }
-  const medals = ['🥇','🥈','🥉'];
+  
+  const podiumBorder = ['rgba(255,214,0,0.35)', 'rgba(220,220,220,0.25)', 'rgba(255,112,67,0.3)'];
+  const podiumBg     = ['rgba(255,214,0,0.05)',  'rgba(220,220,220,0.04)', 'rgba(255,112,67,0.05)'];
+  const medals       = ['🥇','🥈','🥉'];
+
   body.innerHTML = `
     <div style="margin-bottom:16px">
-      ${rows.map(r=>`
-        <div style="display:flex;align-items:center;gap:12px;padding:12px;background:${r.isMe?'rgba(0,212,255,0.07)':'var(--bg2)'};border:1px solid ${r.isMe?'var(--focus)':'var(--border)'};border-radius:10px;margin-bottom:8px">
-          <div style="font-size:20px;width:28px;text-align:center">${medals[r.rank-1]||r.rank}</div>
-          <div style="flex:1">
-            <div style="font-size:13px;font-weight:700;color:${r.isMe?'var(--focus)':'var(--text)'}">${r.username}${r.isMe?' (tú)':''}</div>
-            <div style="font-size:10px;color:var(--text-dim)">${r.hours}h de focus</div>
-          </div>
-          <div style="text-align:right">
-            <div style="font-family:'Orbitron',monospace;font-size:14px;color:var(--text)">${r.pomos} 🍅</div>
-            <div style="font-size:10px;color:var(--xp)">${r.xp} XP</div>
-          </div>
-        </div>`).join('')}
+      ${rows.map(r => {
+        const isPodium  = r.rank <= 3;
+        const lv        = typeof levelFromXP === 'function' ? levelFromXP(r.xp) : '—';
+        const border    = r.isMe ? 'var(--focus)' : isPodium ? podiumBorder[r.rank-1] : 'var(--border)';
+        const bg        = r.isMe ? 'rgba(0,212,255,0.07)' : isPodium ? podiumBg[r.rank-1] : 'var(--bg2)';
+        const nameColor = r.isMe ? 'var(--focus)' : isPodium ? 'var(--text)' : 'var(--text-dim)';
+        const rankBadge = medals[r.rank-1] || `<span style="font-family:'Orbitron',monospace;font-size:11px;color:var(--text-dim)">#${r.rank}</span>`;
+
+        return `
+          <div style="display:flex;align-items:center;gap:12px;padding:13px 12px;background:${bg};border:1px solid ${border};border-radius:11px;margin-bottom:8px">
+            <div style="font-size:${isPodium?'22px':'16px'};width:28px;text-align:center;flex-shrink:0">${rankBadge}</div>
+            <div style="flex:1;min-width:0">
+              <div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin-bottom:3px">
+                <span style="font-size:13px;font-weight:700;color:${nameColor};white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${r.username}${r.isMe?' (tú)':''}</span>
+                <span style="font-family:'Orbitron',monospace;font-size:9px;font-weight:700;padding:2px 7px;border-radius:20px;background:rgba(0,212,255,0.1);color:var(--focus);border:1px solid rgba(0,212,255,0.2);flex-shrink:0">LVL ${lv}</span>
+              </div>
+              <div style="font-size:10px;color:var(--text-dim)">${r.hours}h focus · ${r.streak}🔥 racha</div>
+            </div>
+            <div style="text-align:right;flex-shrink:0">
+              <div style="font-family:'Orbitron',monospace;font-size:14px;font-weight:700;color:var(--text)">${r.pomos} 🍅</div>
+              <div style="font-size:10px;color:var(--xp);font-family:'Orbitron',monospace">${r.xp} XP</div>
+            </div>
+          </div>`;
+      }).join('')}
     </div>
     ${!window._fbUser ? '<div style="text-align:center;font-size:12px;color:var(--text-dim)">Regístrate para aparecer en el ranking 👆</div>' : ''}`;
 });
 
-// Sync automático cada vez que se completa un pomodoro (hook)
 const _origOnComplete = window._onComplete;
 function syncAfterPomo() { if (window.FB && window._fbUser) window.FB.syncToCloud(S); }
-
-// Guardar referencia al usuario actual
 window._fbUser = null;
 
-console.log('%cPOMODOROXP v1.3','font-size:20px;font-weight:900;color:#00d4ff;font-family:monospace');
-console.log('%cTimer fix + Dashboard real data + Firebase sync ⚡','color:#5c78a8;font-family:monospace');
+console.log('%cPOMODOROXP v1.5','font-size:20px;font-weight:900;color:#00d4ff;font-family:monospace');
+console.log('%cRanking visual mejorado — podio + LVL badge + racha ⚡','color:#5c78a8;font-family:monospace');
 </script>
 
 <script type="module" src="firebase.js"></script>
 
-<div class="session-overlay" id="session-overlay">
-  <div class="session-box">
-    <div class="session-glow-bar"></div>
-    <div class="session-body">
-
-      <div class="session-pomo-badge">🍅</div>
-      <div class="session-title">¡SESIÓN COMPLETADA!</div>
-      <div class="session-subtitle" id="session-subtitle">Pomodoro #<span id="session-pomo-num">0</span></div>
-
-      <div class="session-rewards" id="session-rewards">
-        </div>
-
-      <button class="btn-session-close" onclick="closeSessionSummary()">
-        ☕ ¡A por el descanso!
-      </button>
-
-    </div>
-  </div>
-</div>
-
-<div id="cookie-banner">
-  <div class="cookie-text">
-    🍪 <strong>Usamos cookies</strong> propias y de terceros (Google AdSense, Firebase, Analytics) para mejorar tu experiencia y mostrar publicidad relevante. Puedes aceptar todas o rechazar las no esenciales. <a href="cookies.html">Más información</a>
-  </div>
-  <div class="cookie-btns">
-    <button class="btn-cookie-reject" onclick="cookieChoice(false)">Solo esenciales</button>
-    <button class="btn-cookie-accept" onclick="cookieChoice(true)">✓ Aceptar todas</button>
-  </div>
-</div>
-
-<script>
-(function() {
-  const COOKIE_KEY = 'pxp_cookie_consent';
-  const consent    = localStorage.getItem(COOKIE_KEY);
-  const banner     = document.getElementById('cookie-banner');
-
-  // Si ya decidió, ocultamos de inmediato
-  if (consent !== null) banner.classList.add('hidden');
-
-  window.cookieChoice = function(accepted) {
-    localStorage.setItem(COOKIE_KEY, accepted ? 'accepted' : 'rejected');
-    banner.classList.add('hidden');
-    // Si rechaza, intentamos desactivar AdSense personalizado
-    if (!accepted && window.googletag) {
-      try { googletag.pubads().setRequestNonPersonalizedAds(1); } catch(e){}
-    }
-  };
-})();
-</script>
-
 </body>
 </html>
-}
