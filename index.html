@@ -1246,6 +1246,95 @@ body[data-mode="long"]  .btn-play { border-color: var(--long);  background: var(
   .mode-tab { font-size: 10px; padding: 8px 6px; }
   #app { padding: 0 14px 40px; }
 }
+
+/* ---- LO-FI PLAYER v1.7 ---- */
+.lofi-btn {
+  position: fixed; bottom: 28px; left: 28px; z-index: 400;
+  width: 48px; height: 48px; border-radius: 50%;
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  color: var(--text-dim); font-size: 20px;
+  cursor: pointer; transition: all 0.26s;
+  display: flex; align-items: center; justify-content: center;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.4);
+  backdrop-filter: blur(12px);
+}
+.lofi-btn:hover {
+  border-color: var(--long);
+  color: var(--long);
+  box-shadow: 0 0 22px rgba(176,106,255,0.25);
+  transform: scale(1.08);
+}
+.lofi-btn.playing {
+  border-color: var(--long);
+  color: var(--long);
+  box-shadow: 0 0 18px rgba(176,106,255,0.3);
+  animation: lofi-pulse 2.4s ease-in-out infinite;
+}
+@keyframes lofi-pulse {
+  0%,100% { box-shadow: 0 0 14px rgba(176,106,255,0.25); }
+  50%      { box-shadow: 0 0 32px rgba(176,106,255,0.50); }
+}
+
+.lofi-panel {
+  position: fixed; bottom: 88px; left: 28px; z-index: 400;
+  width: 300px;
+  background: var(--bg3);
+  border: 1px solid rgba(176,106,255,0.28);
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 8px 40px rgba(0,0,0,0.55), 0 0 40px rgba(176,106,255,0.08);
+  backdrop-filter: blur(18px);
+  /* slide-up hidden by default */
+  opacity: 0;
+  transform: translateY(12px) scale(0.97);
+  pointer-events: none;
+  transition: opacity 0.28s ease, transform 0.28s cubic-bezier(0.34,1.56,0.64,1);
+}
+.lofi-panel.open {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+  pointer-events: auto;
+}
+
+.lofi-header {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 10px 14px 8px;
+  border-bottom: 1px solid rgba(176,106,255,0.15);
+}
+.lofi-title {
+  font-family: 'Orbitron', monospace;
+  font-size: 9px; font-weight: 700;
+  letter-spacing: 0.2em; color: var(--long);
+  text-transform: uppercase;
+}
+.lofi-close {
+  width: 22px; height: 22px; border-radius: 6px;
+  border: 1px solid var(--border); background: transparent;
+  color: var(--text-dim); font-size: 11px; cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  transition: all 0.2s;
+}
+.lofi-close:hover { border-color: var(--long); color: var(--long); }
+
+.lofi-iframe-wrap {
+  position: relative; width: 100%; padding-top: 56.25%; /* 16:9 */
+}
+.lofi-iframe-wrap iframe {
+  position: absolute; inset: 0; width: 100%; height: 100%;
+  border: none;
+}
+
+.lofi-footer {
+  padding: 8px 14px 10px;
+  font-size: 10px; color: var(--text-faint);
+  text-align: center;
+}
+
+@media (max-width: 400px) {
+  .lofi-btn  { bottom: 20px; left: 16px; width: 42px; height: 42px; font-size: 18px; }
+  .lofi-panel { width: calc(100vw - 32px); left: 16px; }
+}
 </style>
 </head>
 
@@ -1263,7 +1352,7 @@ body[data-mode="long"]  .btn-play { border-color: var(--long);  background: var(
       <div class="logo-icon">⚡</div>
       <div class="logo-wordmark">
         <div class="logo-name">POMODOROXP</div>
-        <div class="logo-sub">Motor de Estudio · v1.5</div>
+        <div class="logo-sub">Motor de Estudio · v1.7</div>
       </div>
     </div>
     <nav class="nav">
@@ -2709,6 +2798,33 @@ document.getElementById('session-overlay').addEventListener('click', e => {
 });
 
 // =====================================================================
+// LO-FI PLAYER — v1.7
+// =====================================================================
+let lofiOpen = false;
+
+function toggleLofi() {
+  lofiOpen = !lofiOpen;
+  const panel  = document.getElementById('lofi-panel');
+  const btn    = document.getElementById('lofi-btn');
+  const iframe = document.getElementById('lofi-iframe');
+
+  panel.classList.toggle('open', lofiOpen);
+  btn.classList.toggle('playing', lofiOpen);
+  btn.textContent = lofiOpen ? '🎵' : '🎵';
+
+  if (lofiOpen) {
+    // Carga diferida: solo asigna src la primera vez para no recargar el vídeo
+    if (!iframe.src || iframe.src === window.location.href) {
+      iframe.src = iframe.dataset.src;
+    }
+  } else {
+    // Pausa el audio quitando el src (recargará al volver a abrir, pero evita
+    // que el audio siga sonando con el panel cerrado)
+    iframe.src = '';
+  }
+}
+
+// =====================================================================
 // BOOT
 // =====================================================================
 initAll();
@@ -2833,8 +2949,8 @@ function syncAfterPomo() { if (window.FB && window._fbUser) window.FB.syncToClou
 // Guardar referencia al usuario actual
 window._fbUser = null;
 
-console.log('%cPOMODOROXP v1.5','font-size:20px;font-weight:900;color:#00d4ff;font-family:monospace');
-console.log('%cRanking mejorado — podio + LVL badge + racha 🥇','color:#5c78a8;font-family:monospace');
+console.log('%cPOMODOROXP v1.7','font-size:20px;font-weight:900;color:#00d4ff;font-family:monospace');
+console.log('%cLo-Fi Player + Botón compartir 🎵','color:#5c78a8;font-family:monospace');
 console.log('%cTimer fix + Dashboard real data + Firebase sync ⚡','color:#5c78a8;font-family:monospace');
 </script>
 
@@ -2870,6 +2986,27 @@ console.log('%cTimer fix + Dashboard real data + Firebase sync ⚡','color:#5c78
   };
 })();
 </script>
+
+<!-- ====== LO-FI PLAYER v1.7 ====== -->
+<button class="lofi-btn" id="lofi-btn" title="Música Lo-Fi para concentrarte" onclick="toggleLofi()">🎵</button>
+
+<div class="lofi-panel" id="lofi-panel">
+  <div class="lofi-header">
+    <span class="lofi-title">🎵 Lo-Fi Focus Radio</span>
+    <button class="lofi-close" onclick="toggleLofi()" title="Cerrar">✕</button>
+  </div>
+  <div class="lofi-iframe-wrap">
+    <iframe
+      id="lofi-iframe"
+      src=""
+      data-src="https://www.youtube.com/embed/jfKfPfyJRdk?autoplay=1&mute=0&controls=1&rel=0"
+      allow="autoplay; encrypted-media"
+      allowfullscreen
+      title="Lo-Fi Hip Hop Radio — Beats to Study/Relax to">
+    </iframe>
+  </div>
+  <div class="lofi-footer">Volumen ajustable en el reproductor · YouTube</div>
+</div>
 
 </body>
 </html>
