@@ -1234,7 +1234,7 @@ body[data-mode="long"]  .btn-play { border-color: var(--long);  background: var(
       <div class="logo-icon">⚡</div>
       <div class="logo-wordmark">
         <div class="logo-name">POMODOROXP</div>
-        <div class="logo-sub">Motor de Estudio · v1.4</div>
+        <div class="logo-sub">Motor de Estudio · v1.5</div>
       </div>
     </div>
     <nav class="nav">
@@ -1700,6 +1700,27 @@ body[data-mode="long"]  .btn-play { border-color: var(--long);  background: var(
     </div>
     <div class="mbody" id="ranking-body">
       <div style="text-align:center;padding:20px;color:var(--text-dim)">Cargando ranking...</div>
+    </div>
+  </div>
+</div>
+
+<!-- ====== MODAL: RESUMEN DE SESIÓN v1.4 ====== -->
+<div class="session-overlay" id="session-overlay">
+  <div class="session-box">
+    <div class="session-glow-bar"></div>
+    <div class="session-body">
+
+      <div class="session-pomo-badge">🍅</div>
+      <div class="session-title">¡SESIÓN COMPLETADA!</div>
+      <div class="session-subtitle" id="session-subtitle">Pomodoro #<span id="session-pomo-num">0</span></div>
+
+      <div class="session-rewards" id="session-rewards">
+        </div>
+
+      <button class="btn-session-close" onclick="closeSessionSummary()">
+        ☕ ¡A por el descanso!
+      </button>
+
     </div>
   </div>
 </div>
@@ -2701,21 +2722,37 @@ document.getElementById('btn-ranking').addEventListener('click', async () => {
   if (!window.FB) { body.innerHTML = '<div style="text-align:center;padding:20px;color:var(--text-dim)">Firebase no disponible</div>'; return; }
   const rows = await window.FB.getRanking();
   if (!rows.length) { body.innerHTML = '<div style="text-align:center;padding:30px;color:var(--text-dim)">Aún no hay datos en el ranking.<br>¡Sé el primero en registrarte! 🚀</div>'; return; }
-  const medals = ['🥇','🥈','🥉'];
+
+  // v1.5 — colores de podio para top 3
+  const podiumBorder = ['rgba(255,214,0,0.35)', 'rgba(220,220,220,0.25)', 'rgba(255,112,67,0.3)'];
+  const podiumBg     = ['rgba(255,214,0,0.05)',  'rgba(220,220,220,0.04)', 'rgba(255,112,67,0.05)'];
+  const medals       = ['🥇','🥈','🥉'];
+
   body.innerHTML = `
     <div style="margin-bottom:16px">
-      ${rows.map(r=>`
-        <div style="display:flex;align-items:center;gap:12px;padding:12px;background:${r.isMe?'rgba(0,212,255,0.07)':'var(--bg2)'};border:1px solid ${r.isMe?'var(--focus)':'var(--border)'};border-radius:10px;margin-bottom:8px">
-          <div style="font-size:20px;width:28px;text-align:center">${medals[r.rank-1]||r.rank}</div>
-          <div style="flex:1">
-            <div style="font-size:13px;font-weight:700;color:${r.isMe?'var(--focus)':'var(--text)'}">${r.username}${r.isMe?' (tú)':''}</div>
-            <div style="font-size:10px;color:var(--text-dim)">${r.hours}h de focus</div>
-          </div>
-          <div style="text-align:right">
-            <div style="font-family:'Orbitron',monospace;font-size:14px;color:var(--text)">${r.pomos} 🍅</div>
-            <div style="font-size:10px;color:var(--xp)">${r.xp} XP</div>
-          </div>
-        </div>`).join('')}
+      ${rows.map(r => {
+        const isPodium  = r.rank <= 3;
+        const lv        = typeof levelFromXP === 'function' ? levelFromXP(r.xp) : '—';
+        const border    = r.isMe ? 'var(--focus)' : isPodium ? podiumBorder[r.rank-1] : 'var(--border)';
+        const bg        = r.isMe ? 'rgba(0,212,255,0.07)' : isPodium ? podiumBg[r.rank-1] : 'var(--bg2)';
+        const nameColor = r.isMe ? 'var(--focus)' : isPodium ? 'var(--text)' : 'var(--text-dim)';
+        const rankBadge = medals[r.rank-1] || `<span style="font-family:'Orbitron',monospace;font-size:11px;color:var(--text-dim)">#${r.rank}</span>`;
+        return `
+          <div style="display:flex;align-items:center;gap:12px;padding:13px 12px;background:${bg};border:1px solid ${border};border-radius:11px;margin-bottom:8px">
+            <div style="font-size:${isPodium?'22px':'16px'};width:28px;text-align:center;flex-shrink:0">${rankBadge}</div>
+            <div style="flex:1;min-width:0">
+              <div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin-bottom:3px">
+                <span style="font-size:13px;font-weight:700;color:${nameColor};white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${r.username}${r.isMe?' (tú)':''}</span>
+                <span style="font-family:'Orbitron',monospace;font-size:9px;font-weight:700;padding:2px 7px;border-radius:20px;background:rgba(0,212,255,0.1);color:var(--focus);border:1px solid rgba(0,212,255,0.2);flex-shrink:0">LVL ${lv}</span>
+              </div>
+              <div style="font-size:10px;color:var(--text-dim)">${r.hours}h focus · ${r.streak}🔥 racha</div>
+            </div>
+            <div style="text-align:right;flex-shrink:0">
+              <div style="font-family:'Orbitron',monospace;font-size:14px;font-weight:700;color:var(--text)">${r.pomos} 🍅</div>
+              <div style="font-size:10px;color:var(--xp);font-family:'Orbitron',monospace">${r.xp} XP</div>
+            </div>
+          </div>`;
+      }).join('')}
     </div>
     ${!window._fbUser ? '<div style="text-align:center;font-size:12px;color:var(--text-dim)">Regístrate para aparecer en el ranking 👆</div>' : ''}`;
 });
@@ -2727,31 +2764,13 @@ function syncAfterPomo() { if (window.FB && window._fbUser) window.FB.syncToClou
 // Guardar referencia al usuario actual
 window._fbUser = null;
 
-console.log('%cPOMODOROXP v1.3','font-size:20px;font-weight:900;color:#00d4ff;font-family:monospace');
+console.log('%cPOMODOROXP v1.5','font-size:20px;font-weight:900;color:#00d4ff;font-family:monospace');
+console.log('%cRanking mejorado — podio + LVL badge + racha 🥇','color:#5c78a8;font-family:monospace');
 console.log('%cTimer fix + Dashboard real data + Firebase sync ⚡','color:#5c78a8;font-family:monospace');
 </script>
 
 <script type="module" src="firebase.js"></script>
 
-<div class="session-overlay" id="session-overlay">
-  <div class="session-box">
-    <div class="session-glow-bar"></div>
-    <div class="session-body">
-
-      <div class="session-pomo-badge">🍅</div>
-      <div class="session-title">¡SESIÓN COMPLETADA!</div>
-      <div class="session-subtitle" id="session-subtitle">Pomodoro #<span id="session-pomo-num">0</span></div>
-
-      <div class="session-rewards" id="session-rewards">
-        </div>
-
-      <button class="btn-session-close" onclick="closeSessionSummary()">
-        ☕ ¡A por el descanso!
-      </button>
-
-    </div>
-  </div>
-</div>
 
 <div id="cookie-banner">
   <div class="cookie-text">
@@ -2785,4 +2804,3 @@ console.log('%cTimer fix + Dashboard real data + Firebase sync ⚡','color:#5c78
 
 </body>
 </html>
-}
