@@ -608,6 +608,35 @@ body[data-mode="long"]  .btn-play { border-color: var(--long);  background: var(
 }
 .btn-session-close:active { transform: none; }
 
+/* Botón compartir — v1.6 */
+.session-btn-row {
+  display: flex; gap: 10px; margin-top: 10px;
+}
+.session-btn-row .btn-session-close {
+  margin-top: 0; flex: 1;
+}
+.btn-session-share {
+  flex-shrink: 0;
+  padding: 14px 18px;
+  background: rgba(255,112,67,0.08);
+  border: 1px solid rgba(255,112,67,0.35);
+  border-radius: 12px; color: var(--xp);
+  font-family: 'Orbitron', monospace;
+  font-size: 12px; font-weight: 700;
+  cursor: pointer; transition: all 0.26s;
+  letter-spacing: 0.06em;
+  box-shadow: 0 0 16px rgba(255,112,67,0.08);
+  white-space: nowrap;
+}
+.btn-session-share:hover {
+  background: rgba(255,112,67,0.18);
+  box-shadow: 0 0 26px rgba(255,112,67,0.22);
+  transform: translateY(-1px);
+}
+.btn-session-share:active { transform: none; }
+/* Ocultar el botón compartir si el navegador no soporta Web Share API */
+.btn-session-share.hidden { display: none; }
+
 /* ---- AD ZONE dentro del modal de stats ---- */
 .ad-modal {
   width: 100%;
@@ -1714,12 +1743,16 @@ body[data-mode="long"]  .btn-play { border-color: var(--long);  background: var(
       <div class="session-title">¡SESIÓN COMPLETADA!</div>
       <div class="session-subtitle" id="session-subtitle">Pomodoro #<span id="session-pomo-num">0</span></div>
 
-      <div class="session-rewards" id="session-rewards">
-        </div>
+      <div class="session-rewards" id="session-rewards"></div>
 
-      <button class="btn-session-close" onclick="closeSessionSummary()">
-        ☕ ¡A por el descanso!
-      </button>
+      <div class="session-btn-row">
+        <button class="btn-session-close" onclick="closeSessionSummary()">
+          ☕ ¡A por el descanso!
+        </button>
+        <button class="btn-session-share" id="btn-session-share" onclick="shareProgress()">
+          📤
+        </button>
+      </div>
 
     </div>
   </div>
@@ -2556,7 +2589,7 @@ function showSessionSummary() {
   // Datos del estado actual
   const pomoNum  = S.totalPomos;
   const streak   = S.streak;
-  const xpEarned = 50; // XP base por pomodoro natural
+  const xpEarned = 50;
 
   // Misión conectada
   const mission = connectedMission
@@ -2592,7 +2625,7 @@ function showSessionSummary() {
       <div class="sr-label">Racha actual</div>
     </div>`;
 
-  // Misión activa (ocupa las 2 columnas)
+  // Misión activa
   if (mission) {
     const done = mission.done;
     const est  = mission.est || 0;
@@ -2600,7 +2633,6 @@ function showSessionSummary() {
     const progText = est > 0
       ? `${done} / ${est} 🍅 · ${pct}%`
       : `${done} 🍅 completados`;
-
     html += `
       <div class="session-reward mission-card">
         <div class="sr-icon">🎯</div>
@@ -2621,10 +2653,47 @@ function showSessionSummary() {
 
   rewardsEl.innerHTML = html;
 
-  // Mostrar overlay con pequeño delay para que se vea después del flash del ring
+  // v1.6 — Preparar texto de compartir dinámico y almacenarlo en el botón
+  let shareText = `¡Acabo de completar mi pomodoro #${pomoNum} en PomodoroXP! 🍅`;
+  if (streak > 1) shareText += ` Llevo una racha de ${streak} días 🔥`;
+  if (cycleJustDone) shareText += ` ¡Y acabo de cerrar un ciclo completo de ${S.cfg.interval} pomodoros! 🏆`;
+  if (mission) shareText += ` Trabajando en: "${mission.name}"`;
+  shareText += ` pausanchezperea.github.io`;
+
+  const shareBtn = document.getElementById('btn-session-share');
+  if (shareBtn) {
+    shareBtn._shareText = shareText;
+    // Ocultar si el navegador no soporta Web Share API
+    shareBtn.classList.toggle('hidden', !navigator.share);
+  }
+
+  // Mostrar overlay con pequeño delay
   setTimeout(() => {
     document.getElementById('session-overlay').classList.add('open');
   }, 700);
+}
+
+// v1.6 — Compartir progreso con Web Share API
+async function shareProgress() {
+  const btn  = document.getElementById('btn-session-share');
+  const text = btn?._shareText || `¡Pomodoro #${S.totalPomos} completado! Racha de ${S.streak} días 🔥 pausanchezperea.github.io`;
+
+  try {
+    await navigator.share({
+      title: 'PomodoroXP — Mi progreso',
+      text,
+      url:   'https://pausanchezperea.github.io'
+    });
+  } catch(e) {
+    // El usuario canceló o el navegador no soporta share — fallback silencioso
+    if (e.name !== 'AbortError') {
+      // Fallback: copiar al portapapeles
+      try {
+        await navigator.clipboard.writeText(text);
+        toast('t-done', '¡Copiado!', 'Texto copiado al portapapeles 📋');
+      } catch(_) {}
+    }
+  }
 }
 
 function closeSessionSummary() {
