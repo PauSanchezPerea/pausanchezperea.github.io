@@ -6,6 +6,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>PomodoroXP — Motor de Estudio</title>
+<meta name="theme-color" content="#04060d">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;900&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -1401,7 +1402,7 @@ body[data-mode="long"]  .btn-play { border-color: var(--long);  background: var(
       <div class="logo-icon">⚡</div>
       <div class="logo-wordmark">
         <div class="logo-name">POMODOROXP</div>
-        <div class="logo-sub">Motor de Estudio · v1.8</div>
+        <div class="logo-sub">Motor de Estudio · v1.9</div>
       </div>
     </div>
     <nav class="nav">
@@ -1629,13 +1630,13 @@ body[data-mode="long"]  .btn-play { border-color: var(--long);  background: var(
     </div>
 
     <div class="about-card">
-      <div class="about-tag">📦 Versión actual — v1.4</div>
+      <div class="about-tag">📦 Versión actual — v1.9</div>
       <h2 class="about-h2">Estado del proyecto</h2>
       <p class="about-p">
-        PomodoroXP se encuentra actualmente en su versión <strong>1.4</strong>. Esta actualización introduce el <strong>Modal de Resumen de Sesión</strong>, que proporciona feedback inmediato y gratificante al completar cada pomodoro de focus, mostrando la experiencia ganada, la racha actual y el progreso de las misiones conectadas.
+        PomodoroXP se encuentra en su versión <strong>1.9</strong>, completamente funcional y en desarrollo activo. La app incluye <strong>Ranking Global en la nube</strong> con Firebase (login por email o Google), <strong>Student Toolkit</strong> con seis herramientas académicas, <strong>Sistema de Misiones</strong> con tanque de energía y categorías, <strong>Dashboard de Analíticas</strong> con gráficos reales de productividad, <strong>Modo Zen</strong> para eliminar distracciones durante el focus, y un <strong>Reproductor Lo-Fi</strong> integrado. No requiere instalación ni registro obligatorio.
       </p>
       <p class="about-p">
-        Además, se ha mejorado la integración con el <strong>Dashboard de Rendimiento</strong>, garantizando que todos los datos de descansos, categorías de estudio y récords se guarden correctamente tanto a nivel local como en la nube mediante Firebase.
+        Todos los datos se guardan automáticamente en el navegador y, opcionalmente, en la nube. Los atajos de teclado disponibles son: <strong>Espacio</strong> play/pausa, <strong>R</strong> reset, <strong>S</strong> saltar fase, <strong>Z</strong> modo zen y <strong>Escape</strong> cerrar modales.
       </p>
     </div>
 
@@ -1714,7 +1715,7 @@ body[data-mode="long"]  .btn-play { border-color: var(--long);  background: var(
 
     <div class="about-footer">
       <div class="about-footer-logo">🍅 PomodoroXP</div>
-      <div class="about-footer-sub">Hecho con ☕ y muchos pomodoros · v1.4</div>
+      <div class="about-footer-sub">Hecho con ☕ y muchos pomodoros · v1.9</div>
       <div class="about-footer-links">
         <a href="privacy.html">Privacidad</a>
         <a href="cookies.html">Cookies</a>
@@ -2472,6 +2473,7 @@ document.addEventListener('keydown', e => {
   if (e.target.tagName==='INPUT') return;
   if (e.code==='Space') { e.preventDefault(); if (S.status==='running') stop(); else startTimer(); }
   if (e.code==='KeyR') resetTimer();
+  if (e.code==='KeyS') skipTimer();
   if (e.code==='KeyZ') toggleZenMode();
   if (e.code==='Escape') closeAll();
 });
@@ -3017,8 +3019,8 @@ function syncAfterPomo() { if (window.FB && window._fbUser) window.FB.syncToClou
 // Guardar referencia al usuario actual
 window._fbUser = null;
 
-console.log('%cPOMODOROXP v1.8','font-size:20px;font-weight:900;color:#00d4ff;font-family:monospace');
-console.log('%cModo Zen + Lo-Fi Player 🧘','color:#5c78a8;font-family:monospace');
+console.log('%cPOMODOROXP v1.9','font-size:20px;font-weight:900;color:#00d4ff;font-family:monospace');
+console.log('%cTheme color + atajos S/Z/R ⌨️','color:#5c78a8;font-family:monospace');
 console.log('%cTimer fix + Dashboard real data + Firebase sync ⚡','color:#5c78a8;font-family:monospace');
 </script>
 
