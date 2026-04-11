@@ -1247,6 +1247,55 @@ body[data-mode="long"]  .btn-play { border-color: var(--long);  background: var(
   #app { padding: 0 14px 40px; }
 }
 
+/* ---- ZEN MODE v1.8 ---- */
+
+/* Elementos que se ocultan en modo zen */
+.zen-mode .header,
+.zen-mode .mode-tabs,
+.zen-mode .missions-panel,
+.zen-mode .toolkit-btn,
+.zen-mode .xp-panel,
+.zen-mode .stats-row,
+.zen-mode .week-panel,
+.zen-mode .ad-banner,
+.zen-mode .app-footer,
+.zen-mode #about-section {
+  opacity: 0;
+  pointer-events: none;
+  max-height: 0;
+  overflow: hidden;
+  margin: 0 !important;
+  padding: 0 !important;
+  transition: opacity 0.4s ease, max-height 0.4s ease;
+}
+
+/* El timer-section se centra en la pantalla */
+.zen-mode #app {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  padding-top: 0;
+}
+
+/* El ciclo de puntos y los controles se quedan visibles */
+.zen-mode .timer-section,
+.zen-mode .cycle-dots,
+.zen-mode .controls,
+.zen-mode .mission-slot {
+  opacity: 1;
+  pointer-events: auto;
+  transition: opacity 0.4s ease;
+}
+
+/* Botón zen activo */
+.btn-zen.active {
+  color: var(--short) !important;
+  border-color: var(--short) !important;
+  box-shadow: 0 0 14px var(--short-d) !important;
+}
+
 /* ---- LO-FI PLAYER v1.7 ---- */
 .lofi-btn {
   position: fixed; bottom: 28px; left: 28px; z-index: 400;
@@ -1352,7 +1401,7 @@ body[data-mode="long"]  .btn-play { border-color: var(--long);  background: var(
       <div class="logo-icon">⚡</div>
       <div class="logo-wordmark">
         <div class="logo-name">POMODOROXP</div>
-        <div class="logo-sub">Motor de Estudio · v1.7</div>
+        <div class="logo-sub">Motor de Estudio · v1.8</div>
       </div>
     </div>
     <nav class="nav">
@@ -1402,6 +1451,7 @@ body[data-mode="long"]  .btn-play { border-color: var(--long);  background: var(
     <button class="btn-circle" id="btn-reset" title="Reset (R)">↺</button>
     <button class="btn-circle btn-play" id="btn-play" title="Play/Pause (Espacio)">▶</button>
     <button class="btn-circle" id="btn-skip" title="Saltar">⏭</button>
+    <button class="btn-circle btn-zen" id="btn-zen" title="Modo Zen (Z)" onclick="toggleZenMode()">🧘</button>
   </div>
 
   <div class="missions-panel">
@@ -2422,6 +2472,7 @@ document.addEventListener('keydown', e => {
   if (e.target.tagName==='INPUT') return;
   if (e.code==='Space') { e.preventDefault(); if (S.status==='running') stop(); else startTimer(); }
   if (e.code==='KeyR') resetTimer();
+  if (e.code==='KeyZ') toggleZenMode();
   if (e.code==='Escape') closeAll();
 });
 
@@ -2825,6 +2876,23 @@ function toggleLofi() {
 }
 
 // =====================================================================
+// ZEN MODE — v1.8
+// =====================================================================
+let zenActive = false;
+
+function toggleZenMode() {
+  zenActive = !zenActive;
+  document.body.classList.toggle('zen-mode', zenActive);
+  document.getElementById('btn-zen').classList.toggle('active', zenActive);
+
+  if (zenActive) {
+    toast('t-done', '🧘 Modo Zen Activado', 'Cero distracciones. Solo tú y el timer.');
+  } else {
+    toast('t-done', '👁 Modo Normal', 'Interfaz completa restaurada.');
+  }
+}
+
+// =====================================================================
 // BOOT
 // =====================================================================
 initAll();
@@ -2949,8 +3017,8 @@ function syncAfterPomo() { if (window.FB && window._fbUser) window.FB.syncToClou
 // Guardar referencia al usuario actual
 window._fbUser = null;
 
-console.log('%cPOMODOROXP v1.7','font-size:20px;font-weight:900;color:#00d4ff;font-family:monospace');
-console.log('%cLo-Fi Player + Botón compartir 🎵','color:#5c78a8;font-family:monospace');
+console.log('%cPOMODOROXP v1.8','font-size:20px;font-weight:900;color:#00d4ff;font-family:monospace');
+console.log('%cModo Zen + Lo-Fi Player 🧘','color:#5c78a8;font-family:monospace');
 console.log('%cTimer fix + Dashboard real data + Firebase sync ⚡','color:#5c78a8;font-family:monospace');
 </script>
 
