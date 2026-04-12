@@ -1402,7 +1402,7 @@ body[data-mode="long"]  .btn-play { border-color: var(--long);  background: var(
       <div class="logo-icon">⚡</div>
       <div class="logo-wordmark">
         <div class="logo-name">POMODOROXP</div>
-        <div class="logo-sub">Motor de Estudio · v1.9</div>
+        <div class="logo-sub">Motor de Estudio · v2.0</div>
       </div>
     </div>
     <nav class="nav">
@@ -2148,6 +2148,9 @@ function onComplete(natural = true) {
       addXP(50, `+50 XP — Pomodoro completado 🍅`);
       refreshWeekChart();
 
+      // v2.0 — notificación nativa (útil cuando el usuario está en otra pestaña)
+      notifyUser('¡Focus completado! 🍅', `Pomodoro #${S.totalPomos} terminado. ¡Toca descanso!`);
+
       // Avanzar misión activa si existe
       missionPomoComplete();
 
@@ -2173,6 +2176,8 @@ function onComplete(natural = true) {
   } else {
     sfxBreakEnd();
     toast('t-done','¡BREAK TERMINADO!','Hora de otro pomodoro 🎯');
+    // v2.0 — notificación nativa al terminar descanso
+    notifyUser('¡Descanso terminado! ☕', 'Hora de volver a concentrarse. ¡Tú puedes!');
     setTimeout(()=>setMode('focus', S.cfg.afocus), S.cfg.afocus ? 1800 : 1000);
   }
 
@@ -2429,6 +2434,7 @@ function loadCfgUI() {
 // EVENTS
 // =====================================================================
 document.getElementById('btn-play').addEventListener('click',()=>{
+  requestNotificationPermission();   // v2.0 — pedir permiso al primer play
   if (actx && actx.state==='suspended') actx.resume();
   if (S.status==='running') stop(); else startTimer();
 });
@@ -2895,6 +2901,32 @@ function toggleZenMode() {
 }
 
 // =====================================================================
+// NOTIFICACIONES NATIVAS — v2.0
+// =====================================================================
+function requestNotificationPermission() {
+  if (!('Notification' in window)) return;
+  if (Notification.permission === 'default') {
+    Notification.requestPermission();
+  }
+}
+
+function notifyUser(title, body) {
+  if (!('Notification' in window)) return;
+  if (Notification.permission !== 'granted') return;
+  // Solo notificar si el documento NO está en foco (usuario en otra pestaña)
+  if (!document.hidden) return;
+  try {
+    new Notification(title, {
+      body,
+      icon: 'https://pausanchezperea.github.io/favicon.ico',
+      badge: 'https://pausanchezperea.github.io/favicon.ico',
+      tag: 'pomodoroxp',       // reemplaza la notif anterior en vez de apilar
+      renotify: true
+    });
+  } catch(e) {}
+}
+
+// =====================================================================
 // BOOT
 // =====================================================================
 initAll();
@@ -3019,8 +3051,8 @@ function syncAfterPomo() { if (window.FB && window._fbUser) window.FB.syncToClou
 // Guardar referencia al usuario actual
 window._fbUser = null;
 
-console.log('%cPOMODOROXP v1.9','font-size:20px;font-weight:900;color:#00d4ff;font-family:monospace');
-console.log('%cTheme color + atajos S/Z/R ⌨️','color:#5c78a8;font-family:monospace');
+console.log('%cPOMODOROXP v2.0','font-size:20px;font-weight:900;color:#00d4ff;font-family:monospace');
+console.log('%cNotificaciones nativas del navegador 🔔','color:#5c78a8;font-family:monospace');
 console.log('%cTimer fix + Dashboard real data + Firebase sync ⚡','color:#5c78a8;font-family:monospace');
 </script>
 
