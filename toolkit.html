@@ -4,522 +4,325 @@
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9027862604686644" crossorigin="anonymous"></script>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Student Toolkit — PomodoroXP</title>
-  <meta name="description" content="Herramientas gratuitas para estudiantes: conversor de unidades, calculadora científica, recursos académicos y más. Todo en un solo lugar.">
+  <meta name="theme-color" content="#04060d">
+  <title>Student Toolkit v2.1 — PomodoroXP</title>
+  <meta name="description" content="Centro de mando para estudiantes: calculadoras, generador APA, estadística, ecuaciones, matrices y más.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;900&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-
 <style>
-/* ================================================================
-   VARIABLES — idénticas a index.html
-   ================================================================ */
+/* ══════════════════════════════════════════════════════════════
+   VARIABLES
+══════════════════════════════════════════════════════════════ */
 :root {
-  --bg:        #04060d;
-  --bg2:       #070c18;
-  --bg3:       #0c1425;
-  --card:      rgba(8,14,28,0.85);
-  --border:    rgba(0,180,255,0.10);
-  --border-h:  rgba(0,212,255,0.30);
-  --focus:     #00d4ff;
-  --focus-d:   rgba(0,212,255,0.13);
-  --short:     #00ff98;
-  --short-d:   rgba(0,255,152,0.12);
-  --long:      #b06aff;
-  --long-d:    rgba(176,106,255,0.12);
-  --xp:        #ff7043;
-  --gold:      #ffd600;
-  --text:      #dce8f8;
-  --text-dim:  #5c78a8;
-  --text-faint:#2a3a5a;
-  --radius:    14px;
+  --bg:       #04060d;
+  --bg2:      #070c18;
+  --bg3:      #0c1425;
+  --card:     rgba(8,14,28,0.92);
+  --border:   rgba(0,180,255,0.10);
+  --border-h: rgba(0,212,255,0.40);
+  --focus:    #00d4ff;  --focus-d:  rgba(0,212,255,0.15);
+  --short:    #00ff98;  --short-d:  rgba(0,255,152,0.13);
+  --long:     #b06aff;  --long-d:   rgba(176,106,255,0.15);
+  --xp:       #ff7043;  --xp-d:     rgba(255,112,67,0.15);
+  --gold:     #ffd600;  --gold-d:   rgba(255,214,0,0.15);
+  --text:     #dce8f8;  --text-dim: #5c78a8; --text-faint: #2a3a5a;
+  --radius:   18px;
+}
+*,*::before,*::after { box-sizing:border-box; margin:0; padding:0; }
+html, body { height:100%; }
+body { background:var(--bg); color:var(--text); font-family:'Outfit',sans-serif; min-height:100vh; overflow-x:hidden; }
+
+/* ══ BACKGROUND ══ */
+.bg-grid { position:fixed; inset:0; background-image:linear-gradient(rgba(0,212,255,.022) 1px,transparent 1px),linear-gradient(90deg,rgba(0,212,255,.022) 1px,transparent 1px); background-size:44px 44px; pointer-events:none; z-index:0; }
+.bg-orb  { position:fixed; pointer-events:none; z-index:0; border-radius:50%; filter:blur(110px); }
+.bg-orb-1 { width:800px; height:800px; top:-280px; left:50%; transform:translateX(-50%); background:radial-gradient(circle,rgba(255,214,0,.06) 0%,transparent 70%); animation:orb 14s ease-in-out infinite; }
+.bg-orb-2 { width:500px; height:500px; bottom:-100px; right:-80px; background:radial-gradient(circle,rgba(176,106,255,.055) 0%,transparent 70%); animation:orb 11s ease-in-out infinite reverse; }
+.bg-orb-3 { width:420px; height:420px; top:30%; left:-100px; background:radial-gradient(circle,rgba(0,212,255,.04) 0%,transparent 70%); animation:orb 9s ease-in-out infinite 3s; }
+@keyframes orb { 0%,100%{transform:translateX(-50%) scale(1)} 50%{transform:translateX(-50%) scale(1.12) translateY(-20px)} }
+.bg-orb-2 { animation:orb2 11s ease-in-out infinite reverse; }
+.bg-orb-3 { animation:orb2 9s ease-in-out infinite 3s; }
+@keyframes orb2 { 0%,100%{transform:scale(1)} 50%{transform:scale(1.1) translateY(-15px)} }
+
+/* ══ TOPBAR ══ */
+.topbar { position:sticky; top:0; z-index:300; background:rgba(4,6,13,.96); backdrop-filter:blur(20px); border-bottom:1px solid var(--border); padding:0 28px; height:60px; display:flex; align-items:center; justify-content:space-between; }
+.topbar-left { display:flex; align-items:center; gap:16px; }
+.topbar-logo { font-family:'Orbitron',monospace; font-size:15px; font-weight:900; letter-spacing:.1em; background:linear-gradient(135deg,var(--focus) 0%,#fff 70%); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; text-decoration:none; }
+.topbar-sep  { color:var(--text-faint); font-size:18px; }
+.topbar-page { font-size:11px; color:var(--text-dim); text-transform:uppercase; letter-spacing:.2em; font-weight:600; }
+.topbar-right { display:flex; align-items:center; gap:10px; }
+.topbar-back { display:flex; align-items:center; gap:7px; background:var(--focus-d); border:1px solid var(--focus); color:var(--focus); padding:8px 16px; border-radius:10px; font-size:12px; font-weight:700; text-decoration:none; transition:all .22s; }
+.topbar-back:hover { background:rgba(0,212,255,.24); box-shadow:0 0 20px var(--focus-d); }
+.topbar-badge { font-size:9px; font-weight:700; letter-spacing:.14em; padding:4px 12px; border-radius:20px; background:rgba(255,214,0,.1); color:var(--gold); border:1px solid rgba(255,214,0,.22); text-transform:uppercase; }
+
+/* ══ PAGE ══ */
+.page { position:relative; z-index:1; max-width:1280px; margin:0 auto; padding:24px 24px 100px; }
+
+/* ══════════════════════════════════════════════════════════════
+   ZONA SUPERIOR — LOS REYES (60vh cada tarjeta)
+══════════════════════════════════════════════════════════════ */
+.kings-row {
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:16px;
+  margin-bottom:16px;
 }
 
-/* ================================================================
-   RESET & BASE
-   ================================================================ */
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-html { scroll-behavior: smooth; }
-body {
-  background: var(--bg);
-  color: var(--text);
-  font-family: 'Outfit', sans-serif;
-  min-height: 100vh;
-  overflow-x: hidden;
+/* ── Base de rey ── */
+.king {
+  height:60vh; min-height:340px; max-height:600px;
+  position:relative; overflow:hidden;
+  border-radius:22px;
+  border:1px solid transparent;
+  display:flex; flex-direction:column; justify-content:flex-end;
+  padding:36px;
+  text-decoration:none; color:inherit;
+  transition: transform .32s cubic-bezier(.34,1.56,.64,1),
+              box-shadow .32s ease,
+              border-color .32s ease;
+  animation:king-in .6s ease both;
+}
+.king:hover { transform:scale(1.025) translateY(-4px); }
+@keyframes king-in { from{opacity:0;transform:translateY(30px) scale(.96)} to{opacity:1;transform:translateY(0) scale(1)} }
+.king:nth-child(1) { animation-delay:.06s; }
+.king:nth-child(2) { animation-delay:.13s; }
+
+/* Capa de gradiente animado — NO bloquea clics */
+.king-bg {
+  position:absolute; inset:-40px;
+  background-size:400% 400%;
+  animation:grad-shift 8s ease infinite;
+  opacity:.9;
+  pointer-events:none;
+  z-index:0;
+  border-radius:inherit;
+}
+@keyframes grad-shift {
+  0%   { background-position:0% 50%; }
+  50%  { background-position:100% 50%; }
+  100% { background-position:0% 50%; }
 }
 
-/* ================================================================
-   BACKGROUND
-   ================================================================ */
-.bg-grid {
-  position: fixed; inset: 0;
-  background-image:
-    linear-gradient(rgba(0,212,255,0.025) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(0,212,255,0.025) 1px, transparent 1px);
-  background-size: 44px 44px;
-  pointer-events: none; z-index: 0;
-}
-.bg-orb {
-  position: fixed; pointer-events: none; z-index: 0;
-  border-radius: 50%; filter: blur(90px);
-}
-.bg-orb-1 {
-  width: 500px; height: 500px; top: -150px; left: 50%;
-  transform: translateX(-50%);
-  background: radial-gradient(circle, rgba(0,212,255,0.06) 0%, transparent 70%);
-}
-.bg-orb-2 {
-  width: 380px; height: 380px; bottom: 10%; right: -80px;
-  background: radial-gradient(circle, rgba(176,106,255,0.05) 0%, transparent 70%);
+/* Capa de cristal encima del gradiente */
+.king-glass {
+  position:absolute; inset:0;
+  background:rgba(4,6,13,.68);
+  backdrop-filter:blur(0px);
+  pointer-events:none;
+  z-index:1;
 }
 
-/* ================================================================
-   TOPBAR
-   ================================================================ */
-.topbar {
-  position: sticky; top: 0; z-index: 200;
-  background: rgba(4,6,13,0.94);
-  backdrop-filter: blur(16px);
-  border-bottom: 1px solid var(--border);
-  padding: 0 24px;
-  height: 60px;
-  display: flex; align-items: center; justify-content: space-between;
+/* Icono descomunal con cristal */
+.king-icon {
+  position:absolute; bottom:-30px; right:-20px;
+  font-size:220px; line-height:1;
+  opacity:.08;
+  pointer-events:none;
+  z-index:2;
+  transition:opacity .32s, transform .32s;
+  filter:blur(1px);
 }
-.topbar-left { display: flex; align-items: center; gap: 16px; }
-.topbar-logo {
-  font-family: 'Orbitron', monospace;
-  font-size: 15px; font-weight: 900;
-  letter-spacing: 0.1em;
-  background: linear-gradient(135deg, var(--focus) 0%, #fff 70%);
-  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-  background-clip: text; text-decoration: none;
+.king:hover .king-icon { opacity:.16; transform:scale(1.06) rotate(-5deg); filter:blur(0); }
+
+/* Brillo de hover — NO bloquea clics */
+.king-glow {
+  position:absolute; inset:0; border-radius:inherit;
+  opacity:0; transition:opacity .32s;
+  pointer-events:none;
+  z-index:3;
 }
-.topbar-sep { color: var(--text-faint); font-size: 18px; }
-.topbar-page {
-  font-size: 11px; color: var(--text-dim);
-  text-transform: uppercase; letter-spacing: 0.2em; font-weight: 600;
+.king:hover .king-glow { opacity:1; }
+
+/* Contenido — z-index alto para ser siempre clicable */
+.king-content {
+  position:relative; z-index:10;
 }
-.topbar-back {
-  display: flex; align-items: center; gap: 7px;
-  background: var(--focus-d);
-  border: 1px solid var(--focus);
-  color: var(--focus);
-  padding: 7px 14px; border-radius: 9px;
-  font-family: 'Outfit', sans-serif;
-  font-size: 12px; font-weight: 600;
-  text-decoration: none; transition: all 0.22s;
-  letter-spacing: 0.06em;
+.king-tag  { font-size:9px; font-weight:700; text-transform:uppercase; letter-spacing:.28em; margin-bottom:12px; opacity:.8; }
+.king-title {
+  font-family:'Orbitron',monospace;
+  font-size:clamp(26px,2.8vw,40px);
+  font-weight:900; line-height:1.15;
+  margin-bottom:12px;
 }
-.topbar-back:hover {
-  background: rgba(0,212,255,0.22);
-  box-shadow: 0 0 14px var(--focus-d);
+.king-desc { font-size:14px; color:rgba(220,232,248,.75); line-height:1.65; margin-bottom:28px; max-width:440px; }
+
+/* CTA real */
+.king-cta {
+  display:inline-flex; align-items:center; gap:10px;
+  padding:14px 28px; border-radius:12px;
+  font-family:'Outfit',sans-serif; font-size:14px; font-weight:700;
+  letter-spacing:.04em; cursor:pointer; border:none;
+  transition:all .24s; position:relative; z-index:10;
+  text-decoration:none;
+}
+.king-cta::after { display:none; } /* no interferir con el pseudo del padre */
+
+/* GOLD */
+.king-notas { border-color:rgba(255,214,0,.25); }
+.king-notas .king-bg  { background:linear-gradient(135deg,#1a1200,#0d0900,#241a00,#0a0800,#1e1500); }
+.king-notas:hover     { border-color:var(--gold); box-shadow:0 0 80px rgba(255,214,0,.3), 0 0 160px rgba(255,214,0,.12), inset 0 0 80px rgba(255,214,0,.04); }
+.king-notas .king-glow { background:radial-gradient(ellipse at top left,rgba(255,214,0,.12),transparent 55%); }
+.king-notas .king-cta  { background:rgba(255,214,0,.15); border:1.5px solid rgba(255,214,0,.5); color:var(--gold); }
+.king-notas .king-cta:hover { background:rgba(255,214,0,.3); box-shadow:0 0 30px rgba(255,214,0,.35); transform:translateY(-2px); }
+
+/* FOCUS CYAN */
+.king-apa  { border-color:rgba(0,212,255,.22); }
+.king-apa .king-bg   { background:linear-gradient(135deg,#001520,#000d18,#001e2a,#000a12,#001828); }
+.king-apa:hover      { border-color:var(--focus); box-shadow:0 0 80px rgba(0,212,255,.3), 0 0 160px rgba(0,212,255,.12), inset 0 0 80px rgba(0,212,255,.04); }
+.king-apa .king-glow { background:radial-gradient(ellipse at top right,rgba(0,212,255,.14),transparent 55%); }
+.king-apa .king-cta  { background:rgba(0,212,255,.13); border:1.5px solid rgba(0,212,255,.45); color:var(--focus); }
+.king-apa .king-cta:hover { background:rgba(0,212,255,.28); box-shadow:0 0 30px rgba(0,212,255,.35); transform:translateY(-2px); }
+
+/* ══════════════════════════════════════════════════════════════
+   ZONA INFERIOR — BARRA DE WIDGETS
+══════════════════════════════════════════════════════════════ */
+.widgets-bar {
+  display:grid;
+  grid-template-columns:auto auto 1fr;
+  gap:14px;
+  align-items:stretch;
 }
 
-/* ================================================================
-   PAGE LAYOUT
-   ================================================================ */
-.page {
-  position: relative; z-index: 1;
-  max-width: 1100px; margin: 0 auto;
-  padding: 40px 24px 80px;
+/* Bloque contenedor de widgets */
+.widget-block {
+  background:var(--card);
+  border:1px solid var(--border);
+  border-radius:var(--radius);
+  padding:16px 20px;
+  backdrop-filter:blur(14px);
+  transition:border-color .24s, box-shadow .24s;
 }
+.widget-block:hover { border-color:var(--border-h); }
 
-/* ================================================================
-   HERO
-   ================================================================ */
-.hero {
-  text-align: center;
-  margin-bottom: 40px;
-  padding-bottom: 36px;
-  border-bottom: 1px solid var(--border);
+.wb-label {
+  font-size:9px; font-weight:700; text-transform:uppercase;
+  letter-spacing:.24em; color:var(--text-dim);
+  margin-bottom:14px; display:flex; align-items:center; gap:6px;
 }
-.hero-tag {
-  font-size: 10px; color: var(--focus);
-  text-transform: uppercase; letter-spacing: 0.28em;
-  font-weight: 700; margin-bottom: 14px;
-}
-.hero-title {
-  font-family: 'Orbitron', monospace;
-  font-size: clamp(26px, 4vw, 42px);
-  font-weight: 900; color: var(--text);
-  margin-bottom: 14px; line-height: 1.2;
-}
-.hero-title span {
-  background: linear-gradient(135deg, var(--focus), var(--short));
-  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-  background-clip: text;
-}
-.hero-sub {
-  font-size: 15px; color: var(--text-dim);
-  max-width: 540px; margin: 0 auto; line-height: 1.7;
-}
+.wb-label-dot { width:6px; height:6px; border-radius:50%; flex-shrink:0; }
 
-/* ================================================================
-   SEARCH BAR
-   ================================================================ */
-.search-wrap {
-  position: relative; max-width: 560px;
-  margin: 0 auto 48px;
-}
-.search-icon {
-  position: absolute; left: 16px; top: 50%;
-  transform: translateY(-50%);
-  font-size: 16px; pointer-events: none;
-  color: var(--text-dim);
-}
-#search-input {
-  width: 100%;
-  background: var(--card);
-  border: 1px solid var(--border);
-  border-radius: 12px;
-  color: var(--text);
-  font-family: 'Outfit', sans-serif;
-  font-size: 15px; font-weight: 500;
-  padding: 14px 16px 14px 46px;
-  transition: all 0.24s;
-  backdrop-filter: blur(12px);
-}
-#search-input::placeholder { color: var(--text-dim); }
-#search-input:focus {
-  outline: none;
-  border-color: var(--focus);
-  box-shadow: 0 0 20px var(--focus-d);
-}
-.search-count {
-  position: absolute; right: 14px; top: 50%;
-  transform: translateY(-50%);
-  font-size: 11px; color: var(--text-dim);
-  font-family: 'Orbitron', monospace;
-}
+/* ── Iconos de widget ── */
+.widgets-row { display:flex; gap:8px; flex-wrap:wrap; }
 
-/* ================================================================
-   SECTION HEADERS
-   ================================================================ */
-.sec-header {
-  display: flex; align-items: center; gap: 14px;
-  margin-bottom: 20px; margin-top: 8px;
+.wt { /* widget tool */
+  display:flex; flex-direction:column; align-items:center; justify-content:center;
+  gap:6px; padding:14px 16px; min-width:90px;
+  background:rgba(255,255,255,.03);
+  border:1px solid rgba(255,255,255,.06);
+  border-radius:14px;
+  text-decoration:none; color:var(--text-dim);
+  font-size:11px; font-weight:600;
+  transition:all .24s;
+  position:relative; z-index:5; /* siempre clicable */
+  cursor:pointer;
 }
-.sec-icon {
-  width: 38px; height: 38px;
-  border: 2px solid var(--focus);
-  border-radius: 10px;
-  display: flex; align-items: center; justify-content: center;
-  font-size: 18px;
-  background: var(--focus-d);
-  flex-shrink: 0;
+.wt:hover {
+  background:rgba(255,255,255,.07);
+  border-color:var(--border-h);
+  color:var(--text);
+  transform:translateY(-4px) scale(1.04);
 }
-.sec-header[data-color="green"] .sec-icon  { border-color: var(--short); background: var(--short-d); }
-.sec-header[data-color="purple"] .sec-icon { border-color: var(--long);  background: var(--long-d);  }
-.sec-header[data-color="gold"] .sec-icon   { border-color: var(--gold);  background: rgba(255,214,0,0.1); }
-.sec-info {}
-.sec-title {
-  font-family: 'Orbitron', monospace;
-  font-size: 13px; font-weight: 700;
-  color: var(--text); letter-spacing: 0.08em;
-  margin-bottom: 2px;
-}
-.sec-sub { font-size: 11px; color: var(--text-dim); }
-.section-block { margin-bottom: 50px; }
+.wt-icon { font-size:28px; line-height:1; transition:transform .24s; }
+.wt:hover .wt-icon { transform:scale(1.2); }
+.wt-name { text-align:center; white-space:nowrap; letter-spacing:.04em; }
 
-/* ================================================================
-   GRID
-   ================================================================ */
-.cards-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-  gap: 14px;
-}
-.cards-grid-wide {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-  gap: 14px;
-}
+/* Colores de hover por bloque */
+.wb-tools .wt:hover    { border-color:var(--long);  box-shadow:0 0 22px rgba(176,106,255,.3), 0 6px 20px rgba(0,0,0,.4); color:var(--long); }
+.wb-ext .wt:hover      { border-color:var(--focus); box-shadow:0 0 22px rgba(0,212,255,.25), 0 6px 20px rgba(0,0,0,.4); color:var(--focus); }
+.wb-soon .wt           { opacity:.45; pointer-events:none; cursor:default; }
 
-/* ================================================================
-   HELP BUTTON & MODAL
-   ================================================================ */
-.help-btn {
-  width: 28px; height: 28px;
-  border-radius: 50%;
-  border: 1px solid var(--border);
-  background: var(--card);
-  color: var(--text-dim);
-  font-size: 13px; font-weight: 700;
-  cursor: pointer; transition: all 0.2s;
-  display: flex; align-items: center; justify-content: center;
-  font-family: 'Outfit', sans-serif;
-  margin-left: 8px; flex-shrink: 0;
+/* Bloque próximamente */
+.wb-soon {
+  border-color:rgba(255,255,255,.04);
+  background:rgba(6,10,22,.7);
+  opacity:.6;
 }
-.help-btn:hover {
-  border-color: var(--focus);
-  color: var(--focus);
-  box-shadow: 0 0 10px var(--focus-d);
-  background: var(--focus-d);
-}
-.help-overlay {
-  display: none; position: fixed; inset: 0;
-  background: rgba(2,4,10,0.82);
-  backdrop-filter: blur(10px);
-  z-index: 500;
-  align-items: center; justify-content: center;
-  padding: 20px;
-}
-.help-overlay.open { display: flex; }
-.help-box {
-  background: var(--bg3);
-  border: 1px solid var(--border);
-  border-radius: 18px;
-  width: 100%; max-width: 480px;
-  max-height: 80vh; overflow-y: auto;
-  box-shadow: 0 0 50px rgba(0,212,255,0.08);
-  animation: help-in 0.3s cubic-bezier(0.34,1.56,0.64,1);
-}
-@keyframes help-in {
-  from { opacity:0; transform: scale(0.9) translateY(20px); }
-  to   { opacity:1; transform: scale(1) translateY(0); }
-}
-.help-head {
-  display: flex; justify-content: space-between; align-items: center;
-  padding: 18px 22px;
-  border-bottom: 1px solid var(--border);
-  position: sticky; top: 0;
-  background: var(--bg3); z-index: 1;
-  border-radius: 18px 18px 0 0;
-}
-.help-title {
-  font-family: 'Orbitron', monospace;
-  font-size: 11px; font-weight: 700;
-  letter-spacing: 0.16em; color: var(--focus);
-}
-.help-close {
-  width: 28px; height: 28px; border-radius: 7px;
-  border: 1px solid var(--border); background: transparent;
-  color: var(--text-dim); font-size: 12px; cursor: pointer;
-  display: flex; align-items: center; justify-content: center;
-  transition: all 0.2s;
-}
-.help-close:hover { border-color: var(--focus); color: var(--text); }
-.help-body { padding: 20px 22px; }
-.help-section { margin-bottom: 18px; }
-.help-sec-title {
-  font-size: 12px; font-weight: 700; color: var(--text);
-  margin-bottom: 7px;
-}
-.help-p {
-  font-size: 13px; color: var(--text-dim);
-  line-height: 1.7; margin-bottom: 6px;
-}
+.wb-soon .wb-label { color:var(--text-faint); }
+.soon-tag { font-size:8px; font-weight:700; text-transform:uppercase; letter-spacing:.2em; padding:3px 9px; border-radius:20px; background:rgba(255,255,255,.05); color:var(--text-faint); border:1px solid rgba(255,255,255,.07); display:inline-block; margin-bottom:10px; }
 
-/* ================================================================
-   COLLAPSIBLE SECTION
-   ================================================================ */
-.collapsible-header { transition: opacity 0.2s; }
-.collapsible-header:hover { opacity: 0.85; }
-.collapse-toggle {
-  display: flex; align-items: center; gap: 7px;
-  background: var(--focus-d);
-  border: 1px solid rgba(0,212,255,0.2);
-  border-radius: 9px; padding: 6px 12px;
-  flex-shrink: 0;
-  transition: all 0.22s;
+/* ══ BOTÓN FLOTANTE CONVERSOR ══ */
+.fab-conv {
+  position:fixed; bottom:28px; right:28px; z-index:400;
+  width:56px; height:56px; border-radius:50%;
+  background:rgba(0,255,152,.12);
+  border:1.5px solid rgba(0,255,152,.35);
+  color:var(--short); font-size:22px;
+  cursor:pointer; transition:all .26s;
+  display:flex; align-items:center; justify-content:center;
+  box-shadow:0 6px 28px rgba(0,0,0,.5), 0 0 20px rgba(0,255,152,.15);
+  backdrop-filter:blur(12px);
 }
-.collapsible-header:hover .collapse-toggle {
-  border-color: var(--focus);
-  box-shadow: 0 0 10px var(--focus-d);
+.fab-conv:hover { background:rgba(0,255,152,.22); transform:scale(1.1) rotate(15deg); box-shadow:0 8px 36px rgba(0,0,0,.55), 0 0 34px rgba(0,255,152,.28); }
+.fab-tooltip {
+  position:absolute; bottom:calc(100% + 10px); right:0;
+  background:var(--bg3); border:1px solid var(--border);
+  border-radius:8px; padding:5px 12px;
+  font-size:11px; font-weight:600; color:var(--short);
+  white-space:nowrap; opacity:0; pointer-events:none;
+  transition:opacity .22s; font-family:'Outfit',sans-serif;
 }
-.collapse-icon {
-  font-size: 10px; color: var(--focus);
-  transition: transform 0.32s cubic-bezier(0.34,1.56,0.64,1);
-  display: inline-block;
-}
-.collapse-icon.collapsed { transform: rotate(180deg); }
-.collapse-label { font-size: 10px; color: var(--focus); font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; }
-.collapsible-body {
-  overflow: hidden;
-  max-height: 2000px;
-  transition: max-height 0.5s cubic-bezier(0.4,0,0.2,1), opacity 0.35s ease, margin 0.35s ease;
-  opacity: 1;
-  margin-top: 0;
-}
-.collapsible-body.collapsed {
-  max-height: 0;
-  opacity: 0;
-  margin-top: -8px;
-}
+.fab-conv:hover .fab-tooltip { opacity:1; }
 
-/* ================================================================
-   LINK CARDS (recursos externos)
-   ================================================================ */
-.link-card {
-  background: var(--card);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  padding: 18px 16px;
-  text-decoration: none;
-  display: flex; flex-direction: column; gap: 8px;
-  transition: all 0.24s;
-  backdrop-filter: blur(10px);
-  position: relative; overflow: hidden;
-  cursor: pointer;
-}
-.link-card::before {
-  content: ''; position: absolute;
-  inset: 0; opacity: 0; transition: opacity 0.3s;
-  background: linear-gradient(135deg, var(--focus-d), transparent);
-}
-.link-card:hover { border-color: var(--border-h); transform: translateY(-2px); box-shadow: 0 8px 28px rgba(0,212,255,0.1); }
-.link-card:hover::before { opacity: 1; }
-.link-card-icon { font-size: 28px; }
-.link-card-name { font-size: 14px; font-weight: 700; color: var(--text); }
-.link-card-desc { font-size: 11px; color: var(--text-dim); line-height: 1.5; }
-.link-card-tag {
-  display: inline-block; font-size: 9px; font-weight: 700;
-  letter-spacing: 0.14em; text-transform: uppercase;
-  padding: 2px 8px; border-radius: 20px;
-  background: var(--focus-d); color: var(--focus);
-  border: 1px solid rgba(0,212,255,0.2);
-  width: fit-content; margin-top: 2px;
-}
+/* ══ AD ══ */
+.ad-tk { width:100%; min-height:90px; background:rgba(0,212,255,.02); border:1px dashed rgba(0,212,255,.07); border-radius:14px; overflow:hidden; margin-bottom:16px; }
 
-/* ================================================================
-   TOOL CARDS (herramientas interactivas)
-   ================================================================ */
-.tool-card {
-  background: var(--card);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  padding: 20px;
-  backdrop-filter: blur(10px);
-  transition: border-color 0.22s;
-}
-.tool-card:hover { border-color: var(--border-h); }
-.tool-card-header {
-  display: flex; align-items: center; gap: 10px; margin-bottom: 16px;
-}
-.tool-card-icon { font-size: 22px; }
-.tool-card-title { font-size: 14px; font-weight: 700; color: var(--text); }
-.tool-card-sub   { font-size: 10px; color: var(--text-dim); margin-top: 1px; }
+/* ══ FOOTER ══ */
+.tk-footer { text-align:center; padding:22px 0 0; border-top:1px solid var(--border); font-size:11px; color:var(--text-faint); }
+.tk-footer a { color:var(--text-faint); text-decoration:none; margin:0 10px; transition:color .2s; }
+.tk-footer a:hover { color:var(--text-dim); }
 
-/* ================================================================
-   COMING SOON CARDS
-   ================================================================ */
-.soon-card {
-  background: var(--card);
-  border: 1px dashed var(--border);
-  border-radius: var(--radius);
-  padding: 24px 20px;
-  text-align: center;
-  backdrop-filter: blur(10px);
-  opacity: 0.65;
-  transition: all 0.24s;
-  cursor: default;
-}
-.soon-card:hover { opacity: 0.85; border-color: var(--border-h); }
-.soon-icon { font-size: 32px; margin-bottom: 10px; }
-.soon-title { font-size: 14px; font-weight: 700; color: var(--text); margin-bottom: 6px; }
-.soon-desc  { font-size: 11px; color: var(--text-dim); line-height: 1.5; margin-bottom: 12px; }
-.soon-badge {
-  display: inline-block; font-size: 9px; font-weight: 700;
-  letter-spacing: 0.16em; text-transform: uppercase;
-  padding: 3px 10px; border-radius: 20px;
-  background: rgba(176,106,255,0.12); color: var(--long);
-  border: 1px solid rgba(176,106,255,0.22);
-}
+/* ══════════════════════════════════════════════════════════════
+   MODAL CONVERSOR
+══════════════════════════════════════════════════════════════ */
+.overlay { display:none; position:fixed; inset:0; background:rgba(2,4,10,.88); backdrop-filter:blur(14px); z-index:500; align-items:center; justify-content:center; padding:20px; }
+.overlay.open { display:flex; }
+.mbox { background:var(--bg3); border:1px solid var(--border); border-radius:20px; width:100%; max-width:720px; max-height:92vh; overflow-y:auto; box-shadow:0 0 70px rgba(0,212,255,.1); animation:modal-in .34s cubic-bezier(.34,1.56,.64,1); }
+@keyframes modal-in { from{opacity:0;transform:scale(.9) translateY(26px)} to{opacity:1;transform:scale(1) translateY(0)} }
+.mhead { display:flex; justify-content:space-between; align-items:center; padding:20px 26px; border-bottom:1px solid var(--border); position:sticky; top:0; background:var(--bg3); z-index:1; border-radius:20px 20px 0 0; }
+.mtitle { font-family:'Orbitron',monospace; font-size:11px; font-weight:700; letter-spacing:.18em; color:var(--focus); }
+.mclose { width:30px; height:30px; border-radius:8px; border:1px solid var(--border); background:transparent; color:var(--text-dim); font-size:13px; cursor:pointer; display:flex; align-items:center; justify-content:center; transition:all .2s; }
+.mclose:hover { border-color:var(--focus); color:var(--text); }
+.mbody { padding:22px 26px; }
+.conv-tabs { display:flex; flex-wrap:wrap; gap:5px; margin-bottom:18px; }
+.conv-tab { padding:7px 13px; border-radius:9px; border:1px solid var(--border); background:transparent; color:var(--text-dim); font-family:'Outfit',sans-serif; font-size:11px; font-weight:600; cursor:pointer; transition:all .2s; }
+.conv-tab:hover { color:var(--text); }
+.conv-tab.active { background:var(--focus-d); border-color:var(--focus); color:var(--focus); }
+.conv-body { display:none; }
+.conv-body.active { display:block; }
+.conv-row { display:grid; grid-template-columns:1fr auto 1fr; gap:14px; align-items:end; margin-bottom:14px; }
+.conv-col { display:flex; flex-direction:column; gap:7px; }
+.conv-label { font-size:10px; color:var(--text-dim); text-transform:uppercase; letter-spacing:.14em; }
+.conv-input { background:var(--bg2); border:1px solid var(--border); border-radius:10px; color:var(--text); font-family:'Orbitron',monospace; font-size:15px; padding:11px 14px; width:100%; transition:border-color .2s; }
+.conv-input:focus { outline:none; border-color:var(--focus); box-shadow:0 0 12px var(--focus-d); }
+.conv-select { background:var(--bg2); border:1px solid var(--border); border-radius:10px; color:var(--text-dim); font-family:'Outfit',sans-serif; font-size:12px; padding:9px 11px; width:100%; cursor:pointer; }
+.conv-select:focus { outline:none; border-color:var(--focus); }
+.conv-arrow { font-size:22px; color:var(--text-dim); text-align:center; padding-bottom:10px; }
+.conv-result { font-size:13px; color:var(--focus); background:var(--focus-d); border:1px solid rgba(0,212,255,.2); border-radius:9px; padding:11px 16px; font-family:'Orbitron',monospace; }
 
-/* ================================================================
-   CONVERSOR DE UNIDADES
-   ================================================================ */
-.conv-tabs {
-  display: flex; gap: 4px; flex-wrap: wrap;
-  background: var(--bg2); border-radius: 10px; padding: 4px;
-  margin-bottom: 18px; border: 1px solid var(--border);
-}
-.conv-tab {
-  flex: 1; min-width: 80px; padding: 7px 10px;
-  border: 1px solid transparent; border-radius: 8px;
-  background: transparent; color: var(--text-dim);
-  font-family: 'Outfit', sans-serif; font-size: 11px;
-  font-weight: 600; cursor: pointer; transition: all 0.22s;
-  text-align: center; letter-spacing: 0.04em;
-}
-.conv-tab:hover { color: var(--text); }
-.conv-tab.active {
-  background: var(--focus-d); border-color: var(--focus);
-  color: var(--focus);
-}
-.conv-body { display: none; }
-.conv-body.active { display: block; }
-.conv-row {
-  display: grid; grid-template-columns: 1fr auto 1fr;
-  gap: 10px; align-items: center; margin-bottom: 12px;
-}
-.conv-col { display: flex; flex-direction: column; gap: 6px; }
-.conv-label { font-size: 10px; color: var(--text-dim); text-transform: uppercase; letter-spacing: 0.14em; }
-.conv-input {
-  background: var(--bg2); border: 1px solid var(--border);
-  border-radius: 9px; color: var(--text);
-  font-family: 'Orbitron', monospace; font-size: 16px; font-weight: 700;
-  padding: 10px 12px; transition: border-color 0.2s; width: 100%;
-}
-.conv-input:focus { outline: none; border-color: var(--focus); box-shadow: 0 0 10px var(--focus-d); }
-.conv-select {
-  background: var(--bg2); border: 1px solid var(--border);
-  border-radius: 9px; color: var(--text);
-  font-family: 'Outfit', sans-serif; font-size: 13px;
-  padding: 8px 10px; cursor: pointer; width: 100%;
-  transition: border-color 0.2s;
-}
-.conv-select:focus { outline: none; border-color: var(--focus); }
-.conv-arrow {
-  font-size: 22px; color: var(--focus);
-  font-family: 'Orbitron', monospace; font-weight: 700;
-  user-select: none;
-}
-.conv-result {
-  background: var(--bg2); border: 1px solid var(--border);
-  border-radius: 10px; padding: 12px 16px;
-  font-family: 'Orbitron', monospace; font-size: 14px;
-  color: var(--short); text-align: center; margin-top: 4px;
-  min-height: 42px; display: flex; align-items: center; justify-content: center;
-  transition: all 0.3s;
-}
+/* ══ SCROLLBAR ══ */
+::-webkit-scrollbar { width:4px; height:4px; }
+::-webkit-scrollbar-track { background:transparent; }
+::-webkit-scrollbar-thumb { background:var(--border); border-radius:2px; }
 
-/* ================================================================
-   AD BANNER
-   ================================================================ */
-.ad-tk {
-  width: 100%; min-height: 90px;
-  background: rgba(0,212,255,0.02);
-  border: 1px dashed rgba(0,212,255,0.1);
-  border-radius: var(--radius); margin: 36px 0; overflow: hidden;
+/* ══════════════════════════════════════════════════════════════
+   RESPONSIVE
+══════════════════════════════════════════════════════════════ */
+@media(max-width:900px) {
+  .kings-row { grid-template-columns:1fr; }
+  .king { height:45vh; min-height:280px; }
+  .widgets-bar { grid-template-columns:1fr; }
+  .king-title { font-size:28px; }
 }
-
-/* ================================================================
-   NO RESULTS
-   ================================================================ */
-.no-results {
-  display: none; text-align: center;
-  padding: 40px; color: var(--text-dim);
-  font-size: 14px;
-}
-.no-results.visible { display: block; }
-
-/* ================================================================
-   SCROLLBAR & RESPONSIVE
-   ================================================================ */
-::-webkit-scrollbar { width: 4px; }
-::-webkit-scrollbar-track { background: transparent; }
-::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
-
-@media (max-width: 640px) {
-  .page { padding: 28px 16px 60px; }
-  .cards-grid, .cards-grid-wide { grid-template-columns: 1fr 1fr; }
-  .conv-row { grid-template-columns: 1fr; }
-  .conv-arrow { transform: rotate(90deg); text-align: center; }
-  .topbar-page { display: none; }
-}
-@media (max-width: 400px) {
-  .cards-grid, .cards-grid-wide { grid-template-columns: 1fr; }
+@media(max-width:600px) {
+  .page { padding:16px 12px 80px; }
+  .topbar-page, .topbar-badge { display:none; }
+  .king { height:38vh; min-height:240px; padding:24px; }
+  .king-icon { font-size:140px; }
+  .king-title { font-size:22px; }
+  .wt { min-width:72px; padding:10px 12px; }
+  .wt-icon { font-size:22px; }
+  .conv-row { grid-template-columns:1fr; }
+  .conv-arrow { transform:rotate(90deg); }
 }
 </style>
 </head>
@@ -528,836 +331,286 @@ body {
 <div class="bg-grid"></div>
 <div class="bg-orb bg-orb-1"></div>
 <div class="bg-orb bg-orb-2"></div>
+<div class="bg-orb bg-orb-3"></div>
 
-<!-- ================================================================
-     TOPBAR
-     ================================================================ -->
+<!-- ══ TOPBAR ══ -->
 <nav class="topbar">
   <div class="topbar-left">
-    <a href="index.html" class="topbar-logo">🍅 POMODOROXP</a>
+    <a href="index.html" class="topbar-logo">&#127813; POMODOROXP</a>
     <span class="topbar-sep">/</span>
     <span class="topbar-page">Student Toolkit</span>
   </div>
-  <a href="index.html" class="topbar-back">⏱ Volver al Timer</a>
-  <button class="help-btn" id="btn-help" title="Ayuda">?</button>
+  <div class="topbar-right">
+    <span class="topbar-badge">v2.1</span>
+    <a href="index.html" class="topbar-back">&#8592; Timer</a>
+  </div>
 </nav>
 
-<!-- ====== MODAL: AYUDA ====== -->
-<div class="help-overlay" id="help-overlay">
-  <div class="help-box">
-    <div class="help-head">
-      <div class="help-title">❓ AYUDA — Student Toolkit</div>
-      <button class="help-close" id="help-close">✕</button>
-    </div>
-    <div class="help-body">
-      <div class="help-section">
-        <div class="help-sec-title">🔍 Buscador</div>
-        <p class="help-p">Usa la barra de búsqueda para filtrar herramientas y recursos en tiempo real. Escribe el nombre o categoría y las tarjetas se filtran automáticamente.</p>
-      </div>
-      <div class="help-section">
-        <div class="help-sec-title">🌐 Enlaces de Interés</div>
-        <p class="help-p">Colección de recursos académicos externos. Haz clic en cualquier tarjeta para abrir el recurso en una pestaña nueva. La sección es desplegable — usa el botón "Ocultar/Mostrar" para contraerla.</p>
-      </div>
-      <div class="help-section">
-        <div class="help-sec-title">⚖️ Conversor de Unidades</div>
-        <p class="help-p">Selecciona la categoría con las pestañas superiores. Introduce un valor en cualquiera de los dos campos y la conversión se calcula automáticamente en tiempo real. Puedes convertir en ambas direcciones.</p>
-        <p class="help-p">Categorías disponibles: Longitud, Masa, Volumen, Temperatura, Ángulo, Velocidad, Área, Tiempo y Energía.</p>
-      </div>
-      <div class="help-section">
-        <div class="help-sec-title">🔬 Calculadora Versátil</div>
-        <p class="help-p">Las herramientas marcadas como "Próximamente" están en desarrollo y se irán activando en futuras versiones del toolkit.</p>
-      </div>
-      <div class="help-section">
-        <div class="help-sec-title">⏱ Volver al Timer</div>
-        <p class="help-p">Usa el botón superior derecho para volver a la app principal de PomodoroXP sin perder tu progreso.</p>
-      </div>
-      <div style="text-align:center;margin-top:20px;padding-top:16px;border-top:1px solid var(--border)">
-        <div style="font-size:11px;color:var(--text-faint)">PomodoroXP Student Toolkit · v1.1</div>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- ================================================================
-     PAGE
-     ================================================================ -->
 <div class="page">
 
-  <!-- HERO -->
-  <div class="hero">
-    <div class="hero-tag">🧰 Herramientas para estudiantes</div>
-    <h1 class="hero-title">Student <span>Toolkit</span></h1>
-    <p class="hero-sub">Tu caja de herramientas académica. Recursos, calculadoras y utilidades gratuitas en un solo lugar, integradas con tu experiencia de estudio.</p>
-  </div>
-
-  <!-- SEARCH -->
-  <div class="search-wrap">
-    <span class="search-icon">🔍</span>
-    <input type="text" id="search-input" placeholder="Buscar herramienta o recurso..." autocomplete="off">
-    <span class="search-count" id="search-count"></span>
-  </div>
-
-  <div id="no-results" class="no-results">
-    <div style="font-size:36px;margin-bottom:12px">🔭</div>
-    <div>No se encontraron resultados para "<span id="no-results-term"></span>"</div>
-  </div>
-
-  <!-- ============================================================
-       SECCIÓN 1 — ENLACES DE INTERÉS (desplegable)
-       ============================================================ -->
-  <div class="section-block" data-section="enlaces recursos internet">
-    <div class="sec-header collapsible-header" id="enlaces-header" onclick="toggleSection('enlaces')" style="cursor:pointer;user-select:none">
-      <div class="sec-icon">🌐</div>
-      <div class="sec-info" style="flex:1">
-        <div class="sec-title">Enlaces de Interés</div>
-        <div class="sec-sub">Recursos académicos y herramientas online esenciales</div>
-      </div>
-      <div class="collapse-toggle" id="enlaces-toggle">
-        <span class="collapse-icon collapsed">▲</span>
-        <span class="collapse-label" id="enlaces-label">Mostrar</span>
-      </div>
-    </div>
-    <div class="collapsible-body collapsed" id="enlaces-body">
-    <div class="cards-grid">
-
-      <a class="link-card" href="https://wuolah.com" target="_blank" rel="noopener" data-tags="wuolah apuntes universidad examenes">
-        <div class="link-card-icon">📚</div>
-        <div class="link-card-name">Wuolah</div>
-        <div class="link-card-desc">Apuntes y exámenes universitarios compartidos por otros estudiantes.</div>
-        <span class="link-card-tag">Apuntes</span>
-      </a>
-
-      <a class="link-card" href="https://es.wikipedia.org" target="_blank" rel="noopener" data-tags="wikipedia enciclopedia conocimiento">
-        <div class="link-card-icon">📖</div>
-        <div class="link-card-name">Wikipedia</div>
-        <div class="link-card-desc">Enciclopedia libre colaborativa. Punto de partida para cualquier investigación.</div>
-        <span class="link-card-tag">Referencia</span>
-      </a>
-
-      <a class="link-card" href="https://gemini.google.com" target="_blank" rel="noopener" data-tags="gemini google ia inteligencia artificial">
-        <div class="link-card-icon">✨</div>
-        <div class="link-card-name">Gemini</div>
-        <div class="link-card-desc">IA de Google para resolver dudas, redactar y analizar contenido académico.</div>
-        <span class="link-card-tag">IA</span>
-      </a>
-
-      <a class="link-card" href="https://www.wolframalpha.com" target="_blank" rel="noopener" data-tags="wolframalpha matematicas calculos ciencia">
-        <div class="link-card-icon">🧮</div>
-        <div class="link-card-name">WolframAlpha</div>
-        <div class="link-card-desc">Motor computacional para matemáticas, física, química y mucho más.</div>
-        <span class="link-card-tag">Cálculo</span>
-      </a>
-
-      <a class="link-card" href="https://scholar.google.com" target="_blank" rel="noopener" data-tags="google scholar papers articulos investigacion ciencia">
-        <div class="link-card-icon">🎓</div>
-        <div class="link-card-name">Google Scholar</div>
-        <div class="link-card-desc">Buscador especializado en artículos científicos, tesis y publicaciones académicas.</div>
-        <span class="link-card-tag">Investigación</span>
-      </a>
-
-      <a class="link-card" href="https://www.khanacademy.org/math" target="_blank" rel="noopener" data-tags="khan academy matematicas ejercicios cursos gratis">
-        <div class="link-card-icon">📐</div>
-        <div class="link-card-name">Khan Academy</div>
-        <div class="link-card-desc">Cursos gratuitos de matemáticas, ciencias e historia con ejercicios interactivos.</div>
-        <span class="link-card-tag">Cursos</span>
-      </a>
-
-      <a class="link-card" href="https://www.desmos.com/calculator" target="_blank" rel="noopener" data-tags="desmos graficas funciones calculadora visual">
-        <div class="link-card-icon">📈</div>
-        <div class="link-card-name">Desmos</div>
-        <div class="link-card-desc">Calculadora gráfica online. Representa funciones y ecuaciones visualmente.</div>
-        <span class="link-card-tag">Gráficas</span>
-      </a>
-
-      <a class="link-card" href="https://www.deepl.com/translator" target="_blank" rel="noopener" data-tags="deepl traductor traduccion idiomas">
-        <div class="link-card-icon">🌍</div>
-        <div class="link-card-name">DeepL</div>
-        <div class="link-card-desc">El traductor automático más preciso del mercado para textos académicos.</div>
-        <span class="link-card-tag">Traducción</span>
-      </a>
-
-      <a class="link-card" href="https://www.notion.so" target="_blank" rel="noopener" data-tags="notion notas organizacion apuntes">
-        <div class="link-card-icon">📝</div>
-        <div class="link-card-name">Notion</div>
-        <div class="link-card-desc">Todo en uno: apuntes, base de datos, calendario y gestión de proyectos.</div>
-        <span class="link-card-tag">Organización</span>
-      </a>
-
-      <a class="link-card" href="https://anki.apps.ankiweb.net" target="_blank" rel="noopener" data-tags="anki flashcards memoria repaso">
-        <div class="link-card-icon">🃏</div>
-        <div class="link-card-name">Anki Web</div>
-        <div class="link-card-desc">Sistema de tarjetas de memoria con repetición espaciada para memorizar cualquier cosa.</div>
-        <span class="link-card-tag">Memoria</span>
-      </a>
-
-      <a class="link-card" href="https://www.overleaf.com" target="_blank" rel="noopener" data-tags="overleaf latex documentos ciencia ingenieria">
-        <div class="link-card-icon">📄</div>
-        <div class="link-card-name">Overleaf</div>
-        <div class="link-card-desc">Editor de LaTeX online colaborativo. Imprescindible para informes científicos.</div>
-        <span class="link-card-tag">LaTeX</span>
-      </a>
-
-      <a class="link-card" href="https://www.youtube.com/@3blue1brown" target="_blank" rel="noopener" data-tags="youtube 3blue1brown matematicas visual">
-        <div class="link-card-icon">🎬</div>
-        <div class="link-card-name">3Blue1Brown</div>
-        <div class="link-card-desc">El mejor canal de YouTube para entender matemáticas visualmente.</div>
-        <span class="link-card-tag">Vídeos</span>
-      </a>
-
-    </div><!-- /.cards-grid -->
-    </div><!-- /.collapsible-body -->
-  </div>
-
   <!-- AD -->
   <div class="ad-tk">
     <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-9027862604686644" data-ad-slot="auto" data-ad-format="auto" data-full-width-responsive="true"></ins>
     <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
   </div>
 
-  <!-- ============================================================
-       SECCIÓN 2 — CONVERSOR DE UNIDADES
-       ============================================================ -->
-  <div class="section-block" data-section="conversor unidades longitud peso masa volumen angulos temperatura">
-    <div class="sec-header" data-color="green">
-      <div class="sec-icon">⚖️</div>
-      <div class="sec-info">
-        <div class="sec-title">Conversor de Unidades</div>
-        <div class="sec-sub">Sistema Internacional — Conversiones en tiempo real</div>
+  <!-- ══════════════════════════════
+       ZONA SUPERIOR — LOS REYES
+       ══════════════════════════════ -->
+  <div class="kings-row">
+
+    <!-- REY 1 — CALCULADORA DE NOTAS (DORADO) -->
+    <a class="king king-notas" href="calculadora.html">
+      <div class="king-bg"></div>
+      <div class="king-glass"></div>
+      <div class="king-icon">&#127891;</div>
+      <div class="king-glow"></div>
+      <div class="king-content">
+        <div class="king-tag" style="color:var(--gold)">&#127775; Calculadora Vers&#225;til</div>
+        <div class="king-title" style="color:var(--gold)">Calculadora<br>de Notas</div>
+        <div class="king-desc">Introduce tus evaluaciones y sus pesos. Calcula exactamente qu&#233; nota necesitas en el examen final para llegar al aprobado.</div>
+        <span class="king-cta">Abrir herramienta &#8594;</span>
+      </div>
+    </a>
+
+    <!-- REY 2 — GENERADOR APA (CIAN) -->
+    <a class="king king-apa" href="generador-apa.html">
+      <div class="king-bg"></div>
+      <div class="king-glass"></div>
+      <div class="king-icon">&#128218;</div>
+      <div class="king-glow"></div>
+      <div class="king-content">
+        <div class="king-tag" style="color:var(--focus)">&#128203; Citas Acad&#233;micas</div>
+        <div class="king-title" style="color:var(--focus)">Generador<br>APA 7&#170;</div>
+        <div class="king-desc">Genera citas en formato APA 7&#170; edici&#243;n para libros, art&#237;culos de revista y p&#225;ginas web. Copia al portapapeles en un clic.</div>
+        <span class="king-cta">Abrir herramienta &#8594;</span>
+      </div>
+    </a>
+
+  </div><!-- /.kings-row -->
+
+  <!-- ══════════════════════════════
+       ZONA INFERIOR — WIDGETS
+       ══════════════════════════════ -->
+  <div class="widgets-bar">
+
+    <!-- BLOQUE HERRAMIENTAS -->
+    <div class="widget-block wb-tools">
+      <div class="wb-label">
+        <span class="wb-label-dot" style="background:var(--long)"></span>
+        Kit Matem&#225;tico
+      </div>
+      <div class="widgets-row">
+        <a class="wt" href="cientifica.html">
+          <span class="wt-icon">&#129518;</span>
+          <span class="wt-name">Cient&#237;fica</span>
+        </a>
+        <a class="wt" href="estadistica.html">
+          <span class="wt-icon">&#128201;</span>
+          <span class="wt-name">Estad&#237;stica</span>
+        </a>
+        <a class="wt" href="ecuaciones.html">
+          <span class="wt-icon">&#128202;</span>
+          <span class="wt-name">Ecuaciones</span>
+        </a>
+        <a class="wt" href="matrices.html">
+          <span class="wt-icon">&#128290;</span>
+          <span class="wt-name">Matrices</span>
+        </a>
       </div>
     </div>
 
-    <div class="tool-card">
-      <!-- Tabs -->
-      <div class="conv-tabs">
-        <button class="conv-tab active" data-cat="longitud">📏 Longitud</button>
-        <button class="conv-tab" data-cat="masa">⚖️ Masa</button>
-        <button class="conv-tab" data-cat="volumen">🧪 Volumen</button>
-        <button class="conv-tab" data-cat="temperatura">🌡️ Temp.</button>
-        <button class="conv-tab" data-cat="angulo">📐 Ángulo</button>
-        <button class="conv-tab" data-cat="velocidad">💨 Velocidad</button>
-        <button class="conv-tab" data-cat="area">🟦 Área</button>
-        <button class="conv-tab" data-cat="tiempo">⏱ Tiempo</button>
-        <button class="conv-tab" data-cat="energia">⚡ Energía</button>
-        <button class="conv-tab soon-tab" data-cat="presion" disabled>🔵 Presión <small style="font-size:8px">(próx.)</small></button>
+    <!-- BLOQUE RECURSOS EXTERNOS -->
+    <div class="widget-block wb-ext">
+      <div class="wb-label">
+        <span class="wb-label-dot" style="background:var(--focus)"></span>
+        Recursos Externos
       </div>
+      <div class="widgets-row">
+        <a class="wt" href="https://www.wuolah.com" target="_blank" rel="noopener">
+          <span class="wt-icon">&#128196;</span>
+          <span class="wt-name">Wuolah</span>
+        </a>
+        <a class="wt" href="https://www.geogebra.org/calculator" target="_blank" rel="noopener">
+          <span class="wt-icon">&#128208;</span>
+          <span class="wt-name">GeoGebra</span>
+        </a>
+        <a class="wt" href="https://www.symbolab.com" target="_blank" rel="noopener">
+          <span class="wt-icon">&#8721;</span>
+          <span class="wt-name">Symbolab</span>
+        </a>
+        <a class="wt" href="https://gradecalc.info" target="_blank" rel="noopener">
+          <span class="wt-icon">&#127979;</span>
+          <span class="wt-name">GradeCalc</span>
+        </a>
+      </div>
+    </div>
 
-      <!-- Longitud -->
-      <div class="conv-body active" id="conv-longitud">
-        <div class="conv-row">
-          <div class="conv-col">
-            <span class="conv-label">Valor</span>
-            <input class="conv-input" type="number" id="l-val" placeholder="0" oninput="convertUnit('longitud')">
-            <select class="conv-select" id="l-from" onchange="convertUnit('longitud')">
-              <option value="1e-9">Nanómetro (nm)</option>
-              <option value="1e-6">Micrómetro (μm)</option>
-              <option value="1e-3">Milímetro (mm)</option>
-              <option value="1e-2">Centímetro (cm)</option>
-              <option value="1e-1">Decímetro (dm)</option>
-              <option value="1" selected>Metro (m)</option>
-              <option value="1e3">Kilómetro (km)</option>
-              <option value="0.0254">Pulgada (in)</option>
-              <option value="0.3048">Pie (ft)</option>
-              <option value="0.9144">Yarda (yd)</option>
-              <option value="1609.344">Milla (mi)</option>
-              <option value="1852">Milla náutica (nmi)</option>
-            </select>
-          </div>
-          <div class="conv-arrow">⇄</div>
-          <div class="conv-col">
-            <span class="conv-label">Resultado</span>
-            <input class="conv-input" type="number" id="l-val2" placeholder="0" oninput="convertUnitInverse('longitud')">
-            <select class="conv-select" id="l-to" onchange="convertUnit('longitud')">
-              <option value="1e-9">Nanómetro (nm)</option>
-              <option value="1e-6">Micrómetro (μm)</option>
-              <option value="1e-3">Milímetro (mm)</option>
-              <option value="1e-2">Centímetro (cm)</option>
-              <option value="1e-1">Decímetro (dm)</option>
-              <option value="1">Metro (m)</option>
-              <option value="1e3" selected>Kilómetro (km)</option>
-              <option value="0.0254">Pulgada (in)</option>
-              <option value="0.3048">Pie (ft)</option>
-              <option value="0.9144">Yarda (yd)</option>
-              <option value="1609.344">Milla (mi)</option>
-              <option value="1852">Milla náutica (nmi)</option>
-            </select>
-          </div>
+    <!-- BLOQUE LABORATORIO (próximamente) -->
+    <div class="widget-block wb-soon">
+      <div class="wb-label">
+        <span class="wb-label-dot" style="background:var(--text-faint)"></span>
+        Laboratorio
+      </div>
+      <div class="soon-tag">&#128291; Pr&#243;ximamente</div>
+      <div class="widgets-row">
+        <div class="wt">
+          <span class="wt-icon">&#128187;</span>
+          <span class="wt-name">Compilador</span>
         </div>
-        <div class="conv-result" id="res-longitud">Introduce un valor para convertir</div>
-      </div>
-
-      <!-- Masa -->
-      <div class="conv-body" id="conv-masa">
-        <div class="conv-row">
-          <div class="conv-col">
-            <span class="conv-label">Valor</span>
-            <input class="conv-input" type="number" id="m-val" placeholder="0" oninput="convertUnit('masa')">
-            <select class="conv-select" id="m-from" onchange="convertUnit('masa')">
-              <option value="1e-6">Microgramo (μg)</option>
-              <option value="1e-3">Miligramo (mg)</option>
-              <option value="1">Gramo (g)</option>
-              <option value="1e3" selected>Kilogramo (kg)</option>
-              <option value="1e6">Tonelada métrica (t)</option>
-              <option value="0.0647989">Grano (gr)</option>
-              <option value="28.3495">Onza (oz)</option>
-              <option value="453.592">Libra (lb)</option>
-              <option value="6350.29">Stone (st)</option>
-            </select>
-          </div>
-          <div class="conv-arrow">⇄</div>
-          <div class="conv-col">
-            <span class="conv-label">Resultado</span>
-            <input class="conv-input" type="number" id="m-val2" placeholder="0" oninput="convertUnitInverse('masa')">
-            <select class="conv-select" id="m-to" onchange="convertUnit('masa')">
-              <option value="1e-6">Microgramo (μg)</option>
-              <option value="1e-3">Miligramo (mg)</option>
-              <option value="1">Gramo (g)</option>
-              <option value="1e3">Kilogramo (kg)</option>
-              <option value="1e6">Tonelada métrica (t)</option>
-              <option value="0.0647989">Grano (gr)</option>
-              <option value="28.3495" selected>Onza (oz)</option>
-              <option value="453.592">Libra (lb)</option>
-              <option value="6350.29">Stone (st)</option>
-            </select>
-          </div>
+        <div class="wt">
+          <span class="wt-icon">&#129302;</span>
+          <span class="wt-name">IA Tutor</span>
         </div>
-        <div class="conv-result" id="res-masa">Introduce un valor para convertir</div>
-      </div>
-
-      <!-- Volumen -->
-      <div class="conv-body" id="conv-volumen">
-        <div class="conv-row">
-          <div class="conv-col">
-            <span class="conv-label">Valor</span>
-            <input class="conv-input" type="number" id="v-val" placeholder="0" oninput="convertUnit('volumen')">
-            <select class="conv-select" id="v-from" onchange="convertUnit('volumen')">
-              <option value="1e-6">Microlitro (μL)</option>
-              <option value="1e-3">Mililitro (mL)</option>
-              <option value="1e-2">Centilitro (cL)</option>
-              <option value="1e-1">Decilitro (dL)</option>
-              <option value="1" selected>Litro (L)</option>
-              <option value="1e3">Kilolitro (kL)</option>
-              <option value="1e-3">cm³ (cc)</option>
-              <option value="1">dm³</option>
-              <option value="1e3">m³</option>
-              <option value="0.236588">Taza americana (cup)</option>
-              <option value="0.473176">Pinta americana (pt)</option>
-              <option value="3.78541">Galón americano (gal)</option>
-              <option value="0.0295735">Onza fluida (fl oz)</option>
-            </select>
-          </div>
-          <div class="conv-arrow">⇄</div>
-          <div class="conv-col">
-            <span class="conv-label">Resultado</span>
-            <input class="conv-input" type="number" id="v-val2" placeholder="0" oninput="convertUnitInverse('volumen')">
-            <select class="conv-select" id="v-to" onchange="convertUnit('volumen')">
-              <option value="1e-6">Microlitro (μL)</option>
-              <option value="1e-3">Mililitro (mL)</option>
-              <option value="1e-2">Centilitro (cL)</option>
-              <option value="1e-1">Decilitro (dL)</option>
-              <option value="1">Litro (L)</option>
-              <option value="1e3">Kilolitro (kL)</option>
-              <option value="1e-3">cm³ (cc)</option>
-              <option value="1">dm³</option>
-              <option value="1e3">m³</option>
-              <option value="0.236588" selected>Taza americana (cup)</option>
-              <option value="0.473176">Pinta americana (pt)</option>
-              <option value="3.78541">Galón americano (gal)</option>
-              <option value="0.0295735">Onza fluida (fl oz)</option>
-            </select>
-          </div>
+        <div class="wt">
+          <span class="wt-icon">&#128196;</span>
+          <span class="wt-name">Flashcards</span>
         </div>
-        <div class="conv-result" id="res-volumen">Introduce un valor para convertir</div>
       </div>
+    </div>
 
-      <!-- Temperatura -->
-      <div class="conv-body" id="conv-temperatura">
-        <div class="conv-row">
-          <div class="conv-col">
-            <span class="conv-label">Valor</span>
-            <input class="conv-input" type="number" id="t-val" placeholder="0" oninput="convertTemp()">
-            <select class="conv-select" id="t-from" onchange="convertTemp()">
-              <option value="C" selected>Celsius (°C)</option>
-              <option value="F">Fahrenheit (°F)</option>
-              <option value="K">Kelvin (K)</option>
-              <option value="R">Rankine (°R)</option>
-            </select>
-          </div>
-          <div class="conv-arrow">⇄</div>
-          <div class="conv-col">
-            <span class="conv-label">Resultado</span>
-            <input class="conv-input" type="number" id="t-val2" placeholder="0" readonly>
-            <select class="conv-select" id="t-to" onchange="convertTemp()">
-              <option value="C">Celsius (°C)</option>
-              <option value="F" selected>Fahrenheit (°F)</option>
-              <option value="K">Kelvin (K)</option>
-              <option value="R">Rankine (°R)</option>
-            </select>
-          </div>
-        </div>
-        <div class="conv-result" id="res-temperatura">Introduce un valor para convertir</div>
-      </div>
-
-      <!-- Ángulo -->
-      <div class="conv-body" id="conv-angulo">
-        <div class="conv-row">
-          <div class="conv-col">
-            <span class="conv-label">Valor</span>
-            <input class="conv-input" type="number" id="a-val" placeholder="0" oninput="convertUnit('angulo')">
-            <select class="conv-select" id="a-from" onchange="convertUnit('angulo')">
-              <option value="1" selected>Grado (°)</option>
-              <option value="0.017453293">Radián (rad)</option>
-              <option value="0.01111111">Gon / Gradián (gon)</option>
-              <option value="0.000277778">Minuto de arco (')</option>
-              <option value="0.000004629">Segundo de arco (")</option>
-              <option value="360">Vuelta completa (rev)</option>
-            </select>
-          </div>
-          <div class="conv-arrow">⇄</div>
-          <div class="conv-col">
-            <span class="conv-label">Resultado</span>
-            <input class="conv-input" type="number" id="a-val2" placeholder="0" oninput="convertUnitInverse('angulo')">
-            <select class="conv-select" id="a-to" onchange="convertUnit('angulo')">
-              <option value="1">Grado (°)</option>
-              <option value="0.017453293" selected>Radián (rad)</option>
-              <option value="0.01111111">Gon / Gradián (gon)</option>
-              <option value="0.000277778">Minuto de arco (')</option>
-              <option value="0.000004629">Segundo de arco (")</option>
-              <option value="360">Vuelta completa (rev)</option>
-            </select>
-          </div>
-        </div>
-        <div class="conv-result" id="res-angulo">Introduce un valor para convertir</div>
-      </div>
-
-      <!-- Velocidad -->
-      <div class="conv-body" id="conv-velocidad">
-        <div class="conv-row">
-          <div class="conv-col">
-            <span class="conv-label">Valor</span>
-            <input class="conv-input" type="number" id="vel-val" placeholder="0" oninput="convertUnit('velocidad')">
-            <select class="conv-select" id="vel-from" onchange="convertUnit('velocidad')">
-              <option value="0.001">mm/s</option>
-              <option value="0.01">cm/s</option>
-              <option value="1" selected>m/s</option>
-              <option value="1000">km/s</option>
-              <option value="0.277778">km/h</option>
-              <option value="0.44704">mph</option>
-              <option value="0.514444">Nudo (kn)</option>
-              <option value="340.29">Mach (a nivel del mar)</option>
-              <option value="299792458">Velocidad de la luz (c)</option>
-            </select>
-          </div>
-          <div class="conv-arrow">⇄</div>
-          <div class="conv-col">
-            <span class="conv-label">Resultado</span>
-            <input class="conv-input" type="number" id="vel-val2" placeholder="0" oninput="convertUnitInverse('velocidad')">
-            <select class="conv-select" id="vel-to" onchange="convertUnit('velocidad')">
-              <option value="0.001">mm/s</option>
-              <option value="0.01">cm/s</option>
-              <option value="1">m/s</option>
-              <option value="1000">km/s</option>
-              <option value="0.277778" selected>km/h</option>
-              <option value="0.44704">mph</option>
-              <option value="0.514444">Nudo (kn)</option>
-              <option value="340.29">Mach (a nivel del mar)</option>
-              <option value="299792458">Velocidad de la luz (c)</option>
-            </select>
-          </div>
-        </div>
-        <div class="conv-result" id="res-velocidad">Introduce un valor para convertir</div>
-      </div>
-
-      <!-- Área -->
-      <div class="conv-body" id="conv-area">
-        <div class="conv-row">
-          <div class="conv-col">
-            <span class="conv-label">Valor</span>
-            <input class="conv-input" type="number" id="ar-val" placeholder="0" oninput="convertUnit('area')">
-            <select class="conv-select" id="ar-from" onchange="convertUnit('area')">
-              <option value="1e-6">mm²</option>
-              <option value="1e-4">cm²</option>
-              <option value="1" selected>m²</option>
-              <option value="1e4">Hectárea (ha)</option>
-              <option value="1e6">km²</option>
-              <option value="6.4516e-4">Pulgada² (in²)</option>
-              <option value="0.09290304">Pie² (ft²)</option>
-              <option value="0.83612736">Yarda² (yd²)</option>
-              <option value="4046.856">Acre</option>
-              <option value="2589988.1">Milla² (mi²)</option>
-            </select>
-          </div>
-          <div class="conv-arrow">⇄</div>
-          <div class="conv-col">
-            <span class="conv-label">Resultado</span>
-            <input class="conv-input" type="number" id="ar-val2" placeholder="0" oninput="convertUnitInverse('area')">
-            <select class="conv-select" id="ar-to" onchange="convertUnit('area')">
-              <option value="1e-6">mm²</option>
-              <option value="1e-4">cm²</option>
-              <option value="1">m²</option>
-              <option value="1e4" selected>Hectárea (ha)</option>
-              <option value="1e6">km²</option>
-              <option value="6.4516e-4">Pulgada² (in²)</option>
-              <option value="0.09290304">Pie² (ft²)</option>
-              <option value="0.83612736">Yarda² (yd²)</option>
-              <option value="4046.856">Acre</option>
-              <option value="2589988.1">Milla² (mi²)</option>
-            </select>
-          </div>
-        </div>
-        <div class="conv-result" id="res-area">Introduce un valor para convertir</div>
-      </div>
-
-      <!-- Tiempo -->
-      <div class="conv-body" id="conv-tiempo">
-        <div class="conv-row">
-          <div class="conv-col">
-            <span class="conv-label">Valor</span>
-            <input class="conv-input" type="number" id="ti-val" placeholder="0" oninput="convertUnit('tiempo')">
-            <select class="conv-select" id="ti-from" onchange="convertUnit('tiempo')">
-              <option value="1e-9">Nanosegundo (ns)</option>
-              <option value="1e-6">Microsegundo (μs)</option>
-              <option value="1e-3">Milisegundo (ms)</option>
-              <option value="1" selected>Segundo (s)</option>
-              <option value="60">Minuto (min)</option>
-              <option value="3600">Hora (h)</option>
-              <option value="86400">Día (d)</option>
-              <option value="604800">Semana</option>
-              <option value="2629800">Mes (promedio)</option>
-              <option value="31557600">Año (365.25 días)</option>
-            </select>
-          </div>
-          <div class="conv-arrow">⇄</div>
-          <div class="conv-col">
-            <span class="conv-label">Resultado</span>
-            <input class="conv-input" type="number" id="ti-val2" placeholder="0" oninput="convertUnitInverse('tiempo')">
-            <select class="conv-select" id="ti-to" onchange="convertUnit('tiempo')">
-              <option value="1e-9">Nanosegundo (ns)</option>
-              <option value="1e-6">Microsegundo (μs)</option>
-              <option value="1e-3">Milisegundo (ms)</option>
-              <option value="1">Segundo (s)</option>
-              <option value="60" selected>Minuto (min)</option>
-              <option value="3600">Hora (h)</option>
-              <option value="86400">Día (d)</option>
-              <option value="604800">Semana</option>
-              <option value="2629800">Mes (promedio)</option>
-              <option value="31557600">Año (365.25 días)</option>
-            </select>
-          </div>
-        </div>
-        <div class="conv-result" id="res-tiempo">Introduce un valor para convertir</div>
-      </div>
-
-      <!-- Energía -->
-      <div class="conv-body" id="conv-energia">
-        <div class="conv-row">
-          <div class="conv-col">
-            <span class="conv-label">Valor</span>
-            <input class="conv-input" type="number" id="en-val" placeholder="0" oninput="convertUnit('energia')">
-            <select class="conv-select" id="en-from" onchange="convertUnit('energia')">
-              <option value="1" selected>Julio (J)</option>
-              <option value="1e3">Kilojulio (kJ)</option>
-              <option value="1e6">Megajulio (MJ)</option>
-              <option value="4.184">Caloría (cal)</option>
-              <option value="4184">Kilocaloría (kcal)</option>
-              <option value="3600000">Kilovatio·hora (kWh)</option>
-              <option value="1.60218e-19">Electronvoltio (eV)</option>
-              <option value="1055.06">BTU</option>
-            </select>
-          </div>
-          <div class="conv-arrow">⇄</div>
-          <div class="conv-col">
-            <span class="conv-label">Resultado</span>
-            <input class="conv-input" type="number" id="en-val2" placeholder="0" oninput="convertUnitInverse('energia')">
-            <select class="conv-select" id="en-to" onchange="convertUnit('energia')">
-              <option value="1">Julio (J)</option>
-              <option value="1e3">Kilojulio (kJ)</option>
-              <option value="1e6">Megajulio (MJ)</option>
-              <option value="4.184" selected>Caloría (cal)</option>
-              <option value="4184">Kilocaloría (kcal)</option>
-              <option value="3600000">Kilovatio·hora (kWh)</option>
-              <option value="1.60218e-19">Electronvoltio (eV)</option>
-              <option value="1055.06">BTU</option>
-            </select>
-          </div>
-        </div>
-        <div class="conv-result" id="res-energia">Introduce un valor para convertir</div>
-      </div>
-
-    </div><!-- /.tool-card -->
-  </div>
+  </div><!-- /.widgets-bar -->
 
   <!-- AD -->
-  <div class="ad-tk">
+  <div class="ad-tk" style="margin-top:16px">
     <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-9027862604686644" data-ad-slot="auto" data-ad-format="auto" data-full-width-responsive="true"></ins>
     <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
   </div>
 
-  <!-- ============================================================
-       SECCIÓN 3 — CALCULADORA VERSÁTIL
-       ============================================================ -->
-  <div class="section-block" data-section="calculadora notas media ponderada cientifica matrices proximamente universidad aprobar">
-    <div class="sec-header" data-color="purple">
-      <div class="sec-icon">🔬</div>
-      <div class="sec-info">
-        <div class="sec-title">Calculadora Versátil</div>
-        <div class="sec-sub">Herramientas de cálculo avanzado</div>
-      </div>
-    </div>
-    <div class="cards-grid-wide">
-
-      <!-- TARJETA ACTIVA — Calculadora de Notas -->
-      <a class="link-card" href="calculadora.html" data-tags="notas media ponderada calificaciones universidad aprobar suspenso asignatura" style="border-color:rgba(255,214,0,0.25);background:rgba(255,214,0,0.04)">
-        <div class="link-card-icon">🎓</div>
-        <div class="link-card-name" style="color:var(--gold)">Calculadora de Notas</div>
-        <div class="link-card-desc">¿Cuánto necesito para aprobar? Gestiona tus asignaturas y calcula exactamente qué nota necesitas en cada examen.</div>
-        <span class="link-card-tag" style="background:rgba(255,214,0,0.12);color:var(--gold);border-color:rgba(255,214,0,0.25)">Disponible ✓</span>
-      </a>
-
-      <a class="link-card" href="cientifica.html" data-tags="calculadora cientifica trigonometria logaritmos seno coseno tangente potencias" style="border-color:rgba(255,214,0,0.25);background:rgba(255,214,0,0.04)">
-        <div class="link-card-icon">🧮</div>
-        <div class="link-card-name" style="color:var(--gold)">Calculadora Científica</div>
-        <div class="link-card-desc">Trigonometría, logaritmos, potencias, raíces y constantes. Modos DEG y RAD. Historial de expresiones.</div>
-        <span class="link-card-tag" style="background:rgba(255,214,0,0.12);color:var(--gold);border-color:rgba(255,214,0,0.25)">Disponible ✓</span>
-      </a>
-
-      <a class="link-card" href="matrices.html" data-tags="matrices multiplicacion algebra lineal dimensiones" style="border-color:rgba(255,214,0,0.25);background:rgba(255,214,0,0.04)">
-        <div class="link-card-icon">🔢</div>
-        <div class="link-card-name" style="color:var(--gold)">Multiplicación de Matrices</div>
-        <div class="link-card-desc">Multiplica matrices de hasta 7×7. Verifica compatibilidad y obtén el resultado con desarrollo paso a paso.</div>
-        <span class="link-card-tag" style="background:rgba(255,214,0,0.12);color:var(--gold);border-color:rgba(255,214,0,0.25)">Disponible ✓</span>
-      </a>
-
-      <a class="link-card" href="ecuaciones.html" data-tags="ecuaciones sistema resolver algebra lineal cramer newton" style="border-color:rgba(255,214,0,0.25);background:rgba(255,214,0,0.04)">
-        <div class="link-card-icon">📊</div>
-        <div class="link-card-name" style="color:var(--gold)">Resolvedor de Ecuaciones</div>
-        <div class="link-card-desc">Sistemas lineales 2×2 y 3×3 (Cramer), polinómicas hasta grado 4 y ecuaciones arbitrarias por Newton-Raphson.</div>
-        <span class="link-card-tag" style="background:rgba(255,214,0,0.12);color:var(--gold);border-color:rgba(255,214,0,0.25)">Disponible ✓</span>
-      </a>
-
-      <a class="link-card" href="estadistica.html" data-tags="estadistica media mediana moda varianza desviacion tipica datos" style="border-color:rgba(255,214,0,0.25);background:rgba(255,214,0,0.04)">
-        <div class="link-card-icon">📉</div>
-        <div class="link-card-name" style="color:var(--gold)">Estadística Básica</div>
-        <div class="link-card-desc">Media, mediana, moda, varianza y desviación típica en tiempo real. Tabla de frecuencias y gráfico de distribución.</div>
-        <span class="link-card-tag" style="background:rgba(255,214,0,0.12);color:var(--gold);border-color:rgba(255,214,0,0.25)">Disponible ✓</span>
-      </a>
-
-      <a class="link-card" href="generador-apa.html" data-tags="bibliografia apa cita referencia libro articulo web" style="border-color:rgba(255,214,0,0.25);background:rgba(255,214,0,0.04)">
-        <div class="link-card-icon">📚</div>
-        <div class="link-card-name" style="color:var(--gold)">Generador APA</div>
-        <div class="link-card-desc">Genera citas bibliográficas en formato APA 7ª edición para libros, artículos y páginas web. Copia con un clic.</div>
-        <span class="link-card-tag" style="background:rgba(255,214,0,0.12);color:var(--gold);border-color:rgba(255,214,0,0.25)">Disponible ✓</span>
-      </a>
-
-    </div>
-  </div>
-
-  <!-- AD -->
-  <div class="ad-tk">
-    <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-9027862604686644" data-ad-slot="auto" data-ad-format="auto" data-full-width-responsive="true"></ins>
-    <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
-  </div>
-
-  <!-- Footer -->
-  <div style="text-align:center;padding:30px 0 0;border-top:1px solid var(--border)">
-    <div style="font-family:'Orbitron',monospace;font-size:13px;color:var(--focus);margin-bottom:6px">🍅 PomodoroXP</div>
-    <div style="font-size:11px;color:var(--text-faint);margin-bottom:14px">Student Toolkit · v1.1</div>
-    <a href="index.html" style="color:var(--text-faint);font-size:11px;text-decoration:none;margin:0 10px">← Volver al Timer</a>
-    <a href="privacy.html" style="color:var(--text-faint);font-size:11px;text-decoration:none;margin:0 10px">Privacidad</a>
-    <a href="cookies.html" style="color:var(--text-faint);font-size:11px;text-decoration:none;margin:0 10px">Cookies</a>
+  <!-- FOOTER -->
+  <div class="tk-footer">
+    <div style="font-family:'Orbitron',monospace;font-size:12px;color:var(--focus);margin-bottom:5px">&#127813; PomodoroXP</div>
+    <div style="margin-bottom:10px;font-size:10px">Student Toolkit &middot; v2.1</div>
+    <a href="index.html">&#9203; Timer</a>
+    <a href="dashboard.html">&#128202; Dashboard</a>
+    <a href="privacy.html">Privacidad</a>
+    <a href="cookies.html">Cookies</a>
   </div>
 
 </div><!-- /.page -->
 
-<!-- ================================================================
-     JAVASCRIPT
-     ================================================================ -->
+<!-- ══ FAB CONVERSOR ══ -->
+<button class="fab-conv" onclick="openOv('ov-conversor')">
+  &#9878;&#65039;
+  <span class="fab-tooltip">Conversor de Unidades</span>
+</button>
+
+<!-- ══════════════════════════════════════════════════════════════
+     MODAL CONVERSOR
+══════════════════════════════════════════════════════════════ -->
+<div class="overlay" id="ov-conversor">
+  <div class="mbox" style="max-width:720px">
+    <div class="mhead">
+      <div class="mtitle">&#9878;&#65039; CONVERSOR DE UNIDADES</div>
+      <button class="mclose" onclick="closeOv('ov-conversor')">&#10005;</button>
+    </div>
+    <div class="mbody">
+      <div class="conv-tabs">
+        <button class="conv-tab active" data-cat="longitud">&#128207; Longitud</button>
+        <button class="conv-tab" data-cat="masa">&#9878;&#65039; Masa</button>
+        <button class="conv-tab" data-cat="volumen">&#129514; Volumen</button>
+        <button class="conv-tab" data-cat="temperatura">&#127777;&#65039; Temp.</button>
+        <button class="conv-tab" data-cat="angulo">&#128208; &#193;ngulo</button>
+        <button class="conv-tab" data-cat="velocidad">&#128168; Velocidad</button>
+        <button class="conv-tab" data-cat="area">&#128420; &#193;rea</button>
+        <button class="conv-tab" data-cat="tiempo">&#9201; Tiempo</button>
+        <button class="conv-tab" data-cat="energia">&#9889; Energ&#237;a</button>
+      </div>
+
+      <div class="conv-body active" id="conv-longitud"><div class="conv-row"><div class="conv-col"><span class="conv-label">Valor</span><input class="conv-input" type="number" id="l-val" placeholder="0" oninput="convertUnit('longitud')"><select class="conv-select" id="l-from" onchange="convertUnit('longitud')"><option value="1e-9">Nan&#243;metro (nm)</option><option value="1e-6">Micr&#243;metro</option><option value="1e-3">Mil&#237;metro (mm)</option><option value="1e-2">Cent&#237;metro (cm)</option><option value="1e-1">Dec&#237;metro (dm)</option><option value="1" selected>Metro (m)</option><option value="1e3">Kil&#243;metro (km)</option><option value="0.0254">Pulgada (in)</option><option value="0.3048">Pie (ft)</option><option value="0.9144">Yarda (yd)</option><option value="1609.344">Milla (mi)</option><option value="1852">Milla n&#225;utica</option></select></div><div class="conv-arrow">&#8647;</div><div class="conv-col"><span class="conv-label">Resultado</span><input class="conv-input" type="number" id="l-val2" placeholder="0" oninput="convertUnitInverse('longitud')"><select class="conv-select" id="l-to" onchange="convertUnit('longitud')"><option value="1e-9">Nan&#243;metro (nm)</option><option value="1e-6">Micr&#243;metro</option><option value="1e-3">Mil&#237;metro (mm)</option><option value="1e-2">Cent&#237;metro (cm)</option><option value="1e-1">Dec&#237;metro (dm)</option><option value="1">Metro (m)</option><option value="1e3" selected>Kil&#243;metro (km)</option><option value="0.0254">Pulgada (in)</option><option value="0.3048">Pie (ft)</option><option value="0.9144">Yarda (yd)</option><option value="1609.344">Milla (mi)</option><option value="1852">Milla n&#225;utica</option></select></div></div><div class="conv-result" id="res-longitud">Introduce un valor para convertir</div></div>
+
+      <div class="conv-body" id="conv-masa"><div class="conv-row"><div class="conv-col"><span class="conv-label">Valor</span><input class="conv-input" type="number" id="m-val" placeholder="0" oninput="convertUnit('masa')"><select class="conv-select" id="m-from" onchange="convertUnit('masa')"><option value="1e-6">Microgramo</option><option value="1e-3">Miligramo</option><option value="1">Gramo (g)</option><option value="1e3" selected>Kilogramo (kg)</option><option value="1e6">Tonelada (t)</option><option value="28.3495">Onza (oz)</option><option value="453.592">Libra (lb)</option><option value="6350.29">Stone (st)</option></select></div><div class="conv-arrow">&#8647;</div><div class="conv-col"><span class="conv-label">Resultado</span><input class="conv-input" type="number" id="m-val2" placeholder="0" oninput="convertUnitInverse('masa')"><select class="conv-select" id="m-to" onchange="convertUnit('masa')"><option value="1e-6">Microgramo</option><option value="1e-3">Miligramo</option><option value="1">Gramo (g)</option><option value="1e3">Kilogramo (kg)</option><option value="1e6">Tonelada (t)</option><option value="28.3495" selected>Onza (oz)</option><option value="453.592">Libra (lb)</option><option value="6350.29">Stone (st)</option></select></div></div><div class="conv-result" id="res-masa">Introduce un valor para convertir</div></div>
+
+      <div class="conv-body" id="conv-volumen"><div class="conv-row"><div class="conv-col"><span class="conv-label">Valor</span><input class="conv-input" type="number" id="v-val" placeholder="0" oninput="convertUnit('volumen')"><select class="conv-select" id="v-from" onchange="convertUnit('volumen')"><option value="1e-3">Mililitro (mL)</option><option value="1e-2">Centilitro</option><option value="1e-1">Decilitro</option><option value="1" selected>Litro (L)</option><option value="0.236588">Taza (cup)</option><option value="0.473176">Pinta (pt)</option><option value="3.78541">Gal&#243;n (gal)</option><option value="0.0295735">Onza fluida</option></select></div><div class="conv-arrow">&#8647;</div><div class="conv-col"><span class="conv-label">Resultado</span><input class="conv-input" type="number" id="v-val2" placeholder="0" oninput="convertUnitInverse('volumen')"><select class="conv-select" id="v-to" onchange="convertUnit('volumen')"><option value="1e-3">Mililitro (mL)</option><option value="1e-2">Centilitro</option><option value="1e-1">Decilitro</option><option value="1">Litro (L)</option><option value="0.236588" selected>Taza (cup)</option><option value="0.473176">Pinta (pt)</option><option value="3.78541">Gal&#243;n (gal)</option><option value="0.0295735">Onza fluida</option></select></div></div><div class="conv-result" id="res-volumen">Introduce un valor para convertir</div></div>
+
+      <div class="conv-body" id="conv-temperatura"><div class="conv-row"><div class="conv-col"><span class="conv-label">Valor</span><input class="conv-input" type="number" id="t-val" placeholder="0" oninput="convertTemp()"><select class="conv-select" id="t-from" onchange="convertTemp()"><option value="C" selected>Celsius (&#176;C)</option><option value="F">Fahrenheit (&#176;F)</option><option value="K">Kelvin (K)</option><option value="R">Rankine (&#176;R)</option></select></div><div class="conv-arrow">&#8647;</div><div class="conv-col"><span class="conv-label">Resultado</span><input class="conv-input" type="number" id="t-val2" placeholder="0" readonly><select class="conv-select" id="t-to" onchange="convertTemp()"><option value="C">Celsius (&#176;C)</option><option value="F" selected>Fahrenheit (&#176;F)</option><option value="K">Kelvin (K)</option><option value="R">Rankine (&#176;R)</option></select></div></div><div class="conv-result" id="res-temperatura">Introduce un valor para convertir</div></div>
+
+      <div class="conv-body" id="conv-angulo"><div class="conv-row"><div class="conv-col"><span class="conv-label">Valor</span><input class="conv-input" type="number" id="a-val" placeholder="0" oninput="convertUnit('angulo')"><select class="conv-select" id="a-from" onchange="convertUnit('angulo')"><option value="1" selected>Grado (&#176;)</option><option value="0.017453293">Radi&#225;n (rad)</option><option value="0.01111111">Gon/Gradi&#225;n</option><option value="0.000277778">Minuto de arco</option><option value="0.000004629">Segundo de arco</option><option value="360">Vuelta</option></select></div><div class="conv-arrow">&#8647;</div><div class="conv-col"><span class="conv-label">Resultado</span><input class="conv-input" type="number" id="a-val2" placeholder="0" oninput="convertUnitInverse('angulo')"><select class="conv-select" id="a-to" onchange="convertUnit('angulo')"><option value="1">Grado (&#176;)</option><option value="0.017453293" selected>Radi&#225;n (rad)</option><option value="0.01111111">Gon/Gradi&#225;n</option><option value="0.000277778">Minuto de arco</option><option value="0.000004629">Segundo de arco</option><option value="360">Vuelta</option></select></div></div><div class="conv-result" id="res-angulo">Introduce un valor para convertir</div></div>
+
+      <div class="conv-body" id="conv-velocidad"><div class="conv-row"><div class="conv-col"><span class="conv-label">Valor</span><input class="conv-input" type="number" id="vel-val" placeholder="0" oninput="convertUnit('velocidad')"><select class="conv-select" id="vel-from" onchange="convertUnit('velocidad')"><option value="1" selected>m/s</option><option value="0.277778">km/h</option><option value="0.44704">mph</option><option value="0.514444">Nudo (kn)</option><option value="340.29">Mach</option><option value="299792458">Vel. luz (c)</option></select></div><div class="conv-arrow">&#8647;</div><div class="conv-col"><span class="conv-label">Resultado</span><input class="conv-input" type="number" id="vel-val2" placeholder="0" oninput="convertUnitInverse('velocidad')"><select class="conv-select" id="vel-to" onchange="convertUnit('velocidad')"><option value="1">m/s</option><option value="0.277778" selected>km/h</option><option value="0.44704">mph</option><option value="0.514444">Nudo (kn)</option><option value="340.29">Mach</option><option value="299792458">Vel. luz (c)</option></select></div></div><div class="conv-result" id="res-velocidad">Introduce un valor para convertir</div></div>
+
+      <div class="conv-body" id="conv-area"><div class="conv-row"><div class="conv-col"><span class="conv-label">Valor</span><input class="conv-input" type="number" id="ar-val" placeholder="0" oninput="convertUnit('area')"><select class="conv-select" id="ar-from" onchange="convertUnit('area')"><option value="1e-4">cm&#178;</option><option value="1" selected>m&#178;</option><option value="1e4">Hect&#225;rea</option><option value="1e6">km&#178;</option><option value="0.09290304">Pie&#178;</option><option value="4046.856">Acre</option></select></div><div class="conv-arrow">&#8647;</div><div class="conv-col"><span class="conv-label">Resultado</span><input class="conv-input" type="number" id="ar-val2" placeholder="0" oninput="convertUnitInverse('area')"><select class="conv-select" id="ar-to" onchange="convertUnit('area')"><option value="1e-4">cm&#178;</option><option value="1">m&#178;</option><option value="1e4" selected>Hect&#225;rea</option><option value="1e6">km&#178;</option><option value="0.09290304">Pie&#178;</option><option value="4046.856">Acre</option></select></div></div><div class="conv-result" id="res-area">Introduce un valor para convertir</div></div>
+
+      <div class="conv-body" id="conv-tiempo"><div class="conv-row"><div class="conv-col"><span class="conv-label">Valor</span><input class="conv-input" type="number" id="ti-val" placeholder="0" oninput="convertUnit('tiempo')"><select class="conv-select" id="ti-from" onchange="convertUnit('tiempo')"><option value="1e-3">Milisegundo</option><option value="1" selected>Segundo (s)</option><option value="60">Minuto</option><option value="3600">Hora (h)</option><option value="86400">D&#237;a</option><option value="604800">Semana</option><option value="31557600">A&#241;o</option></select></div><div class="conv-arrow">&#8647;</div><div class="conv-col"><span class="conv-label">Resultado</span><input class="conv-input" type="number" id="ti-val2" placeholder="0" oninput="convertUnitInverse('tiempo')"><select class="conv-select" id="ti-to" onchange="convertUnit('tiempo')"><option value="1e-3">Milisegundo</option><option value="1">Segundo (s)</option><option value="60" selected>Minuto</option><option value="3600">Hora (h)</option><option value="86400">D&#237;a</option><option value="604800">Semana</option><option value="31557600">A&#241;o</option></select></div></div><div class="conv-result" id="res-tiempo">Introduce un valor para convertir</div></div>
+
+      <div class="conv-body" id="conv-energia"><div class="conv-row"><div class="conv-col"><span class="conv-label">Valor</span><input class="conv-input" type="number" id="en-val" placeholder="0" oninput="convertUnit('energia')"><select class="conv-select" id="en-from" onchange="convertUnit('energia')"><option value="1" selected>Julio (J)</option><option value="1e3">Kilojulio (kJ)</option><option value="4.184">Calor&#237;a</option><option value="4184">Kilocal&#243;ria</option><option value="3600000">kWh</option><option value="1055.06">BTU</option></select></div><div class="conv-arrow">&#8647;</div><div class="conv-col"><span class="conv-label">Resultado</span><input class="conv-input" type="number" id="en-val2" placeholder="0" oninput="convertUnitInverse('energia')"><select class="conv-select" id="en-to" onchange="convertUnit('energia')"><option value="1">Julio (J)</option><option value="1e3">Kilojulio (kJ)</option><option value="4.184" selected>Calor&#237;a</option><option value="4184">Kilocal&#243;ria</option><option value="3600000">kWh</option><option value="1055.06">BTU</option></select></div></div><div class="conv-result" id="res-energia">Introduce un valor para convertir</div></div>
+
+    </div>
+  </div>
+</div>
+
 <script>
 'use strict';
-
-// ================================================================
-// MODAL AYUDA
-// ================================================================
-document.getElementById('btn-help').addEventListener('click', () => {
-  document.getElementById('help-overlay').classList.add('open');
-});
-document.getElementById('help-close').addEventListener('click', () => {
-  document.getElementById('help-overlay').classList.remove('open');
-});
-document.getElementById('help-overlay').addEventListener('click', e => {
-  if (e.target === document.getElementById('help-overlay'))
-    document.getElementById('help-overlay').classList.remove('open');
+function openOv(id)  { document.getElementById(id).classList.add('open');    }
+function closeOv(id) { document.getElementById(id).classList.remove('open'); }
+document.getElementById('ov-conversor').addEventListener('click', e => {
+  if (e.target === document.getElementById('ov-conversor')) closeOv('ov-conversor');
 });
 document.addEventListener('keydown', e => {
-  if (e.code === 'Escape') {
-    document.getElementById('help-overlay').classList.remove('open');
-  }
+  if (e.code === 'Escape') closeOv('ov-conversor');
 });
-
-// ================================================================
-// DESPLEGABLE — Sección de enlaces
-// ================================================================
-function toggleSection(id) {
-  const body    = document.getElementById(id + '-body');
-  const icon    = document.querySelector('#' + id + '-toggle .collapse-icon');
-  const label   = document.getElementById(id + '-label');
-  const isOpen  = !body.classList.contains('collapsed');
-
-  if (isOpen) {
-    body.classList.add('collapsed');
-    icon.classList.add('collapsed');
-    label.textContent = 'Mostrar';
-  } else {
-    body.classList.remove('collapsed');
-    icon.classList.remove('collapsed');
-    label.textContent = 'Ocultar';
-  }
-}
-
-// ================================================================
-// CONVERSOR — Tabs
-// ================================================================
 document.querySelectorAll('.conv-tab').forEach(tab => {
-  if (tab.disabled) return;
   tab.addEventListener('click', () => {
     document.querySelectorAll('.conv-tab').forEach(t => t.classList.remove('active'));
     document.querySelectorAll('.conv-body').forEach(b => b.classList.remove('active'));
     tab.classList.add('active');
-    const cat = tab.dataset.cat;
-    const body = document.getElementById('conv-' + cat);
-    if (body) body.classList.add('active');
+    const b = document.getElementById('conv-' + tab.dataset.cat);
+    if (b) b.classList.add('active');
   });
 });
-
-// ================================================================
-// CONVERSOR — Lógica de conversión lineal (factor base en metros/gramos/etc.)
-// ================================================================
 const CONV_MAP = {
-  longitud:  { val: 'l-val',   val2: 'l-val2',   from: 'l-from',   to: 'l-to',   res: 'res-longitud'  },
-  masa:      { val: 'm-val',   val2: 'm-val2',   from: 'm-from',   to: 'm-to',   res: 'res-masa'      },
-  volumen:   { val: 'v-val',   val2: 'v-val2',   from: 'v-from',   to: 'v-to',   res: 'res-volumen'   },
-  angulo:    { val: 'a-val',   val2: 'a-val2',   from: 'a-from',   to: 'a-to',   res: 'res-angulo'    },
-  velocidad: { val: 'vel-val', val2: 'vel-val2', from: 'vel-from', to: 'vel-to', res: 'res-velocidad' },
-  area:      { val: 'ar-val',  val2: 'ar-val2',  from: 'ar-from',  to: 'ar-to',  res: 'res-area'      },
-  tiempo:    { val: 'ti-val',  val2: 'ti-val2',  from: 'ti-from',  to: 'ti-to',  res: 'res-tiempo'    },
-  energia:   { val: 'en-val',  val2: 'en-val2',  from: 'en-from',  to: 'en-to',  res: 'res-energia'   },
+  longitud:  {val:'l-val',   val2:'l-val2',   from:'l-from',   to:'l-to',   res:'res-longitud'},
+  masa:      {val:'m-val',   val2:'m-val2',   from:'m-from',   to:'m-to',   res:'res-masa'},
+  volumen:   {val:'v-val',   val2:'v-val2',   from:'v-from',   to:'v-to',   res:'res-volumen'},
+  angulo:    {val:'a-val',   val2:'a-val2',   from:'a-from',   to:'a-to',   res:'res-angulo'},
+  velocidad: {val:'vel-val', val2:'vel-val2', from:'vel-from', to:'vel-to', res:'res-velocidad'},
+  area:      {val:'ar-val',  val2:'ar-val2',  from:'ar-from',  to:'ar-to',  res:'res-area'},
+  tiempo:    {val:'ti-val',  val2:'ti-val2',  from:'ti-from',  to:'ti-to',  res:'res-tiempo'},
+  energia:   {val:'en-val',  val2:'en-val2',  from:'en-from',  to:'en-to',  res:'res-energia'},
 };
-
 function fmtNum(n) {
-  if (isNaN(n) || !isFinite(n)) return '—';
+  if (isNaN(n) || !isFinite(n)) return '--';
   if (Math.abs(n) < 1e-10 && n !== 0) return n.toExponential(6);
   if (Math.abs(n) >= 1e12) return n.toExponential(6);
-  // Máximo 10 decimales significativos
-  const s = parseFloat(n.toPrecision(10)).toString();
-  return s;
+  return parseFloat(n.toPrecision(10)).toString();
 }
-
 function convertUnit(cat) {
   const ids = CONV_MAP[cat];
   const val  = parseFloat(document.getElementById(ids.val).value);
   const from = parseFloat(document.getElementById(ids.from).value);
   const to   = parseFloat(document.getElementById(ids.to).value);
-  if (isNaN(val)) { document.getElementById(ids.res).textContent = 'Introduce un valor para convertir'; document.getElementById(ids.val2).value = ''; return; }
-  const result = val * (from / to);
-  document.getElementById(ids.val2).value = fmtNum(result);
-  const fromName = document.getElementById(ids.from).options[document.getElementById(ids.from).selectedIndex].text;
-  const toName   = document.getElementById(ids.to).options[document.getElementById(ids.to).selectedIndex].text;
-  document.getElementById(ids.res).textContent = `${val} ${fromName} = ${fmtNum(result)} ${toName}`;
+  if (isNaN(val)) { document.getElementById(ids.res).textContent = 'Introduce un valor'; document.getElementById(ids.val2).value = ''; return; }
+  const r = val * (from / to);
+  document.getElementById(ids.val2).value = fmtNum(r);
+  const fn = document.getElementById(ids.from).options[document.getElementById(ids.from).selectedIndex].text;
+  const tn = document.getElementById(ids.to).options[document.getElementById(ids.to).selectedIndex].text;
+  document.getElementById(ids.res).textContent = val + ' ' + fn + ' = ' + fmtNum(r) + ' ' + tn;
 }
-
 function convertUnitInverse(cat) {
-  const ids = CONV_MAP[cat];
+  const ids  = CONV_MAP[cat];
   const val2 = parseFloat(document.getElementById(ids.val2).value);
   const from = parseFloat(document.getElementById(ids.from).value);
   const to   = parseFloat(document.getElementById(ids.to).value);
-  if (isNaN(val2)) { document.getElementById(ids.res).textContent = 'Introduce un valor para convertir'; document.getElementById(ids.val).value = ''; return; }
-  const result = val2 * (to / from);
-  document.getElementById(ids.val).value = fmtNum(result);
-  const fromName = document.getElementById(ids.from).options[document.getElementById(ids.from).selectedIndex].text;
-  const toName   = document.getElementById(ids.to).options[document.getElementById(ids.to).selectedIndex].text;
-  document.getElementById(ids.res).textContent = `${fmtNum(result)} ${fromName} = ${val2} ${toName}`;
+  if (isNaN(val2)) { document.getElementById(ids.res).textContent = 'Introduce un valor'; document.getElementById(ids.val).value = ''; return; }
+  const r = val2 * (to / from);
+  document.getElementById(ids.val).value = fmtNum(r);
+  const fn = document.getElementById(ids.from).options[document.getElementById(ids.from).selectedIndex].text;
+  const tn = document.getElementById(ids.to).options[document.getElementById(ids.to).selectedIndex].text;
+  document.getElementById(ids.res).textContent = fmtNum(r) + ' ' + fn + ' = ' + val2 + ' ' + tn;
 }
-
-// ================================================================
-// CONVERSOR — Temperatura (fórmulas especiales, no lineales)
-// ================================================================
 function convertTemp() {
   const val  = parseFloat(document.getElementById('t-val').value);
   const from = document.getElementById('t-from').value;
   const to   = document.getElementById('t-to').value;
-  if (isNaN(val)) { document.getElementById('res-temperatura').textContent = 'Introduce un valor para convertir'; document.getElementById('t-val2').value = ''; return; }
-
-  // Convertir a Celsius primero
-  let celsius;
-  switch(from) {
-    case 'C': celsius = val; break;
-    case 'F': celsius = (val - 32) * 5/9; break;
-    case 'K': celsius = val - 273.15; break;
-    case 'R': celsius = (val - 491.67) * 5/9; break;
-  }
-
-  // Desde Celsius al destino
-  let result;
-  switch(to) {
-    case 'C': result = celsius; break;
-    case 'F': result = celsius * 9/5 + 32; break;
-    case 'K': result = celsius + 273.15; break;
-    case 'R': result = (celsius + 273.15) * 9/5; break;
-  }
-
-  document.getElementById('t-val2').value = fmtNum(result);
-  const fromNames = { C:'°C', F:'°F', K:'K', R:'°R' };
-  document.getElementById('res-temperatura').textContent = `${val} ${fromNames[from]} = ${fmtNum(result)} ${fromNames[to]}`;
+  if (isNaN(val)) { document.getElementById('res-temperatura').textContent = 'Introduce un valor'; document.getElementById('t-val2').value = ''; return; }
+  let c;
+  switch(from) { case 'C': c=val; break; case 'F': c=(val-32)*5/9; break; case 'K': c=val-273.15; break; case 'R': c=(val-491.67)*5/9; break; }
+  let r;
+  switch(to)   { case 'C': r=c; break; case 'F': r=c*9/5+32; break; case 'K': r=c+273.15; break; case 'R': r=(c+273.15)*9/5; break; }
+  document.getElementById('t-val2').value = fmtNum(r);
+  const n = {C:'°C', F:'°F', K:'K', R:'°R'};
+  document.getElementById('res-temperatura').textContent = val + ' ' + n[from] + ' = ' + fmtNum(r) + ' ' + n[to];
 }
-
-// ================================================================
-// BUSCADOR en tiempo real
-// ================================================================
-const allSections  = document.querySelectorAll('.section-block');
-const allLinkCards = document.querySelectorAll('.link-card, .soon-card');
-const searchInput  = document.getElementById('search-input');
-const searchCount  = document.getElementById('search-count');
-const noResults    = document.getElementById('no-results');
-const noResultsTerm = document.getElementById('no-results-term');
-
-searchInput.addEventListener('input', () => {
-  const q = searchInput.value.trim().toLowerCase();
-
-  if (!q) {
-    // Sin búsqueda: mostrar todo
-    allSections.forEach(s => s.style.display = '');
-    allLinkCards.forEach(c => c.style.display = '');
-    searchCount.textContent = '';
-    noResults.classList.remove('visible');
-    return;
-  }
-
-  let visibleCount = 0;
-
-  allSections.forEach(section => {
-    const secText = (section.dataset.section || '').toLowerCase();
-    const cards   = section.querySelectorAll('.link-card, .soon-card');
-    let secVisible = false;
-
-    cards.forEach(card => {
-      const tags    = (card.dataset.tags || '').toLowerCase();
-      const name    = (card.querySelector('.link-card-name, .soon-title')?.textContent || '').toLowerCase();
-      const desc    = (card.querySelector('.link-card-desc, .soon-desc')?.textContent || '').toLowerCase();
-      const matches = tags.includes(q) || name.includes(q) || desc.includes(q);
-      card.style.display = matches ? '' : 'none';
-      if (matches) { secVisible = true; visibleCount++; }
-    });
-
-    // Mostrar sección si el título coincide aunque las cards no
-    const titleMatch = secText.includes(q);
-    if (titleMatch) { cards.forEach(c => c.style.display = ''); secVisible = true; }
-    section.style.display = secVisible ? '' : 'none';
-  });
-
-  searchCount.textContent = visibleCount > 0 ? `${visibleCount}` : '';
-  noResultsTerm.textContent = searchInput.value.trim();
-  noResults.classList.toggle('visible', visibleCount === 0);
-});
 </script>
-
 </body>
 </html>
