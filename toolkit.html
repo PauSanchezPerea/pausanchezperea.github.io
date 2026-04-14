@@ -271,6 +271,18 @@ body { background:var(--bg); color:var(--text); font-family:'Outfit',sans-serif;
 .tk-footer a { color:var(--text-faint); text-decoration:none; margin:0 10px; transition:color .2s; }
 .tk-footer a:hover { color:var(--text-dim); }
 
+/* ══ HELP BUTTON ══ */
+.help-btn {
+  width:32px; height:32px; border-radius:50%;
+  border:1px solid var(--border);
+  background:rgba(255,255,255,.04);
+  color:var(--text-dim); font-size:14px; font-weight:700;
+  cursor:pointer; transition:all .22s;
+  display:flex; align-items:center; justify-content:center;
+  font-family:'Outfit',sans-serif;
+}
+.help-btn:hover { border-color:var(--focus); color:var(--focus); background:var(--focus-d); box-shadow:0 0 12px var(--focus-d); }
+
 /* ══════════════════════════════════════════════════════════════
    MODAL CONVERSOR
 ══════════════════════════════════════════════════════════════ */
@@ -341,6 +353,7 @@ body { background:var(--bg); color:var(--text); font-family:'Outfit',sans-serif;
     <span class="topbar-page">Student Toolkit</span>
   </div>
   <div class="topbar-right">
+    <button class="help-btn" id="btn-help" title="Ayuda">?</button>
     <span class="topbar-badge">v2.1</span>
     <a href="index.html" class="topbar-back">&#8592; Timer</a>
   </div>
@@ -489,6 +502,39 @@ body { background:var(--bg); color:var(--text); font-family:'Outfit',sans-serif;
 
 </div><!-- /.page -->
 
+<!-- ══ MODAL AYUDA ══ -->
+<div class="overlay" id="ov-help">
+  <div class="mbox" style="max-width:480px">
+    <div class="mhead">
+      <div class="mtitle">&#10067; GU&#205;A RÁPIDA — v2.1</div>
+      <button class="mclose" onclick="closeOv('ov-help')">&#10005;</button>
+    </div>
+    <div class="mbody" style="display:flex;flex-direction:column;gap:18px">
+
+      <div style="background:rgba(255,214,0,.06);border:1px solid rgba(255,214,0,.2);border-radius:12px;padding:14px 16px">
+        <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.2em;color:var(--gold);margin-bottom:8px">&#127775; Herramientas Estrella</div>
+        <p style="font-size:13px;color:var(--text-dim);line-height:1.65">Las dos tarjetas grandes de la parte superior son los ejes del Toolkit. La <strong style="color:var(--gold)">Calculadora de Notas</strong> te dice exactamente cu&#225;nto necesitas en el examen final para aprobar. El <strong style="color:var(--focus)">Generador APA 7&#170;</strong> crea citas bibliogr&#225;ficas para libros, art&#237;culos y webs. Haz clic en cualquiera de ellas o en su bot&#243;n "Abrir herramienta".</p>
+      </div>
+
+      <div style="background:rgba(176,106,255,.06);border:1px solid rgba(176,106,255,.2);border-radius:12px;padding:14px 16px">
+        <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.2em;color:var(--long);margin-bottom:8px">&#128300; Kit Matem&#225;tico</div>
+        <p style="font-size:13px;color:var(--text-dim);line-height:1.65">La barra inferior izquierda agrupa las 4 calculadoras avanzadas: <strong style="color:var(--text)">Cient&#237;fica</strong> (trig., log., potencias), <strong style="color:var(--text)">Estad&#237;stica</strong> (media, varianza, gr&#225;ficos), <strong style="color:var(--text)">Ecuaciones</strong> (Cramer, Newton-Raphson) y <strong style="color:var(--text)">Matrices</strong> (hasta 7&#215;7). Haz clic en el icono correspondiente.</p>
+      </div>
+
+      <div style="background:rgba(0,255,152,.05);border:1px solid rgba(0,255,152,.18);border-radius:12px;padding:14px 16px">
+        <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.2em;color:var(--short);margin-bottom:8px">&#9878;&#65039; Conversor de Unidades</div>
+        <p style="font-size:13px;color:var(--text-dim);line-height:1.65">El conversor est&#225; oculto para no saturar la pantalla. Para abrirlo, pulsa el <strong style="color:var(--short)">bot&#243;n flotante &#9878;&#65039;</strong> que encontrar&#225;s en la <strong style="color:var(--text)">esquina inferior derecha</strong> de la pantalla. Soporta 9 categor&#237;as: longitud, masa, volumen, temperatura, &#225;ngulo, velocidad, &#225;rea, tiempo y energ&#237;a.</p>
+      </div>
+
+      <div style="background:rgba(0,212,255,.05);border:1px solid rgba(0,212,255,.15);border-radius:12px;padding:14px 16px">
+        <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.2em;color:var(--focus);margin-bottom:8px">&#128279; Recursos Externos</div>
+        <p style="font-size:13px;color:var(--text-dim);line-height:1.65">La barra central inferior contiene accesos directos a <strong style="color:var(--text)">Wuolah</strong>, <strong style="color:var(--text)">GeoGebra</strong>, <strong style="color:var(--text)">Symbolab</strong> y <strong style="color:var(--text)">GradeCalc</strong>. Se abren en pesta&#241;a nueva.</p>
+      </div>
+
+    </div>
+  </div>
+</div>
+
 <!-- ══ FAB CONVERSOR ══ -->
 <button class="fab-conv" onclick="openOv('ov-conversor')">
   &#9878;&#65039;
@@ -543,11 +589,12 @@ body { background:var(--bg); color:var(--text); font-family:'Outfit',sans-serif;
 'use strict';
 function openOv(id)  { document.getElementById(id).classList.add('open');    }
 function closeOv(id) { document.getElementById(id).classList.remove('open'); }
+document.getElementById('btn-help').addEventListener('click', () => openOv('ov-help'));
 document.getElementById('ov-conversor').addEventListener('click', e => {
   if (e.target === document.getElementById('ov-conversor')) closeOv('ov-conversor');
 });
 document.addEventListener('keydown', e => {
-  if (e.code === 'Escape') closeOv('ov-conversor');
+  if (e.code === 'Escape') { closeOv('ov-conversor'); closeOv('ov-help'); }
 });
 document.querySelectorAll('.conv-tab').forEach(tab => {
   tab.addEventListener('click', () => {
